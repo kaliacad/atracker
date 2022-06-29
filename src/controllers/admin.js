@@ -1,3 +1,3 @@
 exports.getIndex = (req, res, next) => {
-    res.render("admin");
+    res.render("admin/index");
 };
