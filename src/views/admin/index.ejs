@@ -1,13 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/css/style.css" />
-    <title>Document</title>
-  </head>
-  <body>
-    vb
-  </body>
-</html>
+<%- include('../includes/head.ejs') %>
+
+<section
+  class="container-fluid w-100 h-100 mt-0 px-5 py-5 d-flex justify-content-center"
+>
+  <div class=" card shadow w-50">
+    <div class="card-body">
+      <h5 class="card-title">Ajouter un etudiant</h5>
+      <form action="" method="post">
+        <div class="form-group mt-4">
+          <label for="nom">Nom</label>
+          <input id="nom" class="form-control" type="text" name="name" />
+        </div>
+        <div class="form-group mt-4">
+          <label for="email">Email</label>
+          <input id="email" class="form-control" type="email" name="email" />
+        </div>
+        <div class="form-group mt-4">
+          <button class="btn btn-primary" type="submit">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

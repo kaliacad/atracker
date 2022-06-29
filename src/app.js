@@ -7,6 +7,7 @@ const app = express();
 //routes
 const adminRoutes = require("./routes/admin");
 const authRoutes = require("./routes/auth");
+const publicRoutes = require("./routes/public");
 
 const views = path.join(__dirname, "views");
 
@@ -43,6 +44,7 @@ app.use(express.static(path.join(__dirname, "..", "public")));
 
 //use routes
 app.use(authRoutes);
-app.use(adminRoutes);
+app.use("/admin", adminRoutes);
+app.use(publicRoutes);
 
 module.exports = app;

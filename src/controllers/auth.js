@@ -6,5 +6,5 @@ exports.postLogin = (req, res, next) => {
     const username = req.body.username;
     const password = req.body.password;
     console.log(req.body);
-    res.redirect("/");
+    res.redirect("/admin/");
 };
