@@ -1,5 +1,6 @@
 const express = require("express");
 const path = require("path");
+const bodyParser = require("body-parser");
 
 const app = express();
 
@@ -12,6 +13,9 @@ const views = path.join(__dirname, "views");
 //templates views
 app.set("view engine", "ejs");
 app.set("views", views);
+
+//body parser to decode form
+app.use(bodyParser.urlencoded({ extended: false }));
 
 //bootstrap include
 app.use(
