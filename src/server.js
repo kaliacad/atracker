@@ -1,6 +1,7 @@
-import chalk from "chalk";
+const app = require("./app");
 
-import app from "./app.js";
-const PORT = 5000;
+const PORT = 8000;
 
-app.listen(PORT, () => console.log(`The server is listning on port ${chalk.green(PORT)}`));
+app.listen(PORT, () =>
+    console.log(`The server is listning on port ${PORT}`)
+);

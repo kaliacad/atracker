@@ -1,21 +1,19 @@
-import express from "express";
-import path from "path";
-import nodemon from "nodemon";
+const express = require("express");
+const path = require("path");
 
 const app = express();
 
 app.set("view engine", "ejs");
-app.use(nodemon("tiny"))
-app.use('/css', express.static(path.join(_dirname, 'node_modules/bootstrap/dist/css')))
-app.use('/js', express.static(path.join(_dirname, 'node_modules/bootstrap/dist/js')))
+app.use("/css", express.static(path.join("node_modules/bootstrap/dist/css")));
+app.use("/js", express.static(path.join("node_modules/bootstrap/dist/js")));
 
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "views", "index.html"));
+    res.sendFile(path.join("views", "index.html"));
 });
 
-// admin 
+// admin
 app.get("/", (req, res) => {
-  res.render("views/admin")
-})
+    res.render("views/admin");
+});
 
-export default app
+module.exports = app;
