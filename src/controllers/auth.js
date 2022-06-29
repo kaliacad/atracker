@@ -1,10 +1,35 @@
+const db = require("../db");
+const bcrypt = require("bcrypt");
+
 exports.getLogin = (req, res, next) => {
     res.render("auth/login");
 };
 
-exports.postLogin = (req, res, next) => {
+exports.postLogin = async (req, res, next) => {
     const username = req.body.username;
     const password = req.body.password;
-    console.log(req.body);
-    res.redirect("/admin/");
+    try {
+        const result = await db.query(
+            `SELECT * FROM users where username='${username}'`
+        );
+        const user = result.rows[0];
+        console.log(user);
+        if (user && password == user.password) {
+            return res.redirect(`/admin/add-student/${user.id}`);
+        }
+        res.redirect("/login");
+        // bcrypt
+        //     .compare(user.password, password)
+        //     .then((isMatch) => {
+        //         if (isMatch) {
+        //             return res.redirect(`/admin/add-student/${user.id}`);
+        //         }
+        //         res.redirect("/login");
+        //     })
+        //     .catch((error) => console.log(error));
+    } catch (error) {
+        console.log(error);
+    }
+
+    res.redirect("/admin/add-student");
 };
