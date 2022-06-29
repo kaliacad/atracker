@@ -3,17 +3,20 @@ const path = require("path");
 
 const app = express();
 
+const adminRoutes = require('./routes/admin')
+
+const views = path.join(__dirname, "views");
+
 app.set("view engine", "ejs");
+app.set("views", views);
 app.use("/css", express.static(path.join("node_modules/bootstrap/dist/css")));
 app.use("/js", express.static(path.join("node_modules/bootstrap/dist/js")));
 
-app.get("/", (req, res) => {
-    res.sendFile(path.join("views", "index.html"));
-});
+app.use(express.static(path.join(__dirname, 'public')))
+
+app.use(adminRoutes);
 
 // admin
-app.get("/", (req, res) => {
-    res.render("views/admin");
-});
+
 
 module.exports = app;
