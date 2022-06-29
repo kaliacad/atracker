@@ -1,6 +1,6 @@
-const color = require("chalk")
+import chalk from "chalk";
 
-const app = require("./app");
-const port = 4000;
+import app from "./app.js";
+const PORT = 5000;
 
-app.listen(port, () => console.log(`The server is listning on port ${color.green(port)}`));
+app.listen(PORT, () => console.log(`The server is listning on port ${chalk.green(PORT)}`));
