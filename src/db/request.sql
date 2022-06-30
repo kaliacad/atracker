@@ -21,3 +21,6 @@ CREATE TABLE students (
 );
 
 SELECT * FROM students;
+
+
+SELECT students.id AS id, students.noms AS studentNoms, students.email as studentsEmail, users.noms AS usersNoms  FROM students join users ON students.iduser = users.id;

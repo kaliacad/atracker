@@ -2,7 +2,19 @@ const db = require("../db");
 const bcrypt = require("bcrypt");
 
 exports.getIndex = (req, res, next) => {
-    res.render("admin/index");
+    const userId = req.params.idUser;
+    db.query(
+        "SELECT students.id AS id, students.noms AS studentnoms, students.email as studentsemail, users.noms AS usersnoms  FROM students join users ON students.iduser = users.id"
+    )
+        .then((result) => {
+            const students = result.rows;
+            console.log(result);
+            res.render("admin/index", {
+                students: students,
+                userId: userId,
+            });
+        })
+        .catch((error) => console.log(error));
 };
 
 exports.getAddStudent = (req, res, next) => {
@@ -20,7 +32,7 @@ exports.postAddStudent = (req, res, send) => {
     )
         .then((result) => {
             console.log(result);
-            res.redirect("/admin/dashboard");
+            res.redirect(`/admin/dashboard/${userId}`);
         })
         .catch((error) => console.log(error));
 };

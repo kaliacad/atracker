@@ -13,9 +13,8 @@ exports.postLogin = async (req, res, next) => {
             `SELECT * FROM users where username='${username}'`
         );
         const user = result.rows[0];
-        console.log(user);
         if (user && password == user.password) {
-            return res.redirect(`/admin/add-student/${user.id}`);
+            return res.redirect(`/admin/dashboard/${user.id}`);
         }
         res.redirect("/login");
         // bcrypt
@@ -30,6 +29,4 @@ exports.postLogin = async (req, res, next) => {
     } catch (error) {
         console.log(error);
     }
-
-    res.redirect("/admin/add-student");
 };

@@ -8,6 +8,6 @@ const router = express.Router();
 
 router.get("/add-student/:idUser", adminController.getAddStudent);
 router.post("/add-student", adminController.postAddStudent);
-router.get('/dashboard', adminController.getIndex)
+router.get('/dashboard/:userId', adminController.getIndex)
 
 module.exports = router;
