@@ -1,12 +1,79 @@
 <%- include('../includes/head.ejs')%>
 
-<div class="container-fluid w-100 h-100 mt-0  d-flex justify-content-center align-items-center">
-    <div class=" col-md-6 ">
-      <div class="d-flex flex-row w-100 justify-content-between">
-        <h3 class="text-center align-start text-secondary">Faire la presence</h3>
-      </div>
-      <form action="" method="post">
-
-      </form>
+<div
+  class="container-fluid w-100 h-100 mt-0 d-flex justify-content-center align-items-center"
+>
+  <div class="col-md-6">
+    <div class="d-flex flex-row w-100 justify-content-between">
+      <h3 class="text-center align-start text-secondary">Faire la presence</h3>
     </div>
+    <form action="" method="post">
+      <table class="table table-danger shadow p-2">
+        <thead class="thead-light">
+          <tr>
+            <th class="text-danger">#</th>
+            <th class="text-danger">noms</th>
+            <th class="text-danger">Present</th>
+            <th class="text-danger">R (justifie)</th>
+            <th class="text-danger">A (justifie)</th>
+            <th class="text-danger">A (non justifie)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% students.forEach(student => { %>
+          <tr>
+            <td><%= student.id %></td>
+            <td><%= student.noms %></td>
+            <td>
+              <input
+                type="radio"
+                name="<%= student.id%>"
+                id=""
+                value="present"
+                checked
+              />
+            </td>
+            <td>
+              <input
+                type="radio"
+                name="<%= student.id%>"
+                id=""
+                value="retardJustifie"
+              />
+            </td>
+            <td>
+              <input
+                type="radio"
+                name="<%= student.id%>"
+                id=""
+                value="absentJustifie"
+              />
+            </td>
+            <td>
+              <input
+                type="radio"
+                name="<%= student.id%>"
+                id=""
+                value="absentNonjustifie"
+              />
+            </td>
+          </tr>
+          <% }) %>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th class="text-danger">#</th>
+            <th class="text-danger">noms</th>
+            <th class="text-danger">Present</th>
+            <th class="text-danger">R (justifie)</th>
+            <th class="text-danger">A (justifie)</th>
+            <th class="text-danger">A (non justifie)</th>
+          </tr>
+        </tfoot>
+      </table>
+      <div class="form-group d-flex justify-content-center">
+        <button class="btn btn-primary" type="submit">Enregistrer</button>
+      </div>
+    </form>
+  </div>
 </div>

@@ -83,7 +83,6 @@ app.use((req, res, next) => {
     // req.user = user;
 
     req.user = req.session.user ? req.session.user : undefined;
-    console.log(req.user);
     next();
 });
 //use routes
