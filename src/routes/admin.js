@@ -6,8 +6,10 @@ const adminController = require("../controllers/admin");
 
 const router = express.Router();
 
-router.get("/add-student/:idUser", adminController.getAddStudent);
+router.get("/add-student", adminController.getAddStudent);
 router.post("/add-student", adminController.postAddStudent);
-router.get('/dashboard/:userId', adminController.getIndex)
+router.get('/add-presence', adminController.getAddPresence);
+router.get('/dashboard', adminController.getIndex)
+router.get("/", adminController.getIndex);
 
 module.exports = router;

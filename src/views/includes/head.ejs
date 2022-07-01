@@ -31,11 +31,23 @@
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="/">Home</a>
             </li>
+            <% if(userId) { %>
+              <li class="nav-item">
+              <a class="nav-link mr-5" href="/admin/add-presence">Presence</a>
+            </li>
+            <form class="nav-item" method="POST" action="/logout">
+              <button class="nav-link mr-5 btn-logout" type="submit">
+                Se deconnecter
+              </button>
+            </form>
+            <% } else { %>
             <li class="nav-item">
               <a class="nav-link mr-5" href="/login">Se connecter</a>
             </li>
+            <% } %>
           </ul>
         </div>
       </div>
     </nav>
-
+  </body>
+</html>

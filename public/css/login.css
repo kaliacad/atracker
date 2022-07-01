@@ -13,3 +13,11 @@
 .main-container .row .card {
   min-height: 200px;
 }
+
+
+.btn-logout {
+  border: 1px solid whitesmoke;
+  border-radius: 5px;
+  background: whitesmoke;
+  /* background: inherit; */
+}

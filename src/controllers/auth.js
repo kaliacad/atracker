@@ -2,19 +2,24 @@ const db = require("../db");
 const bcrypt = require("bcrypt");
 
 exports.getLogin = (req, res, next) => {
-    res.render("auth/login");
+    const userId = req.user;
+    res.render("auth/login", {
+        userId
+    });
 };
 
 exports.postLogin = async (req, res, next) => {
     const username = req.body.username;
     const password = req.body.password;
+    
     try {
         const result = await db.query(
             `SELECT * FROM users where username='${username}'`
         );
         const user = result.rows[0];
         if (user && password == user.password) {
-            return res.redirect(`/admin/dashboard/${user.id}`);
+            req.session.user = user;
+            return res.redirect("/admin/dashboard/");
         }
         res.redirect("/login");
         // bcrypt
@@ -30,3 +35,9 @@ exports.postLogin = async (req, res, next) => {
         console.log(error);
     }
 };
+
+
+exports.postLogout = (req, res, next) => {
+    req.session.user = undefined
+    res.redirect('/login')
+}
