@@ -53,15 +53,20 @@ exports.getAddPresence = async (req, res, next) => {
 
 exports.postAddPresence = async (req, res, next) => {
     const students = req.body;
-    let userId;
+    let studentId;
     let presence;
+    const createdAt = new Date();
     const allPresences = [];
     for (let i in students) {
-        console.log(i, students[i]);
-        userId = +i;
+        studentId = +i;
         presence = students[i];
-        allPresences.push({ studentId: userId, presence, createdAt: new Date() });
+        await db.query(
+            `INSERT INTO presences(studentid, presence) values (${studentId}, '${presence}')`
+        )
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((error) => console.log(error));
     }
-    console.log(allPresences);
-    res.redirect("/admin/add-presence");
+    return res.redirect("/admin/add-presence");
 };
