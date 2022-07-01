@@ -1,0 +1,23 @@
+.main-container {
+  height: 80vh;
+  display: flexbox;
+  align-items: center;
+}
+
+.main-container .row {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.main-container .row .card {
+  min-height: 200px;
+}
+
+
+.btn-logout {
+  border: 1px solid whitesmoke;
+  border-radius: 5px;
+  background: whitesmoke;
+  /* background: inherit; */
+}
