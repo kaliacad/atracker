@@ -20,6 +20,15 @@ CREATE TABLE students (
     idUser INT NOT NULL REFERENCES users
 );
 
+CREATE TABLE presences (
+    id BIGSERIAL NOT NULL PRIMARY KEY,
+    studentId BIGINT NOT NULL REFERENCES students,
+    presence VARCHAR(20),
+    createdAt TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+
+
 SELECT * FROM students;
 
 
