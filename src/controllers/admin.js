@@ -1,13 +1,12 @@
 const db = require("../db");
-const bcrypt = require("bcrypt");
 
 exports.getIndex = async (req, res, next) => {
     const userId = req.user;
     await db
         .query(
-            "SELECT students.id AS id, students.noms AS studentnoms, students.email as studentsemail, users.noms AS usersnoms  FROM students join users ON students.iduser = users.id"
+            "SELECT students.id AS id, students.noms AS studentnoms, students.email as studentsemail  FROM students"
         )
-        .then(async (result) => {
+        .then(async(result) => {
             await db
                 .query(
                     "select students.id, COUNT (students.noms) as jours,students.noms , presences.presence as nompresence from presences inner join students on presences.studentid = students.id group by students.id , presences.presence order by students.noms"

@@ -1,14 +1,53 @@
 <%- include('../includes/head.ejs')%>
 
-<div class="container-fluid w-100 h-100 p-5 mt-5 row">
-  <div class="col-md-12">
-    <div class="d-flex flex-row w-100 justify-content-between">
-      <h3 class="text-center align-start text-secondary">
-        Listes des etudiants
-      </h3>
-      <a href="/admin/add-student"
-        ><button class="btn btn-primary" type="button">Nouveau</button></a
-      >
+<div class="container-fluid w-100 h-100 mt-0  d-flex justify-content-center align-items-center">
+    <div class=" col-md-6 ">
+      <div class="d-flex flex-row w-100 justify-content-between">
+        <h3 class="text-center align-start text-secondary">Listes des etudiants</h3>
+        <a href="/admin/add-student"><button class="btn btn-primary" type="button">Nouveau</button></a>
+      </div>
+      <table class="table table-danger shadow p-2">
+        <thead class="thead-light">
+          <tr>
+            <th class="text-danger">#</th>
+            <th class="text-danger">noms</th>
+            <th class="text-danger">email</th>
+            <th class="text-danger d-flex justify-content-center">actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% students.forEach(student => { %>
+          <tr>
+            <td><%= student.id %></td>
+            <td><%= student.studentnoms %></td>
+            <td><%= student.studentsemail %></td>
+            <td class="d-flex justify-content-end">
+              <a href="">
+                <button class="btn btn-primary btn-sm mx-1" type="button">
+                  voir
+                </button>
+              </a>
+              <a href="">
+                <button class="btn btn-success btn-sm mx-1" type="button">
+                  Editer
+                </button>
+              </a>
+              <button class="btn btn-danger btn-sm mx-1" type="button">
+                Suppr
+              </button>
+            </td>
+          </tr>
+          <% }) %>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th class="text-danger">#</th>
+            <th class="text-danger">noms</th>
+            <th class="text-danger">email</th>
+            <th class="text-danger d-flex justify-content-center">actions</th>
+          </tr>
+        </tfoot>
+      </table>
     </div>
     <table class="table table-danger shadow p-2">
       <thead class="thead-light">
