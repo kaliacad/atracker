@@ -10,15 +10,17 @@ exports.getIndex = async (req, res, next) => {
         .then(async (result) => {
             await db
                 .query(
-                    "select * from presences inner join students on presences.studentid = students.id group by presences.id, students.id"
+                    "select COUNT (students.noms) as jours,students.noms , presences.presence as nompresence from presences inner join students on presences.studentid = students.id group by students.id , presences.presence order by students.noms"
                 )
-                .then((response) => {
-                    console.log(response);
+                .then((results) => {
+                    const presences = results.rows;
+                    console.log(presences);
                     const students = result.rows;
                     // console.log(students);
                     return res.render("admin/index", {
-                        students: students,
-                        userId: userId,
+                        students,
+                        presences,
+                        userId,
                     });
                 });
         })
@@ -62,8 +64,6 @@ exports.postAddPresence = async (req, res, next) => {
     const students = req.body;
     let studentId;
     let presence;
-    const createdAt = new Date();
-    const allPresences = [];
     for (let i in students) {
         studentId = +i;
         presence = students[i];
