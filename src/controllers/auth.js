@@ -1,5 +1,6 @@
-const db = require("../db");
 const bcrypt = require("bcrypt");
+
+const db = require("../db");
 
 exports.getLogin = (req, res, next) => {
     const userId = req.user;
@@ -11,6 +12,7 @@ exports.getLogin = (req, res, next) => {
 exports.postLogin = async (req, res, next) => {
     const username = req.body.username;
     const password = req.body.password;
+
     await db
         .query(`SELECT * FROM users where username='${username}'`)
         .then((result) => {
@@ -22,16 +24,6 @@ exports.postLogin = async (req, res, next) => {
             res.redirect("/login");
         })
         .catch((error) => console.log(error));
-
-    // bcrypt
-    //     .compare(user.password, password)
-    //     .then((isMatch) => {
-    //         if (isMatch) {
-    //             return res.redirect(`/admin/add-student/${user.id}`);
-    //         }
-    //         res.redirect("/login");
-    //     })
-    //     .catch((error) => console.log(error));
 };
 
 exports.postLogout = (req, res, next) => {
