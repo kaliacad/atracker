@@ -26,10 +26,9 @@ exports.getAddStudent = (req, res, next) => {
 
 exports.postAddStudent = async (req, res, send) => {
     const { names, email, userId } = req.body;
-    console.log(names, email, userId);
     await db
         .query(
-            `INSERT INTO students (noms, email, iduser) values ('${names}','${email}',${userId})`
+            `INSERT INTO students (noms, email, idUser) values ('${names}','${email}', 1)`
         )
         .then((result) => {
             res.redirect("/admin/dashboard");
