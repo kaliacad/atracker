@@ -7,12 +7,20 @@ exports.getIndex = async (req, res, next) => {
         .query(
             "SELECT students.id AS id, students.noms AS studentnoms, students.email as studentsemail, users.noms AS usersnoms  FROM students join users ON students.iduser = users.id"
         )
-        .then((result) => {
-            const students = result.rows;
-            res.render("admin/index", {
-                students: students,
-                userId: userId,
-            });
+        .then(async (result) => {
+            await db
+                .query(
+                    "select * from presences inner join students on presences.studentid = students.id group by presences.id, students.id"
+                )
+                .then((response) => {
+                    console.log(response);
+                    const students = result.rows;
+                    // console.log(students);
+                    return res.render("admin/index", {
+                        students: students,
+                        userId: userId,
+                    });
+                });
         })
         .catch((error) => console.log(error));
 };
@@ -59,9 +67,10 @@ exports.postAddPresence = async (req, res, next) => {
     for (let i in students) {
         studentId = +i;
         presence = students[i];
-        await db.query(
-            `INSERT INTO presences(studentid, presence) values (${studentId}, '${presence}')`
-        )
+        await db
+            .query(
+                `INSERT INTO presences(studentid, presence) values (${studentId}, '${presence}')`
+            )
             .then((response) => {
                 console.log(response);
             })
