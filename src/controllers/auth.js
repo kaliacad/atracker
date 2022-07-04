@@ -1,6 +1,4 @@
-const bcrypt = require("bcrypt");
-
-const db = require("../db");
+const db = require("../db")
 
 exports.getLogin = (req, res, next) => {
     const userId = req.user;
@@ -10,8 +8,8 @@ exports.getLogin = (req, res, next) => {
 };
 
 exports.postLogin = async (req, res, next) => {
-    const username = req.body.username;
-    const password = req.body.password;
+    const username = req.body.username
+    const password = req.body.password
 
     await db
         .query(`SELECT * FROM users where username='${username}'`)
