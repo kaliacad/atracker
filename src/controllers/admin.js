@@ -10,7 +10,7 @@ exports.getIndex = async (req, res, next) => {
         .then(async (result) => {
             await db
                 .query(
-                    "select COUNT (students.noms) as jours,students.noms , presences.presence as nompresence from presences inner join students on presences.studentid = students.id group by students.id , presences.presence order by students.noms"
+                    "select students.id, COUNT (students.noms) as jours,students.noms , presences.presence as nompresence from presences inner join students on presences.studentid = students.id group by students.id , presences.presence order by students.noms"
                 )
                 .then((results) => {
                     const presences = results.rows;
