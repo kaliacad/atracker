@@ -4,6 +4,7 @@
   "description": "",
   "main": "src/server.js",
   "scripts": {
+    "runQuery": "node ./src/utils/runQuery",
     "start": "nodemon ./",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

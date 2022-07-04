@@ -1,17 +1,16 @@
 const db = require("../db");
-const bcrypt = require("bcrypt");
 
 exports.getIndex = async (req, res, next) => {
     const userId = req.user;
     await db
         .query(
-            "SELECT students.id AS id, students.noms AS studentnoms, students.email as studentsemail, users.noms AS usersnoms  FROM students join users ON students.iduser = users.id"
+            "SELECT students.id AS id, students.noms AS studentnoms, students.email as studentsemail  FROM students"
         )
         .then((result) => {
             const students = result.rows;
             res.render("admin/index", {
                 students: students,
-                userId: userId,
+                userId,
             });
         })
         .catch((error) => console.log(error));
