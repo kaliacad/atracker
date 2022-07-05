@@ -1,16 +1,19 @@
 const express = require("express");
-const path = require("path");
+
+//protection of private routes
+const isAuth = require('../middlewares/auth')
 
 //controller
 const adminController = require("../controllers/admin");
 
 const router = express.Router();
 
-router.get("/add-student", adminController.getAddStudent);
-router.post("/add-student", adminController.postAddStudent);
-router.get('/add-presence', adminController.getAddPresence);
-router.post("/add-presence", adminController.postAddPresence);
-router.get('/dashboard', adminController.getIndex)
-router.get("/", adminController.getIndex);
+router.get("/add-student",isAuth, adminController.getAddStudent);
+router.post("/add-student",isAuth, adminController.postAddStudent);
+router.get('/add-presence',isAuth, adminController.getAddPresence);
+router.post("/add-presence", isAuth, adminController.postAddPresence);
+router.get('/students', isAuth, adminController.getStudents);
+router.get('/dashboard', isAuth, adminController.getIndex);
+router.get("/",isAuth, adminController.getIndex);
 
 module.exports = router;
