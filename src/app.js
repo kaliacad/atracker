@@ -5,11 +5,12 @@ const bodyParser = require("body-parser");
 const pg = require("pg");
 const session = require("express-session");
 const pgSession = require("express-pg-session")(session);
-require('dotenv').config()
+require("dotenv").config();
 const pool = require("./db");
 
+
 const app = express();
-app.use(morgan('dev'));
+app.use(morgan("dev"));
 
 app.use(
     session({

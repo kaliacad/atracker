@@ -1,4 +1,5 @@
 const db = require("../db");
+const nodemailer = require("nodemailer");
 
 exports.getIndex = async (req, res, next) => {
     const userId = req.user;
@@ -6,7 +7,7 @@ exports.getIndex = async (req, res, next) => {
         .query(
             "SELECT students.id AS id, students.noms AS studentnoms, students.email as studentsemail  FROM students"
         )
-        .then(async(result) => {
+        .then(async (result) => {
             await db
                 .query(
                     "select presences.presence, COUNT (presences.presence)  from presences  group by presences.presence"
@@ -33,7 +34,7 @@ exports.getAddStudent = (req, res, next) => {
     });
 };
 
-exports.getStudents = async(req, res, next) => {
+exports.getStudents = async (req, res, next) => {
     const userId = req.user;
     await db
         .query("SELECT * FROM students")
@@ -45,7 +46,7 @@ exports.getStudents = async(req, res, next) => {
             });
         })
         .catch((error) => console.log(error));
-}
+};
 
 exports.postAddStudent = async (req, res, send) => {
     const { names, email, userId } = req.body;
@@ -84,10 +85,45 @@ exports.postAddPresence = async (req, res, next) => {
             .query(
                 `INSERT INTO presences(studentid, presence) values (${studentId}, '${presence}')`
             )
-            .then((response) => {
-                console.log(response);
+            .then(async(response) => {
+                console.log("vb");
+                let testAccount = await nodemailer.createTestAccount();
+                // create reusable transporter object using the default SMTP transport
+                let transporter = nodemailer.createTransport({
+                    host: "smtp.ethereal.email",
+                    port: 587,
+                    secure: false, // true for 465, false for other ports
+                    auth: {
+                        user: testAccount.user, // generated ethereal user
+                        pass: testAccount.pass, // generated ethereal password
+                    },
+                    tls: {
+                        rejectUnauthorized: false,
+                    },
+                });
+                console.log("vba");
+
+                const mailOptions = {
+                    from: '"Cedric  👻" <ckarungu921@gmail.com>', // sender address
+                    to: "ckarungu921@gmail.com", // list of receivers
+                    subject: "Hello ✔", // Subject line
+                    text: "Hello world?", // plain text body
+                    html: "<b>Hello world?</b>", // html body
+                };
+
+                // send mail with defined transport object
+                transporter.sendMail(mailOptions, (error, info) => {
+                    if (error) return console.log(error);
+
+                    console.log("Message sent: %s", info.messageId);
+                    console.log(
+                        "Preview URL: %s",
+                        nodemailer.getTestMessageUrl(info)
+                    );
+                    return res.redirect("/admin/dashboard");
+                });
             })
             .catch((error) => console.log(error));
     }
-    return res.redirect("/admin/add-presence");
+    
 };
