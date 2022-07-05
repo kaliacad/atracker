@@ -12,7 +12,7 @@
   <body class="">
     <nav class="navbar navbar-expand-lg bg-danger text-light px-5 fixed-top">
       <div class="container-fluid mx-5">
-        <a class="navbar-brand" href="/">Attendacy GDA</a>
+        <a class="navbar-brand text-light" href="/">Attendacy GDA</a>
         <button
           class="navbar-toggler"
           type="button"
@@ -31,14 +31,22 @@
             <% if(userId) { %>
             <li class="nav-item">
               <a
-                class="nav-link active"
+                class="nav-link text-light"
                 aria-current="page"
                 href="/admin/dashboard"
                 >Dashboard</a
               >
             </li>
             <li class="nav-item">
-              <a class="nav-link mr-5" href="/admin/add-presence">Presence</a>
+              <a
+                class="nav-link text-light"
+                aria-current="page"
+                href="/admin/students"
+                >Apprenants</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link mr-5 text-light" href="/admin/add-presence">Presence</a>
             </li>
             <form class="nav-item" method="POST" action="/logout">
               <button

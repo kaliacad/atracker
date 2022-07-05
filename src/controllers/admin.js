@@ -33,6 +33,20 @@ exports.getAddStudent = (req, res, next) => {
     });
 };
 
+exports.getStudents = async(req, res, next) => {
+    const userId = req.user;
+    await db
+        .query("SELECT * FROM students")
+        .then((result) => {
+            const students = result.rows;
+            res.render("admin/students", {
+                userId,
+                students,
+            });
+        })
+        .catch((error) => console.log(error));
+}
+
 exports.postAddStudent = async (req, res, send) => {
     const { names, email, userId } = req.body;
     await db
