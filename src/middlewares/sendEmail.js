@@ -1,23 +1,42 @@
 const nodemailer = require("nodemailer");
 const db = require("../db");
 
-module.exports = () => {
+module.exports = async() => {
     let studentsEmail;
+    let presences;
+    let contentMail = `<b>Bonjour Cher Coach</b>
+        <p>
+        Voici les statistiques des presences d'aujourd'hui <br/><ul>`;
     const date = new Date();
     const value = date.toTimeString().split(" ")[0];
 
-    value === "16:00:00" ? console.log(value, true) : console.log(value, false);
-    if (value == "16:15:00") {
-        db.query("SELECT * FROM students")
+    value === "16:54:00" ? console.log(value, true) : console.log(value, false);
+    if (value == "17:01:30") {
+        await db.query("SELECT * FROM students")
             .then((results) => {
                 const students = results.rows;
                 studentsEmail = students.map((student) => {
                     return student.email;
                 });
-                studentsEmail = studentsEmail.join('","')
+                studentsEmail = studentsEmail.join('","');
                 console.log(studentsEmail);
             })
             .catch((error) => console.log(error));
+        await db.query(
+            "select presences.presence, COUNT (presences.presence)  from presences  group by presences.presence"
+        )
+            .then((response) => {
+                // presences = response.rows;
+                response.rows.forEach((element) => {
+                    contentMail += `<li>${element.presence + ' '+ element.count}</li>`;
+                    console.log(element)
+                });
+                contentMail += `</ul><br>
+        Merci et bonne suite
+        </p>`;
+            })
+            .catch((error) => console.log(error));
+        console.log(contentMail);
 
         let transporter = nodemailer.createTransport({
             host: "smtp.gmail.com",
@@ -33,15 +52,11 @@ module.exports = () => {
             },
         });
         const mailOptions = {
-            from: '"Administratueur " <ckarungu921@kinshasadigital.com>', // sender address
+            from: '"Administrateur " <ckarungu921@kinshasadigital.com>', // sender address
             to: '"' + studentsEmail + '", "ckarungu921@gmail.com"', // list of receivers
-            subject: "Hello ✔", // Subject line
-            text: "Bonjour cher apprenant, juste vous informe vvvvvvvvvvvv que votre presence a ete bien enregistre aujourd'hui", // plain text body
-            html: `<b>Bonjour Cher apprenant</b>
-        <p>
-        juste vous informe que votre presence vvvvvvvvvvvv a ete bien enregistre aujourd'hui,
-        </p>
-        `, // html body
+            subject: "Feadback des presences des apprenants ✔", // Subject line
+            text: "Bonjour cher apprenant", // plain text body
+            html: contentMail, // html body
         };
         // send mail with defined transport object
         transporter.sendMail(mailOptions, (error, info) => {
@@ -51,5 +66,4 @@ module.exports = () => {
             console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
         });
     }
-
 };
