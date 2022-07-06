@@ -7,7 +7,7 @@ const session = require("express-session");
 const pgSession = require("express-pg-session")(session);
 require("dotenv").config();
 const pool = require("./db");
-const sendEmail = require('./middlewares/sendEmail')
+const sendEmail = require("./middlewares/sendEmail");
 
 const app = express();
 app.use(morgan("dev"));
@@ -64,13 +64,24 @@ app.use((req, res, next) => {
     next();
 });
 //use routes
-app.use(sendEmail)
+
 app.use(authRoutes);
 app.use("/admin", adminRoutes);
 app.use(publicRoutes);
- const date = new Date();
+const date = new Date();
 console.log(date.toTimeString());
-const value = date.toTimeString().split(' ')[0];
-console.log(value);
+const value = date.toTimeString().split(" ")[0];
+if (date === "15:46:00") console.log(value);
+value == "15:51:00" ? console.log(true) : console.log(false);
+
+
+//function to send automaticall eMail
+const autocall = () => {  
+    sendEmail(); 
+};
+ setInterval(() => {
+     autocall();
+ }, 1000);
+// autocall()
 
 module.exports = app;
