@@ -7,7 +7,7 @@ const session = require("express-session");
 const pgSession = require("express-pg-session")(session);
 require("dotenv").config();
 const pool = require("./db");
-
+const sendEmail = require('./middlewares/sendEmail')
 
 const app = express();
 app.use(morgan("dev"));
@@ -59,12 +59,18 @@ app.use(
 app.use(express.static(path.join(__dirname, "..", "public")));
 
 app.use((req, res, next) => {
-    req.user = req.session.user ? req.session.user : undefined;
+    req.user = req.session.user ? req.session.user.id : undefined;
+    console.log(req.user);
     next();
 });
 //use routes
+app.use(sendEmail)
 app.use(authRoutes);
 app.use("/admin", adminRoutes);
 app.use(publicRoutes);
+ const date = new Date();
+console.log(date.toTimeString());
+const value = date.toTimeString().split(' ')[0];
+console.log(value);
 
 module.exports = app;
