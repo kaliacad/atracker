@@ -4,8 +4,8 @@ const sendStudentMail = require("./sendStudentEmail");
 
 module.exports = async () => {
     const value = new Date().toTimeString().split(" ")[0];
-    value === "14:23:30" ? console.log(value, true) : console.log(value, false);
-    if (value == "14:23:30") {
+    value === "16:50:00" ? console.log(value, true) : console.log(value, false);
+    if (value == "16:50:00") {
         await db
             .query("SELECT * FROM students ")
             .then((result) => {
