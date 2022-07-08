@@ -24,14 +24,15 @@ module.exports = async (student) => {
     let template = `
         <h1>Bonjour ${student.noms} </h1>
         <p>
-            Aujourd'hui votre presence de la date du 
+            Votre presence est marque comme suit a la date du :
         </p>
         `;
     presences.forEach((presence) => {
+        const datePresence = new Date(presence.createdat).toLocaleString();
         template += `
-            <p>
-                A ${presence.createdat} vous etait ${presence.presence}
-            </p>
+            <ul>
+                <li> ${datePresence} vous etait  ${presence.presence} </li>
+            </ul>
             `;
     });
     const mailOptions = {

@@ -29,7 +29,7 @@ module.exports = async () => {
         .then((response) => {
             response.rows.forEach((element) => {
                 contentMail += `<li>${
-                    element.presence + " =>  " + element.count
+                    element.presence + "  =>  " + element.count
                 }</li>`;
                 console.log(element);
             });
