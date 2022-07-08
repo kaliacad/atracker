@@ -2,19 +2,31 @@ const express = require("express");
 const path = require("path");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
-const pg = require("pg");
 const session = require("express-session");
-const pgSession = require("express-pg-session")(session);
-require('dotenv').config()
-const pool = require("./db");
+require("dotenv").config();
+const sendEmail = require("./utils/email/sendEmail");
 
 const app = express();
-app.use(morgan('dev'));
+app.use(morgan("dev"));
+
+// app.use(
+//     session({
+//         secret: "secret word",
+//         resave: false,
+//         saveUninitialized: false,
+//     })
+// );
 
 app.use(
     session({
+        // store: new (require("connect-pg-simple")(session))({
+        //     // Insert connect-pg-simple options here
+        //     pool : require('./db/pool')
+        // }),
         secret: "secret word",
         resave: false,
+        cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 }, // 30 days
+        // Insert express-session options here
         saveUninitialized: false,
     })
 );
@@ -58,12 +70,24 @@ app.use(
 app.use(express.static(path.join(__dirname, "..", "public")));
 
 app.use((req, res, next) => {
-    req.user = req.session.user ? req.session.user : undefined;
+    req.user = req.session.user ? req.session.user.id : undefined;
+    console.log(req.user);
     next();
 });
 //use routes
+
 app.use(authRoutes);
 app.use("/admin", adminRoutes);
 app.use(publicRoutes);
+
+//function to send automaticall eMail
+const autocall = () => {
+    sendEmail();
+};
+setInterval(() => {
+    autocall();
+}, 1000);
+// autocall()
+
 
 module.exports = app;

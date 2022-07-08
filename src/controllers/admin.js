@@ -1,19 +1,19 @@
 const db = require("../db");
 
+
 exports.getIndex = async (req, res, next) => {
     const userId = req.user;
     await db
         .query(
             "SELECT students.id AS id, students.noms AS studentnoms, students.email as studentsemail  FROM students"
         )
-        .then(async(result) => {
+        .then(async (result) => {
             await db
                 .query(
                     "select presences.presence, COUNT (presences.presence)  from presences  group by presences.presence"
                 )
                 .then((results) => {
                     const presences = results.rows;
-                    console.log(presences);
                     const students = result.rows;
                     // console.log(students);
                     return res.render("admin/index", {
@@ -33,7 +33,7 @@ exports.getAddStudent = (req, res, next) => {
     });
 };
 
-exports.getStudents = async(req, res, next) => {
+exports.getStudents = async (req, res, next) => {
     const userId = req.user;
     await db
         .query("SELECT * FROM students")
@@ -45,7 +45,7 @@ exports.getStudents = async(req, res, next) => {
             });
         })
         .catch((error) => console.log(error));
-}
+};
 
 exports.postAddStudent = async (req, res, send) => {
     const { names, email, userId } = req.body;
@@ -84,10 +84,11 @@ exports.postAddPresence = async (req, res, next) => {
             .query(
                 `INSERT INTO presences(studentid, presence) values (${studentId}, '${presence}')`
             )
-            .then((response) => {
-                console.log(response);
+            .then(async(response) => {
+                
             })
             .catch((error) => console.log(error));
     }
-    return res.redirect("/admin/add-presence");
+    res.redirect("/admin/dashboard");
+    
 };
