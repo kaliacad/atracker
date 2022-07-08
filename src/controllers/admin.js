@@ -14,7 +14,6 @@ exports.getIndex = async (req, res, next) => {
                 )
                 .then((results) => {
                     const presences = results.rows;
-                    console.log(presences);
                     const students = result.rows;
                     // console.log(students);
                     return res.render("admin/index", {
@@ -86,9 +85,10 @@ exports.postAddPresence = async (req, res, next) => {
                 `INSERT INTO presences(studentid, presence) values (${studentId}, '${presence}')`
             )
             .then(async(response) => {
-                return res.redirect("/admin/dashboard");
+                
             })
             .catch((error) => console.log(error));
     }
+    res.redirect("/admin/dashboard");
     
 };
