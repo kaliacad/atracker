@@ -1,15 +1,16 @@
 <%- include('../includes/head.ejs')%>
+<%- include('../includes/header.ejs')%>
 
 <div class="container-fluid w-100 h-100 mt-5 p-5">
   <div class="mt-5  mx-5 pb-5">
     <h2 class="text-danger">Total des présences</h2>
     <div class="row d-flex justify-content-center mt-2"> 
-      <% presences.forEach(pres => { %>
+      <% presences.forEach(presence => { %>
       <div class="col-md-3  px-3 p-sm-1 col-sm-6">
         <div class="card bg-light py-5">
           <div class="card-body">
-            <h1 class="text-center text-danger"><%= pres.count %></h1>
-            <p class="card-text text-center"><%= pres.presence %></p>
+            <h1 class="text-center text-danger"><%= presence.count %></h1>
+            <p class="card-text text-center"><%= presence.presence %></p>
           </div>
         </div>
       </div>
@@ -50,3 +51,4 @@
     </div>
   </div>
 </div>
+<%- include('../includes/footer.ejs')%>
