@@ -15,11 +15,11 @@ exports.getIndex = async (req, res, next) => {
                 .then((results) => {
                     const presences = results.rows;
                     const students = result.rows;
-                    // console.log(students);
                     return res.render("admin/index", {
                         students,
                         presences,
                         userId,
+                        title: 'Attendancy GDA - Dashboard',
                     });
                 });
         })
@@ -30,6 +30,7 @@ exports.getAddStudent = (req, res, next) => {
     const userId = req.user;
     res.render("admin/add-student", {
         userId: userId,
+        title: 'Attendancy GDA - New student',
     });
 };
 
@@ -42,6 +43,7 @@ exports.getStudents = async (req, res, next) => {
             res.render("admin/students", {
                 userId,
                 students,
+                title: 'Attendancy GDA - Student list',
             });
         })
         .catch((error) => console.log(error));
@@ -51,7 +53,7 @@ exports.postAddStudent = async (req, res, send) => {
     const { names, email, userId } = req.body;
     await db
         .query(
-            `INSERT INTO students (noms, email, idUser) values ('${names}','${email}', 1)`
+            `INSERT INTO students (noms, email) values ('${names}','${email}')`
         )
         .then((result) => {
             res.redirect("/admin/dashboard");
@@ -68,6 +70,7 @@ exports.getAddPresence = async (req, res, next) => {
             res.render("admin/add-presence", {
                 userId,
                 students,
+                title: 'Attendancy GDA - New attendancy',
             });
         })
         .catch((error) => console.log(error));
