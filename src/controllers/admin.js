@@ -54,7 +54,7 @@ exports.postAddStudent = async (req, res, send) => {
             `INSERT INTO students (noms, email, idUser) values ('${names}','${email}', 1)`
         )
         .then((result) => {
-            res.redirect("/admin/dashboard");
+            res.redirect("/admin/");
         })
         .catch((error) => console.log(error));
 };
@@ -89,6 +89,6 @@ exports.postAddPresence = async (req, res, next) => {
             })
             .catch((error) => console.log(error));
     }
-    res.redirect("/admin/dashboard");
+    res.redirect("/admin/");
     
 };
