@@ -2,6 +2,7 @@ const db = require("../db");
 const date = new Date().toISOString().split("T")[0];
 
 
+
 exports.getIndex = async (req, res, next) => {
     const userId = req.user;
     await db
@@ -17,6 +18,7 @@ exports.getIndex = async (req, res, next) => {
                 .then((allPresencesData) => {
                     const presencesToday = presencesTodayData.rows;
                     const allPresences = allPresencesData.rows;
+                    
                     return res.render("admin/index", {
                         presencesToday,
                         date,
@@ -39,7 +41,7 @@ exports.getAddStudent = (req, res, next) => {
 exports.getStudents = async (req, res, next) => {
     const userId = req.user;
     await db
-        .query("SELECT * FROM students")
+        .query("SELECT * FROM students order by id")
         .then((result) => {
             const students = result.rows;
             res.render("admin/students", {
@@ -49,6 +51,22 @@ exports.getStudents = async (req, res, next) => {
         })
         .catch((error) => console.log(error));
 };
+
+exports.getSingleStudent = async(req, res, next) => {
+    const studentId = req.params.id;
+    const userId = req.user;
+    await db
+        .query("SELECT * FROM students where id = $1", [studentId])
+        .then(result => {
+            const student = result.rows;
+            
+            res.render("admin/one-student", {
+                userId,
+                student: student[0],
+            });
+        })
+        .catch((error) => console.log(error));
+}
 
 exports.postAddStudent = async (req, res, send) => {
     const { names, email, userId } = req.body;
@@ -65,7 +83,7 @@ exports.postAddStudent = async (req, res, send) => {
 exports.getAddPresence = async (req, res, next) => {
     const userId = req.user;
     await db
-        .query("SELECT * FROM students")
+        .query("SELECT * FROM students order by id")
         .then((result) => {
             const students = result.rows;
             res.render("admin/add-presence", {

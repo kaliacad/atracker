@@ -80,14 +80,18 @@ app.use(authRoutes);
 app.use("/admin", adminRoutes);
 app.use(publicRoutes);
 
+const fullDate = new Date();
+console.log(fullDate.getMonth());
 //function to send automaticall eMail
 const autocall = () => {
-    sendEmail();
+    // sendEmail();
 };
 setInterval(() => {
     autocall();
 }, 1000);
 // autocall()
+
+
 
 
 module.exports = app;

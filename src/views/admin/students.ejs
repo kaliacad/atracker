@@ -10,36 +10,36 @@
           Listes des etudiants
         </h3>
         <a href="/admin/add-student"
-          ><button class="btn btn-primary" type="button">Nouveau</button></a
+          ><button class="btn btn-outline-primary" type="button">Nouveau</button></a
         >
       </div>
-      <table class="table table-danger shadow p-2">
+      <table class="table table-danger table-hover shadow p-2">
         <thead class="thead-light">
           <tr>
-            <th class="text-danger">#</th>
-            <th class="text-danger">noms</th>
-            <th class="text-danger">email</th>
-            <th class="text-danger d-flex justify-content-center">actions</th>
+            <th class="text-danger text-center">#</th>
+            <th class="text-danger text-center">noms</th>
+            <th class="text-danger text-center">email</th>
+            <th class="text-danger text-center">actions</th>
           </tr>
         </thead>
         <tbody>
           <% students.forEach(student => { %>
           <tr>
-            <td><%= student.id %></td>
-            <td><%= student.noms %></td>
-            <td><%= student.email %></td>
-            <td class="d-flex justify-content-end">
-              <a href="">
-                <button class="btn btn-primary btn-sm mx-1" type="button">
+            <td class="text-center"><%= student.id %></td>
+            <td class="text-center"><%= student.noms %></td>
+            <td class="text-center"><%= student.email %></td>
+            <td class="d-flex justify-content-center">
+              <a href="/admin/students/<%= student.id %>">
+                <button class="btn btn-outline-primary btn-sm mx-1" type="button">
                   voir
                 </button>
               </a>
               <a href="">
-                <button class="btn btn-success btn-sm mx-1" type="button">
+                <button class="btn btn-outline-success btn-sm mx-1" type="button">
                   Editer
                 </button>
               </a>
-              <button class="btn btn-danger btn-sm mx-1" type="button">
+              <button class="btn btn-outline-danger btn-sm mx-1" type="button">
                 Suppr
               </button>
             </td>
@@ -48,10 +48,10 @@
         </tbody>
         <tfoot>
           <tr>
-            <th class="text-danger">#</th>
-            <th class="text-danger">noms</th>
-            <th class="text-danger">email</th>
-            <th class="text-danger d-flex justify-content-center">actions</th>
+            <th class="text-danger text-center">#</th>
+            <th class="text-danger text-center">noms</th>
+            <th class="text-danger text-center">email</th>
+            <th class="text-danger text-center">actions</th>
           </tr>
         </tfoot>
       </table>
