@@ -1,29 +1,32 @@
 const db = require("../db");
+const date = new Date().toISOString().split("T")[0];
 
 
 exports.getIndex = async (req, res, next) => {
     const userId = req.user;
     await db
         .query(
-            "SELECT students.id AS id, students.noms AS studentnoms, students.email as studentsemail  FROM students"
+            "select presences.presence, COUNT (presences.presence)  from presences WHERE CAST(createdat AS DATE) = $1  group by presences.presence ",
+            [date]
         )
-        .then(async (result) => {
+        .then(async(presencesTodayData) => {
             await db
                 .query(
-                    "select presences.presence, COUNT (presences.presence)  from presences  group by presences.presence"
+                    "select presences.presence, COUNT (presences.presence)  from presences group by presences.presence "
                 )
-                .then((results) => {
-                    const presences = results.rows;
-                    const students = result.rows;
-                    // console.log(students);
+                .then((allPresencesData) => {
+                    const presencesToday = presencesTodayData.rows;
+                    const allPresences = allPresencesData.rows;
                     return res.render("admin/index", {
-                        students,
-                        presences,
+                        presencesToday,
+                        date,
+                        allPresences,
                         userId,
                     });
                 });
         })
-        .catch((error) => console.log(error));
+        .catch((error) => console.log(error));;
+    
 };
 
 exports.getAddStudent = (req, res, next) => {
