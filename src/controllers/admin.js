@@ -15,16 +15,10 @@ exports.getIndex = async (req, res, next) => {
                 .query(
                     "select presences.presence, COUNT (presences.presence)  from presences group by presences.presence "
                 )
-<<<<<<< HEAD
                 .then((allPresencesData) => {
                     const presencesToday = presencesTodayData.rows;
                     const allPresences = allPresencesData.rows;
                     
-=======
-                .then((results) => {
-                    const presences = results.rows;
-                    const students = result.rows;
->>>>>>> 59baa6fcd8378ccb929c6d743f8f3d7094f35216
                     return res.render("admin/index", {
                         presencesToday,
                         date,
