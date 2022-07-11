@@ -1,6 +1,7 @@
 exports.getIndex = (req, res, next) => {
     const userId = req.user;
     res.render("public/index", {
-        userId
+        userId,
+        title: 'Attentancy GDA - Bienvenue'
     });
 };
