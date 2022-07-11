@@ -18,7 +18,7 @@ exports.postLogin = async (req, res, next) => {
             const user = result.rows[0];
             if (user && password == user.password) {
                 req.session.user = user;
-                return res.redirect("/admin/dashboard/");
+                return res.redirect("/admin");
             }
             res.redirect("/login");
         })
