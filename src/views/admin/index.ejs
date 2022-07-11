@@ -6,7 +6,8 @@
   <div class="mt-5 container shadow-sm card mx-5 py-5">
     <h5 class="text-danger w-100 text-center">Présences du <%= date %></h5>
     <div class="row d-flex justify-content-center mt-2"> 
-      <% presences.forEach(presence => { %>
+      <% if(presencesToday.length > 0) { %>
+      <% presencesToday.forEach(presence => { %>
       <div class="col-md-3  px-3 p-sm-1 col-sm-6">
         <div class="card bg-light py-5">
           <div class="card-body">
