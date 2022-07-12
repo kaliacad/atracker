@@ -92,6 +92,20 @@ exports.postAddStudent = async (req, res, send) => {
         .catch((error) => console.log(error));
 };
 
+exports.postEditStudent = async (req, res, send) => {
+    const { names, email, studentId } = req.body;
+    await db
+        .query("UPDATE students SET noms= $1, email=$2  WHERE id=$3", [
+            names,
+            email,
+            studentId,
+        ])
+        .then((result) => {
+            res.redirect("/admin/");
+        })
+        .catch((error) => console.log(error));
+};
+
 exports.postDeleleStudent = async (req, res, next) => {
     const { studentId } = req.body;
     await db
