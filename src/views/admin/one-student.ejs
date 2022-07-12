@@ -33,18 +33,18 @@
     class="container mt-5 shadow-sm card mx-5 py-5 d-flex flex-column align-items-center justify-content-center"
   >
     <h5 class="text-danger w-100 text-center">Modifier les informations</h5>
-    <form method="POST" action="/admin/students/" class="p-4">
+    <form method="POST" action="/admin/students/edit" class="p-4">
       <div class="form-group mb-3">
         <label for="noms">Noms</label>
-        <input id="noms" class="form-control" type="text" name="noms">
+        <input id="noms" class="form-control bg-light" type="text" name="noms" value="<%= student.noms%>">
       </div>
       <div class="form-group mb-4">
         <label for="email">Email</label>
-        <input id="email" class="form-control" type="email" name="email">
+        <input id="email" class="form-control bg-light" type="email" name="email" value="<%= student.email%>">
         <input name="studentId" value="<%= student.id %>" hidden>
       </div>
       <div class="form-group pt-3">
-        <button class="btn btn-outline-danger w-100" type="button">Mdifier</button>
+        <button class="btn btn-outline-danger w-100" type="submit">Modifier</button>
       </div>
     </form>
   </div>

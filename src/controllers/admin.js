@@ -93,15 +93,15 @@ exports.postAddStudent = async (req, res, send) => {
 };
 
 exports.postEditStudent = async (req, res, send) => {
-    const { names, email, studentId } = req.body;
+    const { noms, email, studentId } = req.body;
     await db
         .query("UPDATE students SET noms= $1, email=$2  WHERE id=$3", [
-            names,
+            noms,
             email,
             studentId,
         ])
         .then((result) => {
-            res.redirect("/admin/");
+            res.redirect(`/admin/students/${studentId}`);
         })
         .catch((error) => console.log(error));
 };
