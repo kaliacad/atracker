@@ -1,14 +1,15 @@
-<%- include('../includes/head.ejs')%>
-<%- include('../includes/header.ejs')%>
+<%- include('../includes/head.ejs')%> <%- include('../includes/header.ejs')%>
 
-<div class="container-fluid w-100 d-flex flex-column justify-content-center align-items-center mb-2 p-5 bg-light">
+<div
+  class="login container-fluid w-100 d-flex flex-column justify-content-center align-items-center mb-2 p-5 bg-light"
+>
   <!-- to display presences of the current day -->
   <div class="mt-5 container shadow-sm card mx-5 py-5">
     <h5 class="text-danger w-100 text-center">Présences du <%= date %></h5>
-    <div class="row w-100 d-flex justify-content-center mt-2"> 
-      <% if(presencesToday.length > 0) { %>
-      <% presencesToday.forEach(presence => { %>
-      <div class="col-md-2  px-3 p-sm-1 col-sm-6">
+    <div class="row w-100 d-flex justify-content-center mt-2">
+      <% if(presencesToday.length > 0) { %> 
+        <% presencesToday.forEach(presence => { %>
+      <div class="col-md-2 px-3 p-sm-1 col-sm-6">
         <div class="card bg-light m-1">
           <div class="card-body">
             <h1 class="text-center text-danger"><%= presence.count %></h1>
@@ -16,51 +17,51 @@
           </div>
         </div>
       </div>
-      <% }) %>
-    <% } else { %>
-       <p class="w-100 text-center">Pas des presences pour aujourd'hui</p>
-    <% } %>
+      <% }) %> 
+      <% } else { %>
+      <p class="w-100 text-center">Pas des presences pour aujourd'hui</p>
+      <% } %>
+    </div>
   </div>
-  
-</div>
-<!-- to display presences of the current month -->
+  <!-- to display presences of the current month -->
   <div class="mt-5 container shadow-sm card mx-5 py-5">
-    <h5 class="text-danger w-100 text-center">Présences de ce mois </h5>
-    <div class="row d-flex justify-content-center mt-2"> 
-      <% if(allPresences.length > 0) { %>
-        <% allPresences.forEach(pres => { %>
-        <div class="col-md-2  px-3 p-sm-1 col-sm-6">
-          <div class="card bg-light m-1">
-            <div class="card-body">
-              <h1 class="text-center text-danger"><%= pres.count %></h1>
-              <p class="card-text text-center"><%= pres.presence %></p>
-            </div>
+    <h5 class="text-danger w-100 text-center">Présences de ce mois</h5>
+    <div class="row d-flex justify-content-center mt-2">
+      <% if(allPresences.length > 0) { %> 
+      <% allPresences.forEach(pres => { %>
+      <div class="col-md-2 px-3 p-sm-1 col-sm-6">
+        <div class="card bg-light m-1">
+          <div class="card-body">
+            <h1 class="text-center text-danger"><%= pres.count %></h1>
+            <p class="card-text text-center"><%= pres.presence %></p>
           </div>
         </div>
-        <% }) %>
+      </div>
+      <% }) %> 
       <% } else { %>
-         <p class="w-100 text-center">Pas des presences pour aujourd'hui</p>
+      <p class="w-100 text-center">Pas des presences pour aujourd'hui</p>
       <% } %>
     </div>
   </div>
   <!-- to display all presences  -->
   <div class="mt-5 container shadow-sm card mx-5 py-5 mb-2">
     <h5 class="text-danger w-100 text-center">Total des présences</h5>
-    <div class="row d-flex justify-content-center mt-2"> 
-      <% if(allPresences.length > 0) { %>
+    <div class="row d-flex justify-content-center mt-2">
+      <% if(allPresences.length > 0) { %> 
         <% allPresences.forEach(pres => { %>
-        <div class="col-md-2  px-3 p-sm-1 col-sm-6">
-          <div class="card bg-light m-1">
-            <div class="card-body">
-              <h1 class="text-center text-danger"><%= pres.count %></h1>
-              <p class="card-text text-center"><%= pres.presence %></p>
-            </div>
+      <div class="col-md-2 px-3 p-sm-1 col-sm-6">
+        <div class="card bg-light m-1">
+          <div class="card-body">
+            <h1 class="text-center text-danger"><%= pres.count %></h1>
+            <p class="card-text text-center"><%= pres.presence %></p>
           </div>
         </div>
-        <% }) %>
+      </div>
+      <% }) %> 
       <% } else { %>
-         <p class="w-100 text-center">Pas des presences disponible</p>
+      <p class="w-100 text-center">Pas des presences disponible</p>
       <% } %>
     </div>
   </div>
-<%- include('../includes/footer.ejs')%>
+  <%- include('../includes/footer.ejs')%>
+</div>

@@ -1,11 +1,52 @@
-<%- include('../includes/head.ejs')%>
-<%- include('../includes/header.ejs')%>
+<%- include('../includes/head.ejs')%> <%- include('../includes/header.ejs')%>
 
-<div class="container-fluid h-100 w-100 d-flex flex-column justify-content-center align-items-center mb-2 p-5 bg-light">
-  <!-- to display presences of the current day -->
+<div
+  class="container-fluid h-100 w-100 d-flex flex-column justify-content-center align-items-center mb-2 p-5 bg-light"
+>
+  <!-- to display student identity -->
   <div class="mt-5 container shadow-sm card mx-5 py-5">
     <h3 class="text-danger w-100 text-center"><%= student.noms %></h3>
     <p class="card-text text-center"><%= student.email %></p>
+  </div>
+
+  <!-- to display student presences -->
+  <div class="mt-5 container shadow-sm card mx-5 py-5">
+    <h5 class="text-danger w-100 text-center">Total des presences</h5>
+    <div class="row d-flex justify-content-center mt-2">
+      <% if(presences.length > 0) { %> <% presences.forEach(pres => { %>
+      <div class="col-md-2 px-3 p-sm-1 col-sm-6">
+        <div class="card bg-light m-1">
+          <div class="card-body">
+            <h1 class="text-center text-danger"><%= pres.count %></h1>
+            <p class="card-text text-center"><%= pres.presence %></p>
+          </div>
+        </div>
+      </div>
+      <% }) %> <% } else { %>
+      <p class="w-100 text-center">Pas des presences pour aujourd'hui</p>
+      <% } %>
+    </div>
+  </div>
+
+  <!-- to display student identity -->
+  <div
+    class="container mt-5 shadow-sm card mx-5 py-5 d-flex flex-column align-items-center justify-content-center"
+  >
+    <h5 class="text-danger w-100 text-center">Modifier les informations</h5>
+    <form method="POST" action="/admin/students/edit" class="p-4">
+      <div class="form-group mb-3">
+        <label for="noms">Noms</label>
+        <input id="noms" class="form-control bg-light" type="text" name="noms" value="<%= student.noms%>">
+      </div>
+      <div class="form-group mb-4">
+        <label for="email">Email</label>
+        <input id="email" class="form-control bg-light" type="email" name="email" value="<%= student.email%>">
+        <input name="studentId" value="<%= student.id %>" hidden>
+      </div>
+      <div class="form-group pt-3">
+        <button class="btn btn-outline-danger w-100" type="submit">Modifier</button>
+      </div>
+    </form>
   </div>
 </div>
 

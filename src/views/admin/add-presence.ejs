@@ -1,20 +1,21 @@
-<%- include('../includes/head.ejs')%>
-<%- include('../includes/header.ejs')%>
+<%- include('../includes/head.ejs')%> <%- include('../includes/header.ejs')%>
 
 <div
-  class="container-fluid w-100 h-100 mt-5 pt-5 d-flex justify-content-center align-items-center"
+  class="login container-fluid w-100 h-100 pt-5 d-flex justify-content-center align-items-center"
 >
-  <div class="col-md-6">
-    <div class="d-flex flex-row w-100 justify-content-between align-items-center">
+  <div class="container mx-sm-1 mx-5">
+    <div
+      class="d-flex flex-row w-100 justify-content-between flex-wrap align-items-center mt-3"
+    >
       <h3 class="text-center align-start text-secondary">Faire la presence</h3>
       <p class="text-secondary m-0"><%= new Date().toLocaleString() %></p>
     </div>
     <form action="" method="post">
       <table class="table table-danger table-hover shadow p-2">
         <thead class="thead-light">
-          <tr>
+          <tr class="bg-secondary">
             <th class="text-danger text-center">#</th>
-            <th class="text-danger text-center">noms</th>
+            <th class="text-danger text-center" colspan="2">noms</th>
             <th class="text-danger text-center">Present</th>
             <th class="text-danger text-center">R (justifie)</th>
             <th class="text-danger text-center">A (justifie)</th>
@@ -25,7 +26,7 @@
           <% students.forEach(student => { %>
           <tr>
             <td class="text-center"><%= student.id %></td>
-            <td class="text-center"><%= student.noms %></td>
+            <td class="text-center" colspan="2"><%= student.noms %></td>
             <td class="text-center">
               <input
                 type="radio"
@@ -65,7 +66,7 @@
         <tfoot>
           <tr>
             <th class="text-danger text-center">#</th>
-            <th class="text-danger text-center">noms</th>
+            <th class="text-danger text-center" colspan="2">noms</th>
             <th class="text-danger text-center">Present</th>
             <th class="text-danger text-center">R (justifie)</th>
             <th class="text-danger text-center">A (justifie)</th>

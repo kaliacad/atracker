@@ -1,8 +1,6 @@
 const db = require("../db");
 const date = new Date().toISOString().split("T")[0];
 
-
-
 exports.getIndex = async (req, res, next) => {
     const userId = req.user;
     await db
@@ -10,7 +8,7 @@ exports.getIndex = async (req, res, next) => {
             "select presences.presence, COUNT (presences.presence)  from presences WHERE CAST(createdat AS DATE) = $1  group by presences.presence ",
             [date]
         )
-        .then(async(presencesTodayData) => {
+        .then(async (presencesTodayData) => {
             await db
                 .query(
                     "select presences.presence, COUNT (presences.presence)  from presences group by presences.presence "
@@ -18,25 +16,24 @@ exports.getIndex = async (req, res, next) => {
                 .then((allPresencesData) => {
                     const presencesToday = presencesTodayData.rows;
                     const allPresences = allPresencesData.rows;
-                    
+
                     return res.render("admin/index", {
                         presencesToday,
                         date,
                         allPresences,
                         userId,
-                        title: 'Attendancy GDA - Dashboard',
+                        title: "Attendancy GDA - Dashboard",
                     });
                 });
         })
-        .catch((error) => console.log(error));;
-    
+        .catch((error) => console.log(error));
 };
 
 exports.getAddStudent = (req, res, next) => {
     const userId = req.user;
     res.render("admin/add-student", {
         userId: userId,
-        title: 'Attendancy GDA - New student',
+        title: "Attendancy GDA - New student",
     });
 };
 
@@ -49,36 +46,72 @@ exports.getStudents = async (req, res, next) => {
             res.render("admin/students", {
                 userId,
                 students,
-                title: 'Attendancy GDA - Student list',
+                title: "Attendancy GDA - Student list",
             });
         })
         .catch((error) => console.log(error));
 };
 
-exports.getSingleStudent = async(req, res, next) => {
+exports.getSingleStudent = async (req, res, next) => {
     const studentId = req.params.id;
     const userId = req.user;
     await db
         .query("SELECT * FROM students where id = $1", [studentId])
-        .then(result => {
+        .then(async (result) => {
             const student = result.rows;
-            
-            res.render("admin/one-student", {
-                userId,
-                student: student[0],
-            });
+            await db
+                .query(
+                    "select presences.presence, COUNT (presences.presence)  from presences where studentid= $1 group by presences.presence ",
+                    [studentId]
+                )
+                .then((data) => {
+                    const presences = data.rows;
+                    res.render("admin/one-student", {
+                        userId,
+                        student: student[0],
+                        presences,
+                        title: `Attendancy GDA - ${student[0].noms}`,
+                    });
+                })
+                .catch((err) => console.log(err));
         })
         .catch((error) => console.log(error));
-}
+};
 
 exports.postAddStudent = async (req, res, send) => {
     const { names, email, userId } = req.body;
     await db
-        .query(
-            `INSERT INTO students (noms, email) values ('${names}','${email}')`
-        )
+        .query("INSERT INTO students (noms, email, iduser) values ($1,$2,$3)", [
+            names,
+            email,
+            userId,
+        ])
         .then((result) => {
             res.redirect("/admin/");
+        })
+        .catch((error) => console.log(error));
+};
+
+exports.postEditStudent = async (req, res, send) => {
+    const { noms, email, studentId } = req.body;
+    await db
+        .query("UPDATE students SET noms= $1, email=$2  WHERE id=$3", [
+            noms,
+            email,
+            studentId,
+        ])
+        .then((result) => {
+            res.redirect(`/admin/students/${studentId}`);
+        })
+        .catch((error) => console.log(error));
+};
+
+exports.postDeleleStudent = async (req, res, next) => {
+    const { studentId } = req.body;
+    await db
+        .query("DELETE FORM student WHERE id = $1", [studentId])
+        .then((result) => {
+            res.redirect("/admin/students");
         })
         .catch((error) => console.log(error));
 };
@@ -92,7 +125,7 @@ exports.getAddPresence = async (req, res, next) => {
             res.render("admin/add-presence", {
                 userId,
                 students,
-                title: 'Attendancy GDA - New attendancy',
+                title: "Attendancy GDA - New attendancy",
             });
         })
         .catch((error) => console.log(error));
@@ -109,11 +142,8 @@ exports.postAddPresence = async (req, res, next) => {
             .query(
                 `INSERT INTO presences(studentid, presence) values (${studentId}, '${presence}')`
             )
-            .then(async(response) => {
-                
-            })
+            .then(async (response) => {})
             .catch((error) => console.log(error));
     }
     res.redirect("/admin/");
-    
 };

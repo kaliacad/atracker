@@ -5,17 +5,12 @@ const bodyParser = require("body-parser");
 const session = require("express-session");
 require("dotenv").config();
 const sendEmail = require("./utils/email/sendEmail");
+const cookieParser = require("cookie-parser");
 
 const app = express();
 app.use(morgan("dev"));
 
-// app.use(
-//     session({
-//         secret: "secret word",
-//         resave: false,
-//         saveUninitialized: false,
-//     })
-// );
+app.use(cookieParser());
 
 app.use(
     session({
@@ -24,7 +19,7 @@ app.use(
         //     pool : require('./db/pool')
         // }),
         secret: "secret word",
-        resave: false,
+        resave: true,
         cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 }, // 30 days
         // Insert express-session options here
         saveUninitialized: false,
@@ -70,8 +65,7 @@ app.use(
 app.use(express.static(path.join(__dirname, "..", "public")));
 
 app.use((req, res, next) => {
-    req.user = req.session.user ? req.session.user.id : undefined;
-    console.log(req.user);
+    req.user = req.cookies.session ? req.cookies.session : undefined;
     next();
 });
 //use routes
@@ -88,8 +82,5 @@ setInterval(() => {
     autocall();
 }, 1000);
 // autocall()
-
-
-
 
 module.exports = app;
