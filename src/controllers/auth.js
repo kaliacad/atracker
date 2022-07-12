@@ -1,16 +1,15 @@
-const db = require("../db")
+const db = require("../db");
 
 exports.getLogin = (req, res, next) => {
-    const userId = req.user;
     res.render("auth/login", {
-        userId,
-        title: 'Login'
+        title: "Login",
+        userId: undefined
     });
 };
 
 exports.postLogin = async (req, res, next) => {
-    const username = req.body.username
-    const password = req.body.password
+    const username = req.body.username;
+    const password = req.body.password;
 
     await db
         .query(`SELECT * FROM users where username='${username}'`)
@@ -18,6 +17,7 @@ exports.postLogin = async (req, res, next) => {
             const user = result.rows[0];
             if (user && password == user.password) {
                 req.session.user = user;
+                res.cookie("session", user);
                 return res.redirect("/admin");
             }
             res.redirect("/login");
@@ -26,6 +26,10 @@ exports.postLogin = async (req, res, next) => {
 };
 
 exports.postLogout = (req, res, next) => {
-    req.session.user = undefined;
+    req.session.destroy();
+    res.cookie("session", undefined);
+    res.status(200).clearCookie("connect.sid", {
+        path: "/",
+    });
     res.redirect("/login");
 };

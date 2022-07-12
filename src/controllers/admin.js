@@ -60,13 +60,25 @@ exports.getSingleStudent = async(req, res, next) => {
     const userId = req.user;
     await db
         .query("SELECT * FROM students where id = $1", [studentId])
-        .then(result => {
+        .then(async(result) => {
             const student = result.rows;
+            await db
+                .query(
+                    "select presences.presence, COUNT (presences.presence)  from presences where studentid= $1 group by presences.presence ",
+                    [studentId]
+                )
+                .then((data) => {
+                    const presences = data.rows;
+                    res.render("admin/one-student", {
+                        userId,
+                        student: student[0],
+                        presences,
+                        title: `Attendancy GDA - ${student[0].noms}`,
+                    });
+                })
+                .catch((err) => console.log(err));
             
-            res.render("admin/one-student", {
-                userId,
-                student: student[0],
-            });
+            
         })
         .catch((error) => console.log(error));
 }

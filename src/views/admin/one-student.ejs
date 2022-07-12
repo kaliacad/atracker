@@ -7,6 +7,27 @@
     <h3 class="text-danger w-100 text-center"><%= student.noms %></h3>
     <p class="card-text text-center"><%= student.email %></p>
   </div>
+  <div class="mt-5 container shadow-sm card mx-5 py-5">
+  <h5 class="text-danger w-100 text-center">Total des presences</h5>
+  <div class="row d-flex justify-content-center mt-2"> 
+    <% if(presences.length > 0) { %>
+      <% presences.forEach(pres => { %>
+      <div class="col-md-2  px-3 p-sm-1 col-sm-6">
+        <div class="card bg-light m-1">
+          <div class="card-body">
+            <h1 class="text-center text-danger"><%= pres.count %></h1>
+            <p class="card-text text-center"><%= pres.presence %></p>
+          </div>
+        </div>
+      </div>
+      <% }) %>
+    <% } else { %>
+        <p class="w-100 text-center">Pas des presences pour aujourd'hui</p>
+    <% } %>
+  </div>
 </div>
+</div>
+
+
 
 <%- include('../includes/footer.ejs')%>
