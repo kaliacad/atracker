@@ -22,7 +22,7 @@ exports.getIndex = async (req, res, next) => {
                         date,
                         allPresences,
                         userId,
-                        title: "Attendancy GDA - Dashboard",
+                        title: "Dashboard",
                     });
                 });
         })
@@ -33,7 +33,7 @@ exports.getAddStudent = (req, res, next) => {
     const userId = req.user;
     res.render("admin/add-student", {
         userId: userId,
-        title: "Attendancy GDA - New student",
+        title: "New student",
     });
 };
 
@@ -46,7 +46,7 @@ exports.getStudents = async (req, res, next) => {
             res.render("admin/students", {
                 userId,
                 students,
-                title: "Attendancy GDA - Student list",
+                title: "Student list",
             });
         })
         .catch((error) => console.log(error));
@@ -55,6 +55,7 @@ exports.getStudents = async (req, res, next) => {
 exports.getSingleStudent = async (req, res, next) => {
     const studentId = req.params.id;
     const userId = req.user;
+    if(isNaN(studentId)) return res.redirect('/not-found')
     await db
         .query("SELECT * FROM students where id = $1", [studentId])
         .then(async (result) => {
@@ -70,7 +71,7 @@ exports.getSingleStudent = async (req, res, next) => {
                         userId,
                         student: student[0],
                         presences,
-                        title: `Attendancy GDA - ${student[0].noms}`,
+                        title: `${student[0].noms}`,
                     });
                 })
                 .catch((err) => console.log(err));
@@ -125,7 +126,7 @@ exports.getAddPresence = async (req, res, next) => {
             res.render("admin/add-presence", {
                 userId,
                 students,
-                title: "Attendancy GDA - New attendancy",
+                title: "New attendancy",
             });
         })
         .catch((error) => console.log(error));

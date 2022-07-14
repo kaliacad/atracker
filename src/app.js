@@ -31,6 +31,9 @@ const adminRoutes = require("./routes/admin");
 const authRoutes = require("./routes/auth");
 const publicRoutes = require("./routes/public");
 
+//error controller
+const errorController = require('./controllers/error');
+
 const views = path.join(__dirname, "views");
 
 //templates views
@@ -73,6 +76,7 @@ app.use((req, res, next) => {
 app.use(authRoutes);
 app.use("/admin", adminRoutes);
 app.use(publicRoutes);
+app.use(errorController.getNotFound)
 
 //function to send automaticall eMail
 const autocall = () => {
