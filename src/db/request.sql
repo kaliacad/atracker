@@ -6,7 +6,7 @@ CREATE TABLE users (
     id BIGSERIAL NOT NULL PRIMARY KEY,
     noms VARCHAR(200),
     email VARCHAR(20) NOT NULL,
-    username VARCHAR(20) NOT NULL
+    username VARCHAR(20) NOT NULL,
     password VARCHAR(20) NOT NULL
 );
 

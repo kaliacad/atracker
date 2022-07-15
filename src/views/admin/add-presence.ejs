@@ -11,69 +11,71 @@
       <p class="text-secondary m-0"><%= new Date().toLocaleString() %></p>
     </div>
     <form action="" method="post">
-      <table class="table table-danger table-hover shadow p-2">
-        <thead class="thead-light">
-          <tr class="bg-secondary">
-            <th class="text-danger text-center">#</th>
-            <th class="text-danger text-center" colspan="2">noms</th>
-            <th class="text-danger text-center">Present</th>
-            <th class="text-danger text-center">R (justifie)</th>
-            <th class="text-danger text-center">A (justifie)</th>
-            <th class="text-danger text-center">A (non justifie)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% students.forEach(student => { %>
-          <tr>
-            <td class="text-center"><%= student.id %></td>
-            <td class="text-center" colspan="2"><%= student.noms %></td>
-            <td class="text-center">
-              <input
-                type="radio"
-                name="<%= student.id%>"
-                id=""
-                value="present"
-                checked
-              />
-            </td>
-            <td class="text-center">
-              <input
-                type="radio"
-                name="<%= student.id%>"
-                id=""
-                value="retardJustifie"
-              />
-            </td>
-            <td class="text-center">
-              <input
-                type="radio"
-                name="<%= student.id%>"
-                id=""
-                value="absentJustifie"
-              />
-            </td>
-            <td class="text-center">
-              <input
-                type="radio"
-                name="<%= student.id%>"
-                id=""
-                value="absentNonjustifie"
-              />
-            </td>
-          </tr>
-          <% }) %>
-        </tbody>
-        <tfoot>
-          <tr>
-            <th class="text-danger text-center">#</th>
-            <th class="text-danger text-center" colspan="2">noms</th>
-            <th class="text-danger text-center">Present</th>
-            <th class="text-danger text-center">R (justifie)</th>
-            <th class="text-danger text-center">A (justifie)</th>
-            <th class="text-danger text-center">A (non justifie)</th>
-          </tr>
-        </tfoot>
-      </table>
+      <div class="overflow-scroll">
+        <table class="table table-danger table-hover shadow p-2">
+          <thead class="thead-light">
+            <tr class="bg-secondary">
+              <th class="text-danger text-center">#</th>
+              <th class="text-danger text-center" colspan="2">noms</th>
+              <th class="text-danger text-center">Present</th>
+              <th class="text-danger text-center">R (justifie)</th>
+              <th class="text-danger text-center">A (justifie)</th>
+              <th class="text-danger text-center">A (non justifie)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% students.forEach(student => { %>
+            <tr>
+              <td class="text-center"><%= student.id %></td>
+              <td class="text-center" colspan="2"><%= student.noms %></td>
+              <td class="text-center">
+                <input
+                  type="radio"
+                  name="<%= student.id%>"
+                  id=""
+                  value="present"
+                  checked
+                />
+              </td>
+              <td class="text-center">
+                <input
+                  type="radio"
+                  name="<%= student.id%>"
+                  id=""
+                  value="retardJustifie"
+                />
+              </td>
+              <td class="text-center">
+                <input
+                  type="radio"
+                  name="<%= student.id%>"
+                  id=""
+                  value="absentJustifie"
+                />
+              </td>
+              <td class="text-center">
+                <input
+                  type="radio"
+                  name="<%= student.id%>"
+                  id=""
+                  value="absentNonjustifie"
+                />
+              </td>
+            </tr>
+            <% }) %>
+          </tbody>
+          <tfoot>
+            <tr>
+              <th class="text-danger text-center">#</th>
+              <th class="text-danger text-center" colspan="2">noms</th>
+              <th class="text-danger text-center">Present</th>
+              <th class="text-danger text-center">R (justifie)</th>
+              <th class="text-danger text-center">A (justifie)</th>
+              <th class="text-danger text-center">A (non justifie)</th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
       <div class="form-group d-flex justify-content-center">
         <button class="btn btn-primary" type="submit">Enregistrer</button>
       </div>
