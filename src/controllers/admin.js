@@ -30,6 +30,7 @@ exports.getIndex = async (req, res, next) => {
 };
 
 exports.getAddStudent = (req, res, next) => {
+    console.log(req.user)
     const userId = req.user;
     res.render("admin/add-student", {
         userId: userId,
@@ -88,7 +89,7 @@ exports.postAddStudent = async (req, res, send) => {
             userId,
         ])
         .then((result) => {
-            res.redirect("/admin/");
+            res.redirect("/admin/students");
         })
         .catch((error) => console.log(error));
 };

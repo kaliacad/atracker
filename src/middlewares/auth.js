@@ -1,9 +1,8 @@
 module.exports = (req, res, next) => {
-    const userId = req.user.id;
+    const userId = req.user ? req.user : undefined;
     if (!userId) {
-        res.user.id = undefined
-        return res.redirect('/login');
+        // res.user.id = undefined;
+        return res.redirect("/login");
     }
-    next()
-}
-
+    next();
+};
