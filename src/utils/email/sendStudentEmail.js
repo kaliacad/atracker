@@ -21,7 +21,7 @@ module.exports = async (student) => {
 
             //we add the date of presence to template
             template += ` 
-                ${presences[0].createdat.toISOString()} :
+                ${presences[0].createdat.toISOString().split("T")[0]} :
             <ul>`;
         })
         .catch((error) => console.log(error));
@@ -48,13 +48,13 @@ module.exports = async (student) => {
     Merci! <br>
     Equipe pédagogique <br>
     Abel <br>
-    Luccien <br>
+    Lucien <br>
     </p>`;
 
     console.log(template);
 
     const mailOptions = {
-        from: '"Administrateur " <ckarungu921@kinshasadigital.com>', // sender address
+        from: '"Cedric karungu " <ckarungu921@kinshasadigital.com>', // sender address
         to: '"' + student.email + '"', // list of receivers
         subject: "Équipe pedagogique GDA - status de présence ✔", // Subject line
         text: template, // plain text body

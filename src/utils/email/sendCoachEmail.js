@@ -29,7 +29,7 @@ module.exports = async () => {
         .then((response) => {
             response.rows.forEach((element) => {
                 contentMail += `<li>${
-                    element.presence + "  =>  " + element.count
+                    element.presence + " : " + element.count
                 }</li>`;
             });
             contentMail += `
@@ -40,7 +40,7 @@ module.exports = async () => {
         })
         .catch((error) => console.log(error));
     const mailOptions = {
-        from: '"Administrateur " <ckarungu921@kinshasadigital.com>', // sender address
+        from: '"cedric karungu " <ckarungu921@kinshasadigital.com>', // sender address
         to: '"' + usersEmail + '", "ckarungu921@gmail.com"', // list of receivers
         cc:'"jean-louis@kinshasadigital.com"',
         subject: "Feadback des presences des apprenants ✔", // Subject line
