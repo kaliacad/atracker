@@ -1,6 +1,8 @@
 const db = require("../db");
 const date = new Date().toISOString().split("T")[0];
 
+const STUDENT_PER_PAGE = 9;
+
 exports.getIndex = async (req, res, next) => {
     const userId = req.user;
     await db
@@ -43,15 +45,29 @@ exports.getAddStudent = (req, res, next) => {
 };
 
 exports.getStudents = async (req, res, next) => {
+    const page = +req.query.page || 1;
+    console.log(page);
     const userId = req.user;
+    const totalStudents = (await db.query("SELECT * FROM students")).rowCount;
     await db
-        .query("SELECT * FROM students order by id")
+        .query("SELECT * FROM students order by id LIMIT $1 OFFSET $2", [
+            STUDENT_PER_PAGE,
+            (page - 1) * STUDENT_PER_PAGE,
+        ])
         .then((result) => {
             const students = result.rows;
+            console.log(totalStudents);
             res.render("admin/students", {
                 userId,
                 students,
                 title: "Student list",
+                totalStudents,
+                currentPage: page,
+                hasNextPage: STUDENT_PER_PAGE * page < totalStudents,
+                hasPreviousPage: page > 1,
+                nextPage: page + 1,
+                previousPage: page - 1,
+                lastPage : Math.ceil(totalStudents / STUDENT_PER_PAGE)
             });
         })
         .catch((error) => {

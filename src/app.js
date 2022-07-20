@@ -81,6 +81,7 @@ app.get("/500", errorController.getInternalError);
 app.use(errorController.getNotFound);
 
 app.use((error, req, res, next) => {
+    console.log(error);
     res.redirect('/500')
 })
 
