@@ -3,7 +3,13 @@ const db = require("../../db/index");
 
 module.exports = async (student) => {
     const date = new Date().toISOString().split("T")[0];
+    let midi;
     let presences;
+    let template = `
+        <h1> ${student.noms} </h1>
+        <p>
+            Nous avons le réel plaisir de te faire parvenir ton status de présence pour 
+        `;
 
     await db
         .query(
@@ -12,36 +18,49 @@ module.exports = async (student) => {
         )
         .then((result) => {
             presences = result.rows;
-            console.log(
-                date,
-                "presences for ",
-                student,
-                "in sendUser",
-                presences
-            );
+
+            //we add the date of presence to template
+            template += ` 
+                ${presences[0].createdat.toISOString().split("T")[0]} :
+            <ul>`;
         })
         .catch((error) => console.log(error));
-    let template = `
-        <h1>Bonjour ${student.noms} </h1>
-        <p>
-            Votre presence est marque comme suit a la date du :
-        </p>
-        `;
+
     presences.forEach((presence) => {
-        const datePresence = new Date(presence.createdat).toLocaleString();
+        const datePresence = new Date(presence.createdat);
+        midi = new Date(presence.createdat)
+            .toTimeString()
+            .split(" ")[0]
+            .split(":")[0];
+
+
+        //we add description of presence tp template
         template += `
-            <ul>
-                <li> ${datePresence} vous etait  ${presence.presence} </li>
-            </ul>
+            
+                <li> ${midi < 12 ? "Avant-midi" : "Apres-midi"} : ${
+            presence.presence
+        } </li>
+            
             `;
     });
+    template += `
+    </ul>
+    Merci! <br>
+    Equipe pédagogique <br>
+    Abel <br>
+    Lucien <br>
+    </p>`;
+
+    console.log(template);
+
     const mailOptions = {
-        from: '"Administrateur " <ckarungu921@kinshasadigital.com>', // sender address
+        from: '"Cedric karungu " <ckarungu921@kinshasadigital.com>', // sender address
         to: '"' + student.email + '"', // list of receivers
-        subject: "Feadback des presences des apprenants ✔", // Subject line
+        subject: "Équipe pedagogique GDA - status de présence ✔", // Subject line
         text: template, // plain text body
         html: template, // html body
     };
+
     // send mail with defined transport object
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) return console.log(error);

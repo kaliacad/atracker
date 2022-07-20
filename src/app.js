@@ -32,7 +32,7 @@ const authRoutes = require("./routes/auth");
 const publicRoutes = require("./routes/public");
 
 //error controller
-const errorController = require('./controllers/error');
+const errorController = require("./controllers/error");
 
 const views = path.join(__dirname, "views");
 
@@ -68,7 +68,7 @@ app.use(
 app.use(express.static(path.join(__dirname, "..", "public")));
 
 app.use((req, res, next) => {
-    req.user = req.cookies.session ? req.cookies.session : undefined;
+    req.user = req.cookies.session ? req.cookies.session.id : undefined;
     next();
 });
 //use routes
@@ -76,7 +76,7 @@ app.use((req, res, next) => {
 app.use(authRoutes);
 app.use("/admin", adminRoutes);
 app.use(publicRoutes);
-app.use(errorController.getNotFound)
+app.use(errorController.getNotFound);
 
 //function to send automaticall eMail
 const autocall = () => {
