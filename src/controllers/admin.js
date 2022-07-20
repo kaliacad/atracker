@@ -26,11 +26,15 @@ exports.getIndex = async (req, res, next) => {
                     });
                 });
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+            const err = new Error(error);
+            err.httpStatusCode = 500;
+            return next(err);
+        });
 };
 
 exports.getAddStudent = (req, res, next) => {
-    console.log(req.user)
+    console.log(req.user);
     const userId = req.user;
     res.render("admin/add-student", {
         userId: userId,
@@ -50,13 +54,17 @@ exports.getStudents = async (req, res, next) => {
                 title: "Student list",
             });
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+            const err = new Error(error);
+            err.httpStatusCode = 500;
+            return next(err);
+        });
 };
 
 exports.getSingleStudent = async (req, res, next) => {
     const studentId = req.params.id;
     const userId = req.user;
-    if(isNaN(studentId)) return res.redirect('/not-found')
+    if (isNaN(studentId)) return res.redirect("/not-found");
     await db
         .query("SELECT * FROM students where id = $1", [studentId])
         .then(async (result) => {
@@ -75,9 +83,17 @@ exports.getSingleStudent = async (req, res, next) => {
                         title: `${student[0].noms}`,
                     });
                 })
-                .catch((err) => console.log(err));
+                .catch((error) => {
+                    const err = new Error(error);
+                    err.httpStatusCode = 500;
+                    return next(err);
+                });
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+            const err = new Error(error);
+            err.httpStatusCode = 500;
+            return next(err);
+        });
 };
 
 exports.postAddStudent = async (req, res, send) => {
@@ -91,7 +107,11 @@ exports.postAddStudent = async (req, res, send) => {
         .then((result) => {
             res.redirect("/admin/students");
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+            const err = new Error(error);
+            err.httpStatusCode = 500;
+            return next(err);
+        });
 };
 
 exports.postEditStudent = async (req, res, send) => {
@@ -105,7 +125,11 @@ exports.postEditStudent = async (req, res, send) => {
         .then((result) => {
             res.redirect(`/admin/students/${studentId}`);
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+            const err = new Error(error);
+            err.httpStatusCode = 500;
+            return next(err);
+        });
 };
 
 exports.postDeleleStudent = async (req, res, next) => {
@@ -115,7 +139,11 @@ exports.postDeleleStudent = async (req, res, next) => {
         .then((result) => {
             res.redirect("/admin/students");
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+            const err = new Error(error);
+            err.httpStatusCode = 500;
+            return next(err);
+        });
 };
 
 exports.getAddPresence = async (req, res, next) => {
@@ -130,7 +158,11 @@ exports.getAddPresence = async (req, res, next) => {
                 title: "New attendancy",
             });
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+            const err = new Error(error);
+            err.httpStatusCode = 500;
+            return next(err);
+        });
 };
 
 exports.postAddPresence = async (req, res, next) => {
@@ -142,10 +174,15 @@ exports.postAddPresence = async (req, res, next) => {
         presence = students[i];
         await db
             .query(
-                `INSERT INTO presences(studentid, presence) values (${studentId}, '${presence}')`
+                `INSERT INTO presences(studentid, presence) values ($1,$2)`,
+                [studentId, presence]
             )
             .then(async (response) => {})
-            .catch((error) => console.log(error));
+            .catch((error) => {
+                const err = new Error(error);
+                err.httpStatusCode = 500;
+                return next(err);
+            });
     }
     res.redirect("/admin/");
 };

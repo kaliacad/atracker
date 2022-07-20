@@ -3,7 +3,7 @@ const db = require("../db");
 exports.getLogin = (req, res, next) => {
     res.render("auth/login", {
         title: "Login",
-        userId: undefined
+        userId: undefined,
     });
 };
 
@@ -22,7 +22,11 @@ exports.postLogin = async (req, res, next) => {
             }
             res.redirect("/login");
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+            const err = new Error(error)
+            err.httpStatusCode = 500;
+            return next(err);
+        });
 };
 
 exports.postLogout = (req, res, next) => {

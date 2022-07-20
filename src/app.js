@@ -76,7 +76,13 @@ app.use((req, res, next) => {
 app.use(authRoutes);
 app.use("/admin", adminRoutes);
 app.use(publicRoutes);
+
+app.get("/500", errorController.getInternalError);
 app.use(errorController.getNotFound);
+
+app.use((error, req, res, next) => {
+    res.redirect('/500')
+})
 
 //function to send automaticall eMail
 const autocall = () => {
