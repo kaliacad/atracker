@@ -47,7 +47,7 @@ module.exports = async () => {
         html: contentMail, // html body
     };
     // send mail with defined transport object
-    transporter.sendMail(mailOptions, (error, info) => {
+    await transporter.sendMail(mailOptions, (error, info) => {
         if (error) return console.log(error);
 
         console.log("Message sent: %s", info.response);

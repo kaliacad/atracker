@@ -24,7 +24,11 @@ module.exports = async (student) => {
                 ${presences[0].createdat.toISOString().split("T")[0]} :
             <ul>`;
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+            const err = new Error(error);
+            err.httpStatusCode = 500;
+            return next(err);
+        });
 
     presences.forEach((presence) => {
         const datePresence = new Date(presence.createdat);
@@ -62,7 +66,7 @@ module.exports = async (student) => {
     };
 
     // send mail with defined transport object
-    transporter.sendMail(mailOptions, (error, info) => {
+    await transporter.sendMail(mailOptions, (error, info) => {
         if (error) return console.log(error);
 
         console.log("Message sent: %s", info.response);
