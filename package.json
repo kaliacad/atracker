@@ -25,9 +25,10 @@
     "express-session": "^1.17.3",
     "nodemailer": "^6.7.6",
     "nodemon": "^2.0.18",
-    "pg": "^8.7.3"
+    "pg": "^8.7.3",
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
-    "morgan": "^1.10.0"
+    
   }
 }
