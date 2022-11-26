@@ -1,19 +1,16 @@
-const pool = require('../db/pool')
-const { 
-    createStudentsTable, 
-    insertStudents
-} = require("./queries")
+import pool from "../db/pool.js";
+import { createStudentsTable, insertStudents } from "./queries.js";
 
-const runQueryArray = async arr => new Promise(resolve => {
-    const stop = arr.length
-    arr.forEach(async (q, idx) => {
-        await pool.query(q)
-        if (idx + 1 === stop) resolve()
-    })
-})
+const { query } = pool;
 
-const createTables = () => runQueryArray([createStudentsTable])
-const insertIntoTables = () => runQueryArray([insertStudents])
+const runQueryArray = async (arr) =>
+    new Promise((resolve) => {
+        const stop = arr.length;
+        arr.forEach(async (q, idx) => {
+            await query(q);
+            if (idx + 1 === stop) resolve();
+        });
+    });
 
-exports.createTables = createTables;
-exports.insertIntoTables = insertIntoTables;
+export const createTables = () => runQueryArray([createStudentsTable]);
+export const insertIntoTables = () => runQueryArray([insertStudents]);

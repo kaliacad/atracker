@@ -1,6 +1,6 @@
-const { createTables, insertIntoTables } = require("./queryFunctions")
-
-(async () => {
-    await createTables()
-    await insertIntoTables()
-})()
+const { createTables, insertIntoTables } = require("./queryFunctions.js")(
+    async () => {
+        await createTables();
+        await insertIntoTables();
+    }
+)();

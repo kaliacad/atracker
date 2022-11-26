@@ -1,11 +1,10 @@
-const express = require("express");
+import { Router } from "express";
 
-const router = express.Router();
+// auth controller
+import getIndex from "../controllers/public.js";
 
-//auth controller
-const publicController = require('../controllers/public')
+const router = Router();
 
-router.get("/", publicController.getIndex);
+router.get("/", getIndex);
 
-
-module.exports = router;
+export default router;

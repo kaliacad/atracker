@@ -1,4 +1,4 @@
-exports.createStudentsTable = `
+export const createStudentsTable = `
 DROP TABLE IF EXISTS students CASCADE;
 CREATE TABLE students (
     id SERIAL NOT NULL PRIMARY KEY,
@@ -7,7 +7,7 @@ CREATE TABLE students (
 );
 `;
 
-exports.insertStudents = `
+export const insertStudents = `
 INSERT INTO students(noms, email)
 VALUES
 ('Sarah Lifaefi Masika', 'salimas@gmail.com'),
