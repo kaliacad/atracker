@@ -12,22 +12,22 @@ export function getLogin(req, res, next) {
 export async function postLogin(req, res, next) {
     const username = req.body.username;
     const password = req.body.password;
-
-    await query(`SELECT * FROM users where username='${username}'`)
-        .then((result) => {
-            const user = result.rows[0];
-            if (user && password == user.password) {
-                req.session.user = user;
-                res.cookie("session", user);
-                return res.redirect("/admin");
-            }
-            res.redirect("/login");
-        })
-        .catch((error) => {
-            const err = new Error(error);
-            err.httpStatusCode = 500;
-            return next(err);
-        });
+    try {
+        const result = await query(
+            `SELECT * FROM users where username='${username}'`
+        );
+        const user = result.rows[0];
+        if (user && password == user.password) {
+            req.session.user = user;
+            res.cookie("session", user);
+            return res.redirect("/admin");
+        }
+        res.redirect("/login");
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
 }
 
 export function postLogout(req, res, next) {
