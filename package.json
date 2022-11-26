@@ -3,13 +3,16 @@
   "version": "1.0.0",
   "description": "",
   "main": "src/server.js",
+  "type": "module",
   "scripts": {
     "runQuery": "node ./src/utils/runQuery",
     "start": "nodemon ./",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint src/**/*.js",
+    "lint:fix": "eslint . src/**/*.js --fix"
   },
   "keywords": [],
-  "author": "Abel",
+  "author": ["Abel", "cedric"],
   "license": "MIT",
   "dependencies": {
     "bcrypt": "^5.0.1",
@@ -29,6 +32,9 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
-    
+    "eslint": "^8.28.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "morgan": "^1.10.0"
   }
 }

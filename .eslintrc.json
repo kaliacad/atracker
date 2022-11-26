@@ -1,0 +1,26 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": "airbnb-base",
+  "overrides": [],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "rules": {
+    "implicit-arrow-linebreak": "off",
+    "no-await-in-loop": "warn",
+    "comma-dangle": "off",
+    "quotes": ["error", "double"],
+    "indent": ["warn", 4],
+    "import/extensions": [
+      "error",
+      {
+        "js": "always"
+      }
+    ]
+  },
+  "ignorePatterns": ["src/**/*.test.js"]
+}

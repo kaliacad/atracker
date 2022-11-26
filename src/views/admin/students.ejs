@@ -8,11 +8,13 @@
       <h3 class="text-center align-start text-secondary">
         Listes des etudiants
       </h3>
+      <% if(userId) { %>
       <a href="/admin/add-student"
         ><button class="btn btn-outline-primary" type="button">
           Nouveau
         </button></a
       >
+      <% } %>
     </div>
     <div class="overflow-scroll">
       <table class="table table-danger table-hover shadow p-2">
@@ -56,20 +58,17 @@
     <!-- bottom butons -->
     <div class="d-flex justify-content-center my-3">
       <% if(!hasPreviousPage && previousPage > 1 ){ %>
-      <a
-        href="/admin/students"
-        class="btn btn-sm px-3 m-2 btn-outline-danger"
+      <a href="/admin/students" class="btn btn-sm px-3 m-2 btn-outline-danger"
         >1</a
       >
-      
-      <% }%>
-      <% if(currentPage !== 1){ %>
+
+      <% }%> <% if(currentPage !== 1){ %>
       <a
         href="/admin/students?page=<%= previousPage %>"
         class="btn btn-sm px-3 m-2 btn-outline-danger"
         ><<</a
       >
-      
+
       <% }%>
       <a
         href="/admin/students?page=<%= currentPage %>"
@@ -82,14 +81,13 @@
         class="btn btn-sm px-3 m-2 btn-outline-danger"
         >>></a
       >
-      <% } %>
-       <% if (lastPage !== currentPage && lastPage !== nextPage) { %>
+      <% } %> <% if (lastPage !== currentPage && lastPage !== nextPage) { %>
       <a
         href="/admin/students?page=<%= lastPage %>"
         class="btn btn-sm px-3 m-2 btn-outline-danger"
         ><%= lastPage %></a
       >
-       <% } %>
+      <% } %>
     </div>
   </div>
 </div>
