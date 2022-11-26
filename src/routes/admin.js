@@ -1,9 +1,9 @@
 import { Router } from "express";
 
-//protection of private routes
+// protection of private routes
 import isAuth from "../middlewares/auth.js";
 
-//controller
+// controller
 import {
     getAddStudent,
     postAddStudent,

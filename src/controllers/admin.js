@@ -1,7 +1,10 @@
+/* eslint-disable no-restricted-globals */
+/* eslint-disable guard-for-in */
+/* eslint-disable consistent-return */
 import pool from "../db/index.js";
 
 const date = new Date().toISOString().split("T")[0];
-const query = pool.query;
+const { query } = pool;
 
 const STUDENT_PER_PAGE = 9;
 
@@ -31,18 +34,17 @@ export async function getIndex(req, res, next) {
     }
 }
 
-export function getAddStudent(req, res, next) {
-    console.log(req.user);
+export function getAddStudent(req, res) {
     const userId = req.user;
     res.render("admin/add-student", {
-        userId: userId,
+        userId,
         title: "New student",
     });
 }
 
+// eslint-disable-next-line consistent-return
 export async function getStudents(req, res, next) {
     const page = +req.query.page || 1;
-    console.log(page);
     const userId = req.user;
     try {
         const result = await query(
@@ -82,7 +84,7 @@ export async function getSingleStudent(req, res, next) {
             [studentId]
         );
         if (studentsResult) {
-            students = result.rows;
+            students = studentsResult.rows;
         }
         const presenceResult = await query(
             "select presences.presence, COUNT (presences.presence)  from presences where studentid= $1 group by presences.presence ",
@@ -166,12 +168,14 @@ export async function postAddPresence(req, res, next) {
     const students = req.body;
     let studentId;
     let presence;
-    for (let i in students) {
+    // eslint-disable-next-line no-restricted-syntax
+    for (const i in students) {
         studentId = +i;
         presence = students[i];
         try {
-            const response = await query(
-                `INSERT INTO presences(studentid, presence) values ($1,$2)`,
+            // eslint-disable-next-line no-await-in-loop
+            await query(
+                "INSERT INTO presences(studentid, presence) values ($1,$2)",
                 [studentId, presence]
             );
         } catch (error) {

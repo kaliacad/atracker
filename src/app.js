@@ -1,21 +1,29 @@
 import express from "express";
 import { join } from "path";
 import * as url from "url";
+// eslint-disable-next-line import/no-extraneous-dependencies
 import morgan from "morgan";
 import session from "express-session";
-import dotenv from "dotenv";
-import sendEmail from "./utils/email/sendEmail.js";
 import cookieParser from "cookie-parser";
+import sendEmail from "./utils/email/sendEmail.js";
 
-dotenv.config();
+// routes
+import adminRoutes from "./routes/admin.js";
+import authRoutes from "./routes/auth.js";
+import publicRoutes from "./routes/public.js";
+
+// error controller
+import { getInternalError, getNotFound } from "./controllers/error.js";
+
 const app = express();
 
 app.use(morgan("dev"));
-//body parser to decode form
+// body parser to decode form
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-const __filename = url.fileURLToPath(import.meta.url);
+// const __filename = url.fileURLToPath(import.meta.url);
+// eslint-disable-next-line no-underscore-dangle
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
 app.use(
@@ -32,21 +40,13 @@ app.use(
     })
 );
 
-//routes
-import adminRoutes from "./routes/admin.js";
-import authRoutes from "./routes/auth.js";
-import publicRoutes from "./routes/public.js";
-
-//error controller
-import { getInternalError, getNotFound } from "./controllers/error.js";
-
 const views = join(__dirname, "views");
 
-//templates views
+// templates views
 app.set("view engine", "ejs");
 app.set("views", views);
 
-//bootstrap include
+// bootstrap include
 app.use(
     "/css",
     express.static(join(__dirname, "..", "node_modules/bootstrap/dist/css"))
@@ -56,7 +56,7 @@ app.use(
     express.static(join(__dirname, "..", "node_modules/bootstrap/dist/js"))
 );
 
-//for public  css and  js folders
+// for public  css and  js folders
 app.use(
     express.static(
         join(
@@ -72,7 +72,7 @@ app.use((req, res, next) => {
     req.user = req.cookies.session ? req.cookies.session.id : undefined;
     next();
 });
-//use routes
+// use routes
 
 app.use(authRoutes);
 app.use("/admin", adminRoutes);
@@ -81,12 +81,13 @@ app.use(publicRoutes);
 app.get("/500", getInternalError);
 app.use(getNotFound);
 
-app.use((error, req, res, next) => {
+app.use((error, req, res) => {
+    // eslint-disable-next-line no-console
     console.log(error);
     res.redirect("/500");
 });
 
-//function to send automaticall eMail
+// function to send automaticall eMail
 const autocall = () => {
     sendEmail();
 };

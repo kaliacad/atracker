@@ -1,5 +1,7 @@
-import { query } from "../db/pool.js";
+import pool from "../db/pool.js";
 import { createStudentsTable, insertStudents } from "./queries.js";
+
+const { query } = pool;
 
 const runQueryArray = async (arr) =>
     new Promise((resolve) => {
@@ -12,8 +14,3 @@ const runQueryArray = async (arr) =>
 
 export const createTables = () => runQueryArray([createStudentsTable]);
 export const insertIntoTables = () => runQueryArray([insertStudents]);
-
-// const _createTables = createTables;
-// export { _createTables as createTables };
-// const _insertIntoTables = insertIntoTables;
-// export { _insertIntoTables as insertIntoTables };

@@ -1,9 +1,9 @@
 import { Router } from "express";
 
-const router = Router();
+// auth controller
+import getIndex from "../controllers/public.js";
 
-//auth controller
-import { getIndex } from "../controllers/public.js";
+const router = Router();
 
 router.get("/", getIndex);
 
