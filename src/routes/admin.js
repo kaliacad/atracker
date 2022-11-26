@@ -1,21 +1,31 @@
-const express = require("express");
+import { Router } from "express";
 
 //protection of private routes
-const isAuth = require('../middlewares/auth')
+import isAuth from "../middlewares/auth.js";
 
 //controller
-const adminController = require("../controllers/admin");
+import {
+    getAddStudent,
+    postAddStudent,
+    getAddPresence,
+    postAddPresence,
+    getStudents,
+    getSingleStudent,
+    postDeleleStudent,
+    postEditStudent,
+    getIndex,
+} from "../controllers/admin.js";
 
-const router = express.Router();
+const router = Router();
 
-router.get("/add-student",isAuth, adminController.getAddStudent);
-router.post("/add-student",isAuth, adminController.postAddStudent);
-router.get('/add-presence',isAuth, adminController.getAddPresence);
-router.post("/add-presence", isAuth, adminController.postAddPresence);
-router.get('/students', isAuth, adminController.getStudents);
-router.get('/students/:id', adminController.getSingleStudent);
-router.post("/students/delete", isAuth, adminController.postDeleleStudent);
-router.post("/students/edit", adminController.postEditStudent);
-router.get("/",isAuth, adminController.getIndex);
+router.get("/add-student", isAuth, getAddStudent);
+router.post("/add-student", isAuth, postAddStudent);
+router.get("/add-presence", isAuth, getAddPresence);
+router.post("/add-presence", isAuth, postAddPresence);
+router.get("/students", isAuth, getStudents);
+router.get("/students/:id", getSingleStudent);
+router.post("/students/delete", isAuth, postDeleleStudent);
+router.post("/students/edit", postEditStudent);
+router.get("/", isAuth, getIndex);
 
-module.exports = router;
+export default router;

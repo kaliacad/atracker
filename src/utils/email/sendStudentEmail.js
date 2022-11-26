@@ -1,7 +1,9 @@
-const transporter = require("../emailTransport");
-const db = require("../../db/index");
+import transporter from "../emailTransport.js";
+import pool from "../../db/index.js";
 
-module.exports = async (student) => {
+const query = pool.query;
+
+export default async (student) => {
     const date = new Date().toISOString().split("T")[0];
     let midi;
     let presences;
@@ -11,11 +13,10 @@ module.exports = async (student) => {
             Nous avons le réel plaisir de te faire parvenir ton status de présence pour 
         `;
 
-    await db
-        .query(
-            "SELECT * FROM presences where studentid= $1  AND CAST(createdat AS DATE) = $2",
-            [student.id, date]
-        )
+    await query(
+        "SELECT * FROM presences where studentid= $1  AND CAST(createdat AS DATE) = $2",
+        [student.id, date]
+    )
         .then((result) => {
             presences = result.rows;
 
@@ -36,7 +37,6 @@ module.exports = async (student) => {
             .toTimeString()
             .split(" ")[0]
             .split(":")[0];
-
 
         //we add description of presence tp template
         template += `

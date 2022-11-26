@@ -1,13 +1,14 @@
-const db = require("../../db/index");
-const sendCoachMail = require("./sendCoachEmail");
-const sendStudentMail = require("./sendStudentEmail");
+import pool from "../../db/index.js";
+import sendCoachMail from "./sendCoachEmail.js";
+import sendStudentMail from "./sendStudentEmail.js";
 
-module.exports = async () => {
+const query = pool.query;
+
+export default async () => {
     const value = new Date().toTimeString().split(" ")[0];
     if (value == "16:50:00") {
-        setTimeout(sendCoachMail, 1000);
-        await db
-            .query("SELECT * FROM students ")
+        sendCoachMail();
+        await query("SELECT * FROM students ")
             .then((result) => {
                 const students = result.rows;
                 students.forEach((student) => {

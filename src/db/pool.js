@@ -1,7 +1,9 @@
-const { Pool } = require("pg");
+import pg from "pg";
 
-const connectionString = require("../settings")
+const { Pool } = pg;
 
-const pool = new Pool({ connectionString })
+import connectionString from "../settings.js";
 
-module.exports = pool
+const pool = new Pool({ connectionString });
+
+export default pool;

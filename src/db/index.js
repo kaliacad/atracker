@@ -1,5 +1,5 @@
-const pool = require("./pool")
+import pool from "./pool.js";
 
-module.exports = {
+export default {
     query: (text, params) => pool.query(text, params),
 };

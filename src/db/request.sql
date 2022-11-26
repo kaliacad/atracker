@@ -32,7 +32,11 @@ CREATE TABLE presences (
 SELECT * FROM students ORDER BY id;
 
 
-SELECT students.id AS id, students.noms AS studentNoms, students.email as studentsEmail, users.noms AS usersNoms  FROM students join users ON students.iduser = users.id;
+SELECT students.id AS id, students.noms AS studentNoms, students.email as studentsEmail, users.noms AS usersNoms  
+FROM students 
+JOIN users ON students.iduser = users.id;
 
 
-select presences.presence, COUNT (presences.presence)  from presences WHERE CAST(createdat AS DATE) = '2022:07:09'  group by presences.presence
+SELECT presences.presence, COUNT (presences.presence)  
+FROM presences 
+WHERE CAST(createdat AS DATE) = '2022:07:09'  GROUP BY presences.presence

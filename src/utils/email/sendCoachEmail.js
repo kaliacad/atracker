@@ -1,8 +1,10 @@
-const nodemailer = require("nodemailer");
-const db = require("../../db/index");
-const transporter = require("../emailTransport");
+import { getTestMessageUrl } from "nodemailer";
+import pool from "../../db/index.js";
+import transporter from "../emailTransport.js";
 
-module.exports = async () => {
+const query = pool.query;
+
+export default async () => {
     const date = new Date().toISOString().split("T")[0];
     let usersEmail;
     let contentMail = `
@@ -10,8 +12,7 @@ module.exports = async () => {
         En date du ${date} la situation des présences pour la classe dev GDA se présente comme suit :<br/>
         <ul>
     `;
-    await db
-        .query("SELECT * FROM users")
+    await query("SELECT * FROM users")
         .then((results) => {
             const users = results.rows;
             usersEmail = users.map((user) => {
@@ -20,11 +21,10 @@ module.exports = async () => {
             usersEmail = usersEmail.join('","');
         })
         .catch((error) => console.log(error));
-    await db
-        .query(
-            "select presences.presence, COUNT (presences.presence)  from presences WHERE CAST(createdat AS DATE) = $1  group by presences.presence ",
-            [date]
-        )
+    await query(
+        "select presences.presence, COUNT (presences.presence)  from presences WHERE CAST(createdat AS DATE) = $1  group by presences.presence ",
+        [date]
+    )
         .then((response) => {
             response.rows.forEach((element) => {
                 contentMail += `<li>${
@@ -51,6 +51,6 @@ module.exports = async () => {
         if (error) return console.log(error);
 
         console.log("Message sent: %s", info.response);
-        console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+        console.log("Preview URL: %s", getTestMessageUrl(info));
     });
 };
