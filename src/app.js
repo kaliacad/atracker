@@ -14,6 +14,10 @@ import publicRoutes from "./routes/public.js";
 
 // error controller
 import { getInternalError, getNotFound } from "./controllers/error.js";
+// use routes
+
+// eslint-disable-next-line no-unused-vars
+import faker from "./db/faker.js";
 
 const app = express();
 
@@ -72,7 +76,10 @@ app.use((req, res, next) => {
     req.user = req.cookies.session ? req.cookies.session.id : undefined;
     next();
 });
-// use routes
+app.use(async (req, res, next) => {
+    // await faker();
+    next();
+});
 
 app.use(authRoutes);
 app.use("/admin", adminRoutes);
