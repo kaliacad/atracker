@@ -22,7 +22,7 @@ router.get("/add-student", isAuth, getAddStudent);
 router.post("/add-student", isAuth, postAddStudent);
 router.get("/add-presence", isAuth, getAddPresence);
 router.post("/add-presence", isAuth, postAddPresence);
-router.get("/students", isAuth, getStudents);
+router.get("/students", getStudents);
 router.get("/students/:id", getSingleStudent);
 router.post("/students/delete", isAuth, postDeleleStudent);
 router.post("/students/edit", postEditStudent);

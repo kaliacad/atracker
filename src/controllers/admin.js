@@ -45,7 +45,7 @@ export function getAddStudent(req, res) {
 // eslint-disable-next-line consistent-return
 export async function getStudents(req, res, next) {
     const page = +req.query.page || 1;
-    const userId = req.user;
+    const userId = req.user || null;
     try {
         const result = await query(
             "SELECT * FROM students order by id LIMIT $1 OFFSET $2",
@@ -75,7 +75,7 @@ export async function getStudents(req, res, next) {
 
 export async function getSingleStudent(req, res, next) {
     const studentId = req.params.id;
-    const userId = req.user;
+    const userId = req.user || null;
     if (isNaN(studentId)) return res.redirect("/not-found");
     try {
         let students = [];
