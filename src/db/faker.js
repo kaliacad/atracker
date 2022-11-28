@@ -26,7 +26,7 @@ export default async () => {
          CREATE TABLE students (
          id BIGSERIAL NOT NULL PRIMARY KEY,
          noms VARCHAR(200) NOT NULL,
-         email VARCHAR(20) NOT NULL,
+         email VARCHAR(200) NOT NULL,
          idUser INT NOT NULL REFERENCES users
       );
    `);
