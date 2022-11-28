@@ -25,3 +25,13 @@
   font-size: 80px;
   color: rgb(201, 18, 18);
 }
+
+::-webkit-scrollbar {
+  width: 5px;
+  background-color: #a19d9d;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #da4d4d;
+}
