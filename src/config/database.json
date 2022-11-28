@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "postgres",
+    "database": "attendancy2",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "postgres",
+    "password": "postgres",
+    "database": "attendancy2",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "fttqenrd",
+    "password": "SsEAsNn_RbwnYuSLCs_AdsWfSEdxK60P",
+    "database": "fttqenrd",
+    "host": "peanut.db.elephantsql.com",
+    "dialect": "postgres"
+  }
+}

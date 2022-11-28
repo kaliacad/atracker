@@ -9,12 +9,22 @@
         <h4 class="card-title text-danger">Ajouter un etudiant</h4>
         <form action="/admin/add-student" method="post">
           <div class="form-group mt-4">
-            <label for="nom">Noms</label>
+            <label for="nom">Nom</label>
             <input
               id="nom"
               class="form-control"
               type="text"
-              name="names"
+              name="nom"
+              required
+            />
+          </div>
+          <div class="form-group mt-4">
+            <label for="nom">Prenom</label>
+            <input
+              id="nom"
+              class="form-control"
+              type="text"
+              name="prenom"
               required
             />
           </div>
@@ -27,6 +37,14 @@
               name="email"
               required
             />
+          </div>
+          <div class="form-group mt-4">
+            <label for="cohorteid">cohorte</label>
+            <select name="cohorteId" id="cohorteid" class="form-control">
+              <% cohortes && cohortes.map( coh => { %>
+              <option value="<%= coh.id %>"><%= coh.nom %></option>
+              <% }) %>
+            </select>
           </div>
           <input type="hidden" name="userId" value="<%= userId %>" />
           <div class="form-group mt-4">
