@@ -81,7 +81,8 @@
         class="btn btn-sm px-3 m-2 btn-outline-danger"
         >>></a
       >
-      <% } %> <% if (lastPage !== currentPage && lastPage !== nextPage) { %>
+      <% } %> <% if (lastPage && lastPage !== currentPage && lastPage !==
+      nextPage) { %>
       <a
         href="/admin/students?page=<%= lastPage %>"
         class="btn btn-sm px-3 m-2 btn-outline-danger"

@@ -6,7 +6,6 @@ import pool from "../db/index.js";
 import Cohorte from "../models/Cohorte.js";
 import Presence from "../models/Presence.js";
 import Student from "../models/Student.js";
-import User from "../models/User.js";
 
 const date = new Date().toISOString().split("T")[0];
 const { query } = pool;
@@ -16,19 +15,25 @@ const STUDENT_PER_PAGE = 9;
 export async function getIndex(req, res, next) {
     const userId = req.user;
     try {
-        const presencesTodayData = await Presence.findAll({
+        const presencesToday = await Presence.findAll({
             attributes: [
-                ["presence", "pres"],
+                "presence",
                 [sequelize.fn("COUNT", sequelize.col("presence")), "total"],
             ],
-            where: { createdAt: date },
+            where: { createdAt: date }, // i make here great than
             group: "presence",
         });
-        const allPresencesData = await query(
-            "select presences.presence, COUNT (presences.presence)  from presences group by presences.presence "
-        );
-        const presencesToday = presencesTodayData.rows;
-        const allPresences = allPresencesData.rows;
+        const allPresences = (
+            await Presence.findAll({
+                attributes: [
+                    "presence",
+                    "isMatin",
+                    [sequelize.fn("COUNT", sequelize.col("presence")), "total"],
+                ],
+                group: ["presence", "isMatin"],
+                order: ["presence"],
+            })
+        ).map((ele) => ele.dataValues);
         return res.render("admin/index", {
             presencesToday,
             date,
@@ -81,7 +86,7 @@ export async function getStudents(req, res, next) {
             hasPreviousPage: page > 1,
             nextPage: page + 1,
             previousPage: page - 1,
-            lastPage: Math.ceil(totalStudents / STUDENT_PER_PAGE),
+            lastPage: Math.ceil(totalStudents / STUDENT_PER_PAGE) || null,
         });
     } catch (error) {
         const err = new Error(error);
@@ -95,24 +100,28 @@ export async function getSingleStudent(req, res, next) {
     const userId = req.user || null;
     if (isNaN(studentId)) return res.redirect("/not-found");
     try {
-        let students = [];
-        const studentsResult = await query(
-            "SELECT * FROM students where id = $1",
-            [studentId]
-        );
-        if (studentsResult) {
-            students = studentsResult.rows;
-        }
-        const presenceResult = await query(
-            "select presences.presence, COUNT (presences.presence)  from presences where studentid= $1 group by presences.presence ",
-            [studentId]
-        );
-        const presences = presenceResult.rows;
+        const student = await Student.findOne({
+            where: { id: studentId },
+            include: Student.belongsTo(Cohorte),
+        });
+
+        const presences = (
+            await Presence.findAll({
+                attributes: [
+                    "presence",
+                    "isMatin",
+                    [sequelize.fn("COUNT", sequelize.col("presence")), "total"],
+                ],
+                where: { studentId },
+                group: ["presence", "isMatin"],
+            })
+        ).map((element) => element.dataValues);
+
         res.render("admin/one-student", {
             userId,
-            student: students[0],
+            student,
             presences,
-            title: `${students[0].noms}`,
+            title: `${student.noms}`,
         });
     } catch (error) {
         const err = new Error(error);
@@ -125,14 +134,13 @@ export async function postAddStudent(req, res, next) {
     const { nom, prenom, email, cohorteId } = req.body;
     const userId = req.user || null;
     try {
-        const resul = await Student.create({
+        await Student.create({
             nom,
             prenom,
             email,
             userId,
             cohorteId,
         });
-        console.log(resul);
 
         res.redirect("/admin/students");
     } catch (error) {
@@ -196,11 +204,14 @@ export async function postAddPresence(req, res, next) {
     for (const i in students) {
         studentId = +i;
         presence = students[i];
+
+        if (isNaN(studentId)) break;
         try {
             // eslint-disable-next-line no-await-in-loop
             await Presence.create({
                 studentId,
                 presence,
+                isMatin: students.isMatin,
             });
         } catch (error) {
             const err = new Error(error);

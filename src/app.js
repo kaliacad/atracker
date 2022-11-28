@@ -56,6 +56,16 @@ Presence.belongsTo(Student);
 // eslint-disable-next-line no-underscore-dangle
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
+try {
+    await sequelize.authenticate();
+    // sequelize.sync();
+    // eslint-disable-next-line no-console
+    console.log("connection to db etablished ");
+} catch (error) {
+    // eslint-disable-next-line no-console
+    console.log("Unable to connect to the database", error);
+}
+
 app.use(
     session({
         // store: new (require("connect-pg-simple")(session))({
@@ -119,16 +129,6 @@ app.use((error, req, res) => {
     console.log(error);
     res.redirect("/500");
 });
-
-try {
-    await sequelize.authenticate();
-    // sequelize.sync();
-    // eslint-disable-next-line no-console
-    console.log("connection to db etablished ");
-} catch (error) {
-    // eslint-disable-next-line no-console
-    console.log("Unable to connect to the database", error);
-}
 
 // function to send automaticall eMail
 const autocall = () => {

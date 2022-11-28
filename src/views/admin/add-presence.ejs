@@ -4,13 +4,42 @@
   class="login container-fluid w-100 h-100 pt-5 mb-5 d-flex justify-content-center align-items-start"
 >
   <div class="container mx-sm-1 mx-5">
-    <div
-      class="d-flex flex-row w-100 justify-content-between flex-wrap align-items-center mt-3"
-    >
-      <h5 class="text-center align-start text-secondary">Faire la presence</h5>
-      <p class="text-secondary m-0"><%= new Date().toLocaleString() %></p>
-    </div>
     <form action="" method="post">
+      <div
+        class="d-flex flex-row w-100 justify-content-between flex-wrap align-items-center mt-3"
+      >
+        <h5 class="text-center align-start text-secondary">
+          Faire la presence
+        </h5>
+        <p class="text-secondary m-0"><%= new Date().toLocaleString() %></p>
+        <div>
+          <div class="form-check form-check-inline">
+            <label class="form-check-label">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="isMatin"
+                id="isMatin"
+                value="true"
+                checked
+              />
+              Matin
+            </label>
+          </div>
+          <div class="form-check form-check-inline">
+            <label class="form-check-label">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="isMatin"
+                id="isMatin"
+                value="false"
+              />
+              Apres midi
+            </label>
+          </div>
+        </div>
+      </div>
       <div class="overflow-auto">
         <table class="table table-light table-hover shadow-sm p-2">
           <thead class="thead-light">
@@ -27,7 +56,9 @@
             <% students.forEach(student => { %>
             <tr>
               <td class="text-center text-muted"><%= student.id %></td>
-              <td class="text-center" colspan="2"><%= student.noms %></td>
+              <td class="text-center" colspan="2">
+                <%= student.prenom %> <%= student.nom %>
+              </td>
               <td class="text-center">
                 <input
                   type="radio"
