@@ -18,21 +18,21 @@
       <table class="table table-hover shadow-sm table-light p-2">
         <thead class="thead-light">
           <tr>
-            <th class="text-danger text-center">#</th>
-            <th class="text-danger text-center" colspan="2">noms</th>
-            <th class="text-danger text-center">email</th>
-            <th class="text-danger text-center">actions</th>
+            <th class="text-danger text-start">#</th>
+            <th class="text-danger text-start" colspan="2">noms</th>
+            <th class="text-danger text-start">email</th>
+            <th class="text-danger text-start">actions</th>
           </tr>
         </thead>
         <tbody>
           <% students && students.forEach(student => { %>
           <tr>
-            <td class="text-center"><%= student.id %></td>
-            <td class="text-center" colspan="2">
+            <td class="text-start"><%= student.id %></td>
+            <td class="text-start" colspan="2">
               <%= student.prenom %> <%= student.nom %>
             </td>
-            <td class="text-center"><%= student.email %></td>
-            <td class="d-flex justify-content-center">
+            <td class="text-start"><%= student.email %></td>
+            <td class="d-flex justify-content-start">
               <a href="/admin/students/<%= student.id %>">
                 <button
                   class="btn btn-outline-primary btn-sm mx-1"
@@ -41,16 +41,27 @@
                   voir
                 </button>
               </a>
+              <% if(userId) { %>
+              <form action="/admin/students/<%= student.id %>">
+                <input type="hidden" value="<%= student.id %>" />
+                <button
+                  class="btn btn-outline-danger btn-sm mx-1"
+                  type="button"
+                >
+                  désactiver
+                </button>
+              </form>
+              <% } %>
             </td>
           </tr>
           <% }) %>
         </tbody>
         <tfoot>
           <tr>
-            <th class="text-danger text-center">#</th>
-            <th class="text-danger text-center" colspan="2">noms</th>
-            <th class="text-danger text-center">email</th>
-            <th class="text-danger text-center">actions</th>
+            <th class="text-danger text-start">#</th>
+            <th class="text-danger text-start" colspan="2">noms</th>
+            <th class="text-danger text-start">email</th>
+            <th class="text-danger text-start">actions</th>
           </tr>
         </tfoot>
       </table>
