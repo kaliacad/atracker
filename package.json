@@ -12,7 +12,7 @@
     "lint:fix": "eslint . src/**/*.js --fix"
   },
   "keywords": [],
-  "author": "Abel",
+  "author": ["Abel", "cedric"],
   "license": "MIT",
   "dependencies": {
     "bcrypt": "^5.0.1",
@@ -31,6 +31,7 @@
     "pg": "^8.8.0",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.25.8"
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
     "eslint": "^8.28.0",
