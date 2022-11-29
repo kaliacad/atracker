@@ -8,7 +8,7 @@
     <h5 class="text-danger w-100 text-center">Présences du <%= date %></h5>
     <div class="row w-100 d-flex justify-content-center mt-2">
       <!--  -->
-      <% if(presencesToday.length > 0) { %>
+      <% if(presencesToday && presencesToday.length > 0) { %>
       <!--  -->
       <% presencesToday.forEach(presence => { %>
       <!--  -->

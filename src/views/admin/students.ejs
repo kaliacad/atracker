@@ -25,10 +25,12 @@
           </tr>
         </thead>
         <tbody>
-          <% students.forEach(student => { %>
+          <% students && students.forEach(student => { %>
           <tr>
             <td class="text-center"><%= student.id %></td>
-            <td class="text-center" colspan="2"><%= student.noms %></td>
+            <td class="text-center" colspan="2">
+              <%= student.prenom %> <%= student.nom %>
+            </td>
             <td class="text-center"><%= student.email %></td>
             <td class="d-flex justify-content-center">
               <a href="/admin/students/<%= student.id %>">

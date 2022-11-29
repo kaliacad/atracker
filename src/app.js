@@ -12,19 +12,45 @@ import adminRoutes from "./routes/admin.js";
 import authRoutes from "./routes/auth.js";
 import publicRoutes from "./routes/public.js";
 
+// models
+import User from "./models/User.js";
+import Student from "./models/Student.js";
+import Presence from "./models/Presence.js";
+import Cohorte from "./models/Cohorte.js";
+
 // error controller
 import { getInternalError, getNotFound } from "./controllers/error.js";
 // use routes
 
 // eslint-disable-next-line no-unused-vars
 import faker from "./db/faker.js";
+import sequelize from "./db/config.js";
 
 const app = express();
 
+// config
 app.use(morgan("dev"));
-// body parser to decode form
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+// database relations
+User.hasMany(Student, {
+    onDelete: "RESTRICT",
+    onUpdate: "RESTRICT",
+});
+Student.belongsTo(User);
+
+Cohorte.hasMany(Student, {
+    onDelete: "RESTRICT",
+    onUpdate: "RESTRICT",
+});
+Student.belongsTo(Cohorte);
+
+Student.hasMany(Presence, {
+    onDelete: "RESTRICT",
+    onUpdate: "RESTRICT",
+});
+Presence.belongsTo(Student);
 
 // const __filename = url.fileURLToPath(import.meta.url);
 // eslint-disable-next-line no-underscore-dangle
@@ -93,6 +119,16 @@ app.use((error, req, res) => {
     console.log(error);
     res.redirect("/500");
 });
+
+try {
+    await sequelize.authenticate();
+    // sequelize.sync();
+    // eslint-disable-next-line no-console
+    console.log("connection to db etablished ");
+} catch (error) {
+    // eslint-disable-next-line no-console
+    console.log("Unable to connect to the database", error);
+}
 
 // function to send automaticall eMail
 const autocall = () => {
