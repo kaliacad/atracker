@@ -1,9 +1,8 @@
-import pool from "../db/index.js";
-
-const { query } = pool;
+import User from "../models/User.js";
 
 export function getLogin(req, res) {
-    res.render("auth/login", {
+    if (res.user) return res.redirect("/admin");
+    return res.render("auth/login", {
         title: "Login",
         userId: undefined,
     });
@@ -14,10 +13,12 @@ export async function postLogin(req, res, next) {
     const { username } = req.body;
     const { password } = req.body;
     try {
-        const result = await query(
-            `SELECT * FROM users where username='${username}'`
-        );
-        const user = result.rows[0];
+        const user = await User.findOne({
+            where: {
+                username,
+            },
+        });
+
         if (user && password === user.password) {
             req.session.user = user;
             res.cookie("session", user);

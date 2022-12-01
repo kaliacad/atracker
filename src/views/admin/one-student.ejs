@@ -6,8 +6,11 @@
   <div class="container w-100 row mt-5 p-0">
     <div class="col-md-4 p-0 m-0 pe-1">
       <div class="card py-5 shadow-sm h-100">
-        <h3 class="text-danger w-100 text-center"><%= student.noms %></h3>
+        <h3 class="text-danger w-100 text-center">
+          <%= student.prenom %> <%= student.nom %>
+        </h3>
         <p class="card-text text-center"><%= student.email %></p>
+        <p class="card-text text-center"><%= student.cohorte.nom %></p>
       </div>
     </div>
 
@@ -16,11 +19,16 @@
         <h5 class="text-danger w-100 text-center">Total des presences</h5>
         <div class="row d-flex justify-content-center mt-2">
           <% if(presences.length > 0) { %> <% presences.forEach(pres => { %>
-          <div class="col-md-2 px-3 p-sm-1 col-sm-6">
+          <div class="col-md-3 px-3 p-sm-1 col-sm-6">
             <div class="card bg-light m-1">
               <div class="card-body">
-                <h1 class="text-center text-danger"><%= pres.count %></h1>
-                <p class="card-text text-center"><%= pres.presence %></p>
+                <h1 class="text-center text-danger"><%= pres.total %></h1>
+                <h5 class="card-text text-center text-danger">
+                  <%= pres.presence %>
+                </h5>
+                <p class="card-text text-center">
+                  <%= pres.isMatin ? 'avant midi' : 'apres midi' %>
+                </p>
               </div>
             </div>
           </div>
@@ -43,13 +51,23 @@
     <h5 class="text-danger w-100 text-center">Modifier les informations</h5>
     <form method="POST" action="/admin/students/edit" class="p-4">
       <div class="form-group mb-3">
-        <label for="noms">Noms</label>
+        <label for="noms">Prenom</label>
         <input
-          id="noms"
+          id="prenom"
           class="form-control bg-light"
           type="text"
-          name="noms"
-          value="<%= student.noms%>"
+          name="prenom"
+          value="<%= student.prenom%>"
+        />
+      </div>
+      <div class="form-group mb-3">
+        <label for="nom">Noms</label>
+        <input
+          id="nom"
+          class="form-control bg-light"
+          type="text"
+          name="nom"
+          value="<%= student.nom %>"
         />
       </div>
       <div class="form-group mb-4">

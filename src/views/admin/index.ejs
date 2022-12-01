@@ -35,8 +35,13 @@
       <div class="col-md-2 px-3 p-sm-1 col-sm-6">
         <div class="card bg-light m-1">
           <div class="card-body">
-            <h1 class="text-center text-danger"><%= pres.count %></h1>
-            <p class="card-text text-center"><%= pres.presence %></p>
+            <h1 class="text-center text-danger"><%= pres.total %></h1>
+            <h5 class="card-text text-center text-danger">
+              <%= pres.presence %>
+            </h5>
+            <p class="text-center text-center">
+              <%= pres.isMatin ? 'avant midi' : 'apres midi' %>
+            </p>
           </div>
         </div>
       </div>
@@ -53,7 +58,7 @@
       <div class="col-md-2 px-3 p-sm-1 col-sm-6">
         <div class="card bg-light m-1">
           <div class="card-body">
-            <h1 class="text-center text-danger"><%= pres.count %></h1>
+            <h1 class="text-center text-danger"><%= pres.total %></h1>
             <p class="card-text text-center"><%= pres.presence %></p>
           </div>
         </div>

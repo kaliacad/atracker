@@ -40,7 +40,7 @@ export default async () => {
         from: '"cedric karungu " <ckarungu921@kinshasadigital.com>', // sender address
         to: `"${usersEmail}", "ckarungu921@gmail.com"`, // list of receivers
         // eslint-disable-next-line quotes
-        cc: '"jean-louis@kinshasadigital.com"',
+        // cc: '"jean-louis@kinshasadigital.com"',
         subject: "Équipe pédagogique GDA- status de présence ✔", // Subject line
         text: "Bonjour cher apprenant", // plain text body
         html: contentMail, // html body
