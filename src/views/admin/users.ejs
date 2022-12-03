@@ -1,0 +1,65 @@
+<%- include('../includes/head.ejs')%> 
+<%- include('../includes/header.ejs')%>
+
+<div
+  class="container w-100 h-100 mt-5 p-5 d-flex flex-column justify-content-center"
+>
+  <div class="col-md-12 d-flex flex-column justify-content-center">
+    <div class="d-flex flex-row w-100 justify-content-between">
+      <h3 class="text-center align-start text-secondary">
+        <%= title %>
+      </h3>
+      <a href="/admin/add-user"
+        ><button class="btn btn-outline-primary" type="button">
+          Nouveau
+        </button></a
+      >
+    </div>
+    <table class="table table-danger table-hover shadow p-2">
+      <thead class="thead-light">
+        <tr>
+          <th class="text-danger text-center">#</th>
+          <th class="text-danger text-center">noms</th>
+          <th class="text-danger text-center">email</th>
+          <th class="text-danger text-center">role</th>
+          <th class="text-danger text-center">actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% users.forEach(user => { %>
+        <tr>
+          <td class="text-center"><%= user.id %></td>
+          <td class="text-center"><%= user.noms %></td>
+          <td class="text-center"><%= user.email %></td>
+          <td class="text-center">admin</td>
+          <td class="d-flex justify-content-center">
+            <a href="/admin/users/<%= user.id %>">
+              <button class="btn btn-outline-primary btn-sm mx-1" type="button">
+                voir
+              </button>
+            </a>
+            <a href="">
+              <button class="btn btn-outline-success btn-sm mx-1" type="button">
+                Editer
+              </button>
+            </a>
+            <button class="btn btn-outline-danger btn-sm mx-1" type="button">
+              Suppr
+            </button>
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+      <tfoot>
+        <tr>
+          <th class="text-danger text-center">#</th>
+          <th class="text-danger text-center">noms</th>
+          <th class="text-danger text-center">email</th>
+          <th class="text-danger text-center">role</th>
+          <th class="text-danger text-center">actions</th>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+<%- include('../includes/footer.ejs')%>
