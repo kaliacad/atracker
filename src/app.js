@@ -80,11 +80,9 @@ app.use(
     })
 );
 
-const views = join(__dirname, "views");
-
 // templates views
 app.set("view engine", "ejs");
-app.set("views", views);
+app.set("views", join(__dirname, "views"));
 
 // bootstrap include
 app.use(
