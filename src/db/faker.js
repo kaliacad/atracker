@@ -9,24 +9,29 @@ const dropDB = async () => {
     DROP TABLE IF EXISTS students; 
       DROP TABLE IF EXISTS users; 
    END TRANSACTION`);
+
+    // eslint-disable-next-line no-console
     console.log(resUsersTable);
 };
 
 export default async () => {
     await dropDB();
-    const resUsersTable = await query(`CREATE TABLE IF NOT EXISTS users (
-    id BIGSERIAL NOT NULL PRIMARY KEY,
-    noms VARCHAR(200),
-    email VARCHAR(200) NOT NULL,
-    username VARCHAR(20) NOT NULL,
-    password VARCHAR(20) NOT NULL
+
+    const resUsersTable = await query(`
+        CREATE TABLE IF NOT EXISTS users (
+        id BIGSERIAL NOT NULL PRIMARY KEY,
+        noms VARCHAR(200),
+        email VARCHAR(200) NOT NULL,
+        username VARCHAR(20) NOT NULL,
+        password VARCHAR(20) NOT NULL
+
    );`);
     if (resUsersTable) {
         const resStudents = await query(`
          CREATE TABLE students (
          id BIGSERIAL NOT NULL PRIMARY KEY,
          noms VARCHAR(200) NOT NULL,
-         email VARCHAR(20) NOT NULL,
+         email VARCHAR(200) NOT NULL,
          idUser INT NOT NULL REFERENCES users
       );
    `);
@@ -40,10 +45,10 @@ export default async () => {
             );
          `);
             if (resPresences) {
-                const resUser = await query(
+                await query(
                     "INSERT INTO users(noms,email,username, password) VALUES ('cedric karungu', 'ckarungu921@gmail.com','cedric921','123456')"
                 );
-                console.log(resUser, resPresences, resStudents, resUsersTable);
+
             }
         }
     }
