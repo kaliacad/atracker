@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable no-restricted-globals */
 /* eslint-disable guard-for-in */
 /* eslint-disable consistent-return */
@@ -52,6 +53,11 @@ export async function getAddStudent(req, res, next) {
     try {
         const cohortes = await Cohorte.findAll();
         const userId = req.user;
+        console.log(req.user);
+        if (req.user.role !== 1 || req.user.role !== 2) {
+            return res.redirect("/admin/students");
+        }
+
         res.render("admin/add-student", {
             userId,
             title: "New student",
@@ -67,7 +73,9 @@ export async function getAddStudent(req, res, next) {
 // eslint-disable-next-line consistent-return
 export async function getStudents(req, res, next) {
     const page = +req.query.page || 1;
-    const userId = req.user || null;
+    const isAuth = (req.user.role === 1 || req.user.role === 2) ?? false;
+    const userId = req.user.id || null;
+    console.log(userId, isAuth);
     try {
         const students = await Student.findAll({
             order: [["id", "DESC"]],
@@ -86,6 +94,7 @@ export async function getStudents(req, res, next) {
             hasPreviousPage: page > 1,
             nextPage: page + 1,
             previousPage: page - 1,
+            isAuth,
             lastPage: Math.ceil(totalStudents / STUDENT_PER_PAGE) || null,
         });
     } catch (error) {
@@ -97,7 +106,7 @@ export async function getStudents(req, res, next) {
 
 export async function getSingleStudent(req, res, next) {
     const studentId = req.params.id;
-    const userId = req.user || null;
+    const isAuth = (req.user.role === 1 || req.user.role === 2) ?? false;
     if (isNaN(studentId)) return res.redirect("/not-found");
     try {
         const student = await Student.findOne({
@@ -118,7 +127,7 @@ export async function getSingleStudent(req, res, next) {
         ).map((element) => element.dataValues);
 
         res.render("admin/one-student", {
-            userId,
+            isAuth,
             student,
             presences,
             title: `${student.noms}`,
@@ -131,8 +140,17 @@ export async function getSingleStudent(req, res, next) {
 }
 
 export async function postAddStudent(req, res, next) {
-    const { nom, prenom, email, cohorteId } = req.body;
-    const userId = req.user || null;
+    const {
+        //
+        nom,
+        prenom,
+        email,
+        cohorteId,
+    } = req.body;
+    const userId = req.user.id || null;
+    if (req.user.role !== 1 || req.user.role !== 2) {
+        return res.redirect("admin.students");
+    }
     try {
         await Student.create({
             nom,
@@ -151,6 +169,9 @@ export async function postAddStudent(req, res, next) {
 }
 
 export async function postEditStudent(req, res, next) {
+    if (req.user.role !== 1 || req.user.role !== 2) {
+        return res.redirect("admin.students");
+    }
     const { noms, email, studentId } = req.body;
     try {
         await query("UPDATE students SET noms= $1, email=$2  WHERE id=$3", [
@@ -167,6 +188,9 @@ export async function postEditStudent(req, res, next) {
 }
 
 export async function postDeleleStudent(req, res, next) {
+    if (req.user.role !== 1 || req.user.role !== 2) {
+        return res.redirect("admin.students");
+    }
     const { studentId } = req.body;
     try {
         const student = await Student.findOne({ where: { id: studentId } });

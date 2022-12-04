@@ -109,7 +109,7 @@ app.use(
 app.use(express.static(join(__dirname, "..", "public")));
 
 app.use((req, res, next) => {
-    req.user = req.cookies.session ? req.cookies.session.id : undefined;
+    req.user = req.cookies.session ? req.cookies.session : undefined;
     next();
 });
 app.use(async (req, res, next) => {

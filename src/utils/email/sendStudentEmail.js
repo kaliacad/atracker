@@ -31,8 +31,8 @@ export default async (student) => {
             // we add description of presence tp template
             template += `
                 <li> ${presence.isMatin ? "Avant-midi" : "Apres-midi"} : ${
-                presence.presence
-            } </li>`;
+    presence.presence
+} </li>`;
         });
         template += `
     </ul>

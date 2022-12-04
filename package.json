@@ -12,7 +12,10 @@
     "lint:fix": "eslint . src/**/*.js --fix"
   },
   "keywords": [],
-  "author": ["Abel", "cedric"],
+  "author": [
+    "Abel",
+    "cedric"
+  ],
   "license": "MIT",
   "dependencies": {
     "bcrypt": "^5.0.1",
