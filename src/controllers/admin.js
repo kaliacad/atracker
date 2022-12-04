@@ -14,7 +14,8 @@ const { query } = pool;
 const STUDENT_PER_PAGE = 9;
 
 export async function getIndex(req, res, next) {
-    const userId = req.user;
+    const userId = req.user.id;
+    const { role } = req.user;
     try {
         const presencesToday = await Presence.findAll({
             attributes: [
@@ -41,6 +42,7 @@ export async function getIndex(req, res, next) {
             allPresences,
             userId,
             title: "Dashboard",
+            role,
         });
     } catch (error) {
         const err = new Error(error);
@@ -50,10 +52,11 @@ export async function getIndex(req, res, next) {
 }
 
 export async function getAddStudent(req, res, next) {
+    const { role } = req.user;
+
     try {
         const cohortes = await Cohorte.findAll();
-        const userId = req.user;
-        console.log(req.user);
+        const userId = req.user.id;
         if (req.user.role !== 1 || req.user.role !== 2) {
             return res.redirect("/admin/students");
         }
@@ -62,6 +65,7 @@ export async function getAddStudent(req, res, next) {
             userId,
             title: "New student",
             cohortes,
+            role,
         });
     } catch (error) {
         const err = new Error(error);
@@ -72,10 +76,11 @@ export async function getAddStudent(req, res, next) {
 
 // eslint-disable-next-line consistent-return
 export async function getStudents(req, res, next) {
+    const { role } = req.user;
+
     const page = +req.query.page || 1;
     const isAuth = (req.user.role === 1 || req.user.role === 2) ?? false;
     const userId = req.user.id || null;
-    console.log(userId, isAuth);
     try {
         const students = await Student.findAll({
             order: [["id", "DESC"]],
@@ -86,6 +91,7 @@ export async function getStudents(req, res, next) {
 
         res.render("admin/students", {
             userId,
+            role,
             students,
             title: "Student list",
             totalStudents,
@@ -105,6 +111,8 @@ export async function getStudents(req, res, next) {
 }
 
 export async function getSingleStudent(req, res, next) {
+    const { role } = req.user;
+
     const studentId = req.params.id;
     const isAuth = (req.user.role === 1 || req.user.role === 2) ?? false;
     if (isNaN(studentId)) return res.redirect("/not-found");
@@ -131,6 +139,7 @@ export async function getSingleStudent(req, res, next) {
             student,
             presences,
             title: `${student.noms}`,
+            role,
         });
     } catch (error) {
         const err = new Error(error);
@@ -149,15 +158,17 @@ export async function postAddStudent(req, res, next) {
     } = req.body;
     const userId = req.user.id || null;
     if (req.user.role !== 1 || req.user.role !== 2) {
-        return res.redirect("admin.students");
+        return res.redirect("admin/students");
     }
     try {
+        const { role } = req.user;
         await Student.create({
             nom,
             prenom,
             email,
             userId,
             cohorteId,
+            role,
         });
 
         res.redirect("/admin/students");
@@ -170,7 +181,7 @@ export async function postAddStudent(req, res, next) {
 
 export async function postEditStudent(req, res, next) {
     if (req.user.role !== 1 || req.user.role !== 2) {
-        return res.redirect("admin.students");
+        return res.redirect("admin/students");
     }
     const { noms, email, studentId } = req.body;
     try {
@@ -188,11 +199,12 @@ export async function postEditStudent(req, res, next) {
 }
 
 export async function postDeleleStudent(req, res, next) {
-    if (req.user.role !== 1 || req.user.role !== 2) {
-        return res.redirect("admin.students");
-    }
-    const { studentId } = req.body;
     try {
+        if (req.user.role !== 1 || req.user.role !== 2) {
+            return res.redirect("admin/students");
+        }
+        const { studentId } = req.body;
+
         const student = await Student.findOne({ where: { id: studentId } });
         await student.destroy();
         res.redirect("/admin/students");
@@ -204,14 +216,17 @@ export async function postDeleleStudent(req, res, next) {
 }
 
 export async function getAddPresence(req, res, next) {
-    const userId = req.user;
     try {
+        const userId = req.user.id;
+        const { role } = req.user;
+
         const students = await Student.findAll({});
 
         res.render("admin/add-presence", {
             userId,
             students,
             title: "New attendancy",
+            role,
         });
     } catch (error) {
         const err = new Error(error);
@@ -244,4 +259,31 @@ export async function postAddPresence(req, res, next) {
         }
     }
     res.redirect("/admin/");
+}
+
+export async function getAddUser(req, res, next) {
+    const userId = req.user ? req.user.id : null;
+    const { role } = req.user;
+
+    if (req.user.role !== 1) {
+        return res.redirect("admin/students");
+    }
+    try {
+        res.render("admin/add-user", {
+            userId,
+            title: "New attendancy",
+            role,
+        });
+    } catch (error) {
+        return next(error);
+    }
+}
+
+export async function postAddUser(req, res, next) {
+    try {
+        console.log(req.body);
+        res.redirect("/admin");
+    } catch (error) {
+        next(error);
+    }
 }

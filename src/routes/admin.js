@@ -14,11 +14,15 @@ import {
     postDeleleStudent,
     postEditStudent,
     getIndex,
+    getAddUser,
+    postAddUser,
 } from "../controllers/admin.js";
 
 const router = Router();
 
 router.get("/add-student", isAuth, getAddStudent);
+router.get("/add-user", isAuth, getAddUser);
+router.post("/add-user", isAuth, postAddUser);
 router.post("/add-student", isAuth, postAddStudent);
 router.get("/add-presence", isAuth, getAddPresence);
 router.post("/add-presence", isAuth, postAddPresence);
