@@ -26,6 +26,7 @@ import { getInternalError, getNotFound } from "./controllers/error.js";
 import faker from "./db/faker.js";
 import sequelize from "./db/config.js";
 
+
 const app = express();
 
 // config
@@ -80,11 +81,9 @@ app.use(
     })
 );
 
-const views = join(__dirname, "views");
-
 // templates views
 app.set("view engine", "ejs");
-app.set("views", views);
+app.set("views", join(__dirname, "views"));
 
 // bootstrap include
 app.use(
