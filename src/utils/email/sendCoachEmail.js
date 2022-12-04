@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import { getTestMessageUrl } from "nodemailer";
+import User from "../../models/Student.js";
 import pool from "../../db/index.js";
 import transporter from "../emailTransport.js";
 
@@ -14,17 +15,18 @@ export default async () => {
         <ul>
     `;
     try {
-        const results = await query("SELECT * FROM users");
-        const users = results.rows;
+        const users = (await User.findAll()).map((ele) => ele.dataValues);
         usersEmail = users.map((user) => user.email);
         // eslint-disable-next-line quotes
         usersEmail = usersEmail.join('","');
         const response = await query(
-            "select presences.presence, COUNT (presences.presence)  from presences WHERE CAST(createdat AS DATE) = $1  group by presences.presence ",
+            "select presences.presence, COUNT (presences.presence)  from presences WHERE CAST(createdat AS DATE) = $1  group by presences.presence, presences.isMatin",
             [date]
         );
         response.rows.forEach((element) => {
-            contentMail += `<li>${`${element.presence} : ${element.count}`}</li>`;
+            contentMail += `<li>${`${
+                element.isMatin ? "avat midi" : "apres midi"
+            } : ${element.count} ${element.presence} `}</li>`;
         });
         contentMail += `
                 </ul><br>
@@ -40,7 +42,7 @@ export default async () => {
         from: '"cedric karungu " <ckarungu921@kinshasadigital.com>', // sender address
         to: `"${usersEmail}", "ckarungu921@gmail.com"`, // list of receivers
         // eslint-disable-next-line quotes
-        cc: '"jean-louis@kinshasadigital.com"',
+        // cc: '"jean-louis@kinshasadigital.com"',
         subject: "Équipe pédagogique GDA- status de présence ✔", // Subject line
         text: "Bonjour cher apprenant", // plain text body
         html: contentMail, // html body
