@@ -6,7 +6,7 @@
       <h3 class="text-center align-start text-secondary">
         Listes des etudiants
       </h3>
-      <% if(userId) { %>
+      <% if(userId && isAuth) { %>
       <a href="/admin/add-student"
         ><button class="btn btn-outline-primary" type="button">
           Nouveau
@@ -41,7 +41,7 @@
                   voir
                 </button>
               </a>
-              <% if(userId) { %>
+              <% if(userId && isAuth) { %>
               <form action="/admin/students/<%= student.id %>">
                 <input type="hidden" value="<%= student.id %>" />
                 <button

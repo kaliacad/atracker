@@ -6,7 +6,6 @@ const { query } = pool;
 
 export default async (student) => {
     const date = new Date().toISOString().split("T")[0];
-    let midi;
     let presences;
     try {
         let template = `
@@ -28,15 +27,10 @@ export default async (student) => {
         presences.forEach((presence) => {
             // eslint-disable-next-line no-unused-vars
             const datePresence = new Date(presence.createdat);
-            // eslint-disable-next-line prefer-destructuring
-            midi = new Date(presence.createdat)
-                .toTimeString()
-                .split(" ")[0]
-                .split(":")[0];
 
             // we add description of presence tp template
             template += `
-                <li> ${midi < 12 ? "Avant-midi" : "Apres-midi"} : ${
+                <li> ${presence.isMatin ? "Avant-midi" : "Apres-midi"} : ${
     presence.presence
 } </li>`;
         });
