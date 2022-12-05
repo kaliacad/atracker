@@ -58,7 +58,7 @@ const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
 try {
     await sequelize.authenticate();
-    // sequelize.sync();
+    sequelize.sync({ alter: true });
     // eslint-disable-next-line no-console
     console.log("connection to db etablished ");
 } catch (error) {
