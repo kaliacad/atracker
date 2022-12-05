@@ -26,6 +26,7 @@ import { getInternalError, getNotFound } from "./controllers/error.js";
 import faker from "./db/faker.js";
 import sequelize from "./db/config.js";
 
+
 const app = express();
 
 // config
@@ -58,7 +59,7 @@ const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
 try {
     await sequelize.authenticate();
-    // sequelize.sync();
+    sequelize.sync({ alter: true });
     // eslint-disable-next-line no-console
     console.log("connection to db etablished ");
 } catch (error) {
@@ -107,7 +108,7 @@ app.use(
 app.use(express.static(join(__dirname, "..", "public")));
 
 app.use((req, res, next) => {
-    req.user = req.cookies.session ? req.cookies.session.id : undefined;
+    req.user = req.cookies.session ? req.cookies.session : undefined;
     next();
 });
 app.use(async (req, res, next) => {
