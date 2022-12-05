@@ -26,6 +26,7 @@ import { getInternalError, getNotFound } from "./controllers/error.js";
 import faker from "./db/faker.js";
 import sequelize from "./db/config.js";
 
+
 const app = express();
 
 // config
