@@ -34,6 +34,17 @@
               >Apprenants</a
             >
           </li>
+          <% if(role === 1) { %>
+          <li class="nav-item">
+            <a
+              class="nav-link text-light"
+              aria-current="page"
+              href="/admin/add-user"
+              >Ajouter utilisateur</a
+            >
+          </li>
+
+          <% }%>
 
           <li class="nav-item">
             <a class="nav-link mr-5 text-light" href="/admin/add-presence"
@@ -48,6 +59,7 @@
               Se deconnecter
             </button>
           </form>
+
           <% } else { %>
           <li class="nav-item">
             <a
