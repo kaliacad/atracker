@@ -29,12 +29,12 @@
     "express": "^4.18.1",
     "express-pg-session": "^1.1.0",
     "express-session": "^1.17.3",
+    "morgan": "^1.10.0",
     "nodemailer": "^6.7.6",
     "nodemon": "^2.0.18",
     "pg": "^8.8.0",
     "pg-hstore": "^2.3.4",
-    "sequelize": "^6.25.8",
-    "morgan": "^1.10.0"
+    "sequelize": "^6.26.0"
   },
   "devDependencies": {
     "eslint": "^8.28.0",

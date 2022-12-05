@@ -16,10 +16,16 @@ import {
     getIndex,
     getAddUser,
     postAddUser,
+    getUsers,
+    postUser,
+    getUserForm,
 } from "../controllers/admin.js";
 
 const router = Router();
 
+router.get("/", isAuth, getIndex);
+
+// students route
 router.get("/add-student", isAuth, getAddStudent);
 router.get("/add-user", isAuth, getAddUser);
 router.post("/add-user", isAuth, postAddUser);
@@ -30,6 +36,10 @@ router.get("/students", getStudents);
 router.get("/students/:id", getSingleStudent);
 router.post("/students/delete", isAuth, postDeleleStudent);
 router.post("/students/edit", postEditStudent);
-router.get("/", isAuth, getIndex);
+
+// users routes
+router.get("/users", isAuth, getUsers);
+router.get("/add-user", isAuth, getUserForm);
+router.post("/add-user", isAuth, postUser);
 
 export default router;

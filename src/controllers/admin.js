@@ -7,6 +7,7 @@ import pool from "../db/index.js";
 import Cohorte from "../models/Cohorte.js";
 import Presence from "../models/Presence.js";
 import Student from "../models/Student.js";
+import User from "../models/User.js";
 
 const date = new Date().toISOString().split("T")[0];
 const { query } = pool;
@@ -93,7 +94,7 @@ export async function getStudents(req, res, next) {
             userId,
             role,
             students,
-            title: "Student list",
+            title: "Liste des étudiants",
             totalStudents,
             currentPage: page,
             hasNextPage: STUDENT_PER_PAGE * page < totalStudents,
@@ -108,6 +109,33 @@ export async function getStudents(req, res, next) {
         err.httpStatusCode = 500;
         return next(err);
     }
+}
+
+export async function getUsers(req, res, next) {
+    const userId = req.user.id || null;
+    const { role } = req.user;
+
+    try {
+        const users = await User.findAll({ order: [["noms", "ASC"]] });
+
+        res.render("admin/users", {
+            userId,
+            users,
+            title: "Liste des utilisateurs",
+            role,
+        });
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+}
+
+export function getUserForm(req, res) {
+    res.render("admin/form/user", {
+        title: "Ajouter un utilisateur",
+        userId: req.user,
+    });
 }
 
 export async function getSingleStudent(req, res, next) {
@@ -172,6 +200,46 @@ export async function postAddStudent(req, res, next) {
         });
 
         res.redirect("/admin/students");
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+}
+
+export function postUser(req, res, next) {
+    const {
+        //
+        noms,
+        email,
+        username,
+        password,
+        role,
+    } = req.body;
+    const userId = req.user.id || null;
+    try {
+        User.findOne({ where: { username } }) // check for uniqueness
+            .then((user) => {
+                if (!user) {
+                    User.create({
+                        noms,
+                        email,
+                        username,
+                        password,
+                        userId,
+                        role,
+                    });
+
+                    res.redirect("/admin/users");
+                } else {
+                    res.render("admin/form/user", {
+                        message: "Username already exists",
+                        title: "Ajouter utilisateur",
+                        userId,
+                        role: req.user.role,
+                    });
+                }
+            });
     } catch (error) {
         const err = new Error(error);
         err.httpStatusCode = 500;
