@@ -74,19 +74,6 @@
   background-color: #da4d4d81;
 }
 
-.login_topimg img {
-  width: 100%;
-  height: auto;
-}
-.login_topimg .logo_wrap {
-  border-radius: 5px;
-  background: #fff;
-  padding: 13px 55px;
-  position: relative;
-  top: -21px;
-  margin: 10px auto;
-  max-width: 255px;
-}
 #login .wrap-login100 {
   background-color: rgba(255, 255, 255, 0.993);
   padding: 20px 45px;
