@@ -223,7 +223,7 @@ export function postUser(req, res, next) {
     } = req.body;
     const userId = req.user.id || null;
     if (password !== password2) {
-        res.render("admin/form/user", {
+        return res.render("admin/form/user", {
             message: "les mots de passe ne correspondent pas ",
             title: "Ajouter utilisateur",
             userId,
