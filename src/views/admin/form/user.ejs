@@ -1,31 +1,34 @@
-<%- include('../includes/head.ejs') %> 
-<%- include('../includes/header.ejs')%>
+<%- include('../../includes/head.ejs') %> 
+<%- include('../../includes/header.ejs')%>
 
 <section
   class="login container-fluid w-100 mt-0 d-flex justify-content-center align-items-center"
 >
+<% if(this.message) {%>
+  <h3><%= message %> </h3>
+<% } %>
   <div class="offest-4 col-md-4">
     <div class="card bg-light shadow w-100 w-sm-80 border-danger">
       <div class="card-body">
-        <h4 class="card-title text-danger">Ajouter un etudiant</h4>
-        <form action="/admin/add-student" method="post">
+        <h4 class="card-title text-danger"><%= title %></h4>
+        <form action="/admin/add-user" method="post">
           <div class="form-group mt-4">
-            <label for="nom">Nom</label>
+            <label for="nom">Nom complet</label>
             <input
-              id="nom"
+              id="noms"
               class="form-control"
               type="text"
-              name="nom"
+              name="noms"
               required
             />
           </div>
           <div class="form-group mt-4">
-            <label for="nom">Prenom</label>
+            <label for="nom">Nom d'utilisateur</label>
             <input
-              id="nom"
+              id="username"
               class="form-control"
               type="text"
-              name="prenom"
+              name="username"
               required
             />
           </div>
@@ -40,12 +43,14 @@
             />
           </div>
           <div class="form-group mt-4">
-            <label for="cohorteid">cohorte</label>
-            <select name="cohorteId" id="cohorteid" class="form-control">
-              <% cohortes && cohortes.map( coh => { %>
-              <option value="<%= coh.id %>"><%= coh.nom %></option>
-              <% }) %>
-            </select>
+            <label for="nom">Mot de passe</label>
+            <input
+              id="password"
+              class="form-control"
+              type="password"
+              name="password"
+              required
+            />
           </div>
           <input type="hidden" name="userId" value="<%= userId %>" />
           <div class="form-group mt-4">
@@ -55,5 +60,6 @@
       </div>
     </div>
   </div>
+ 
 </section>
-<%- include('../includes/footer.ejs')%>
+<%- include('../../includes/footer.ejs')%>

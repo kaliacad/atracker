@@ -9,12 +9,14 @@ const dropDB = async () => {
     DROP TABLE IF EXISTS students; 
       DROP TABLE IF EXISTS users; 
    END TRANSACTION`);
+
     // eslint-disable-next-line no-console
     console.log(resUsersTable);
 };
 
 export default async () => {
     await dropDB();
+
     const resUsersTable = await query(`
         CREATE TABLE IF NOT EXISTS users (
         id BIGSERIAL NOT NULL PRIMARY KEY,
@@ -22,6 +24,7 @@ export default async () => {
         email VARCHAR(200) NOT NULL,
         username VARCHAR(20) NOT NULL,
         password VARCHAR(20) NOT NULL
+
    );`);
     if (resUsersTable) {
         const resStudents = await query(`
@@ -45,6 +48,7 @@ export default async () => {
                 await query(
                     "INSERT INTO users(noms,email,username, password) VALUES ('cedric karungu', 'ckarungu921@gmail.com','cedric921','123456')"
                 );
+
             }
         }
     }
