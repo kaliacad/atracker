@@ -29,8 +29,8 @@
           <td class="text-center"><%= user.noms %></td>
           <td class="text-center"><%= user.email %></td>
           <td class="text-center">
-            <%= user.role == 1? 'admin' : user.role == 2 ? 'attendance' : 'user'
-            %>
+            <%= user.role == 1? 'Super admin' : user.role == 2 ? 'admin' :
+            'attendance' %>
           </td>
           <td class="d-flex justify-content-center">
             <a href="/admin/users/<%= user.id %>">

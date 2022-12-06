@@ -9,7 +9,6 @@ import Presence from "../models/Presence.js";
 import Student from "../models/Student.js";
 import User from "../models/User.js";
 
-
 const date = new Date().toISOString().split("T")[0];
 const { query } = pool;
 
@@ -136,12 +135,8 @@ export function getUserForm(req, res) {
     const { role } = req.user;
     res.render("admin/form/user", {
         title: "Ajouter un utilisateur",
-<<<<<<< HEAD
         userId: req.user,
         role,
-=======
-        userId: req.user.id,
->>>>>>> eadb648882fab88d6354aecf158266789e0c5698
     });
 }
 
@@ -223,9 +218,18 @@ export function postUser(req, res, next) {
         email,
         username,
         password,
+        password2,
         role,
     } = req.body;
     const userId = req.user.id || null;
+    if (password !== password2) {
+        res.render("admin/form/user", {
+            message: "les mots de passe ne correspondent pas ",
+            title: "Ajouter utilisateur",
+            userId,
+            role: req.user.role,
+        });
+    }
     try {
         User.findOne({ where: { username } }) // check for uniqueness
             .then(async (user) => {
@@ -239,14 +243,6 @@ export function postUser(req, res, next) {
                         role,
                     });
                     await newUser.save();
-                    // User.create({
-                    //     noms,
-                    //     email,
-                    //     username,
-                    //     password,
-                    //     userId,
-                    //     role,
-                    // });
 
                     res.redirect("/admin/users");
                 } else {
@@ -346,30 +342,3 @@ export async function postAddPresence(req, res, next) {
     }
     res.redirect("/admin/");
 }
-
-// export async function getAddUser(req, res, next) {
-//     const userId = req.user ? req.user.id : null;
-//     const { role } = req.user;
-
-//     if (req.user.role !== 1) {
-//         return res.redirect("admin/students");
-//     }
-//     try {
-//         res.render("admin/add-user", {
-//             userId,
-//             title: "New attendancy",
-//             role,
-//         });
-//     } catch (error) {
-//         return next(error);
-//     }
-// }
-
-// export async function postAddUser(req, res, next) {
-//     try {
-//         console.log(req.body);
-//         res.redirect("/admin");
-//     } catch (error) {
-//         next(error);
-//     }
-// }
