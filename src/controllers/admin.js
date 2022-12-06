@@ -7,7 +7,7 @@ import pool from "../db/index.js";
 import Cohorte from "../models/Cohorte.js";
 import Presence from "../models/Presence.js";
 import Student from "../models/Student.js";
-import User from "../models/User.js"
+import User from "../models/User.js";
 
 const date = new Date().toISOString().split("T")[0];
 const { query } = pool;
@@ -51,18 +51,19 @@ export async function getIndex(req, res, next) {
             presencesToday,
             studentsCounts,
             statistics: {
-                beforeNoon: (
-                    (beforeNoonPresences.total / studentsCounts)
-                    * 100
-                ).toFixed(2) || 0,
-                afterNoon: (
-                    (afterNoonPresences.total / studentsCounts)
-                    * 100
-                ).toFixed(2) || 0,
+                beforeNoon:
+                    (
+                        (beforeNoonPresences.total / studentsCounts) *
+                        100
+                    ).toFixed(2) || 0,
+                afterNoon:
+                    ((afterNoonPresences.total / studentsCounts) * 100).toFixed(
+                        2
+                    ) || 0,
                 glob: (
-                    ((beforeNoonPresences.total + afterNoonPresences.total)
-                        / (2 * studentsCounts))
-                    * 100
+                    ((beforeNoonPresences.total + afterNoonPresences.total) /
+                        (2 * studentsCounts)) *
+                    100
                 ).toFixed(2),
             },
             date,
@@ -115,22 +116,19 @@ export async function getStudents(req, res, next) {
             offset: (page - 1) * STUDENT_PER_PAGE,
         });
         const totalStudents = await Student.findAndCountAll();
-
-
         res.render("admin/students", {
             userId,
             role,
             students,
             title: "Liste des étudiants",
             totalStudents,
-            pageNumber: Math.floor(totalStudents.count / STUDENT_PER_PAGE),
             currentPage: page,
             hasNextPage: STUDENT_PER_PAGE * page < totalStudents,
             hasPreviousPage: page > 1,
             nextPage: page + 1,
             previousPage: page - 1,
             isAuth,
-            lastPage: Math.ceil(totalStudents / STUDENT_PER_PAGE) || null,
+            lastPage: Math.ceil(totalStudents.count / STUDENT_PER_PAGE),
         });
     } catch (error) {
         const err = new Error(error);
@@ -143,14 +141,14 @@ export async function getUsers(req, res, next) {
     const userId = req.user || null;
 
     try {
-        const users = await User.findAll({order: [["noms", "ASC"]]});
+        const users = await User.findAll({ order: [["noms", "ASC"]] });
 
         res.render("admin/users", {
             userId,
             users,
             title: "Liste des utilisateurs",
-        })
-     } catch (error) {
+        });
+    } catch (error) {
         const err = new Error(error);
         err.httpStatusCode = 500;
         return next(err);
@@ -158,10 +156,10 @@ export async function getUsers(req, res, next) {
 }
 
 export function getUserForm(req, res) {
-        res.render("admin/form/user", {
-            title: "Ajouter un utilisateur",
-            userId: req.user
-        })
+    res.render("admin/form/user", {
+        title: "Ajouter un utilisateur",
+        userId: req.user,
+    });
 }
 
 export async function getSingleStudent(req, res, next) {
@@ -237,29 +235,26 @@ export function postUser(req, res, next) {
     const { noms, email, username, password } = req.body;
     const userId = req.user || null;
     try {
-        User
-        .findOne({ where: { username }}) // check for uniqueness
-        .then(user => {
-            if (!user) {
-                User.create({
-                    noms,
-                    email,
-                    username,
-                    password,
-                    userId,
-                });
-        
-                res.redirect("/admin/users");
-            } 
-            else {
-                res.render("./admin/form/user", { 
-                    message: "Username already exists",
-                    title: "Ajouter utilisateur",
-                    userId
-                 })
-            }
-        })
-        
+        User.findOne({ where: { username } }) // check for uniqueness
+            .then((user) => {
+                if (!user) {
+                    User.create({
+                        noms,
+                        email,
+                        username,
+                        password,
+                        userId,
+                    });
+
+                    res.redirect("/admin/users");
+                } else {
+                    res.render("./admin/form/user", {
+                        message: "Username already exists",
+                        title: "Ajouter utilisateur",
+                        userId,
+                    });
+                }
+            });
     } catch (error) {
         const err = new Error(error);
         err.httpStatusCode = 500;
@@ -369,7 +364,6 @@ export async function getAddUser(req, res, next) {
 
 export async function postAddUser(req, res, next) {
     try {
-        console.log(req.body);
         res.redirect("/admin");
     } catch (error) {
         next(error);
