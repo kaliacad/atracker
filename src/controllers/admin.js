@@ -102,11 +102,13 @@ export async function getStudents(req, res, next) {
         });
         const totalStudents = await Student.findAndCountAll();
 
+
         res.render("admin/students", {
             userId,
             students,
             title: "Student list",
             totalStudents,
+            pageNumber: Math.floor(totalStudents.count / STUDENT_PER_PAGE),
             currentPage: page,
             hasNextPage: STUDENT_PER_PAGE * page < totalStudents,
             hasPreviousPage: page > 1,

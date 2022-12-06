@@ -67,6 +67,7 @@
       </table>
     </div>
     <!-- bottom butons -->
+    <% if (pageNumber > 1) { %>
     <div class="d-flex justify-content-center my-3">
       <% if(!hasPreviousPage && previousPage > 1 ){ %>
       <a href="/admin/students" class="btn btn-sm px-3 m-2 btn-outline-danger"
@@ -101,6 +102,7 @@
       >
       <% } %>
     </div>
+    <% } %>
   </div>
 </div>
 <%- include('../includes/footer.ejs')%>
