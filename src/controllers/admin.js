@@ -2,6 +2,7 @@
 /* eslint-disable no-restricted-globals */
 /* eslint-disable guard-for-in */
 /* eslint-disable consistent-return */
+import bcrypt from "bcryptjs";
 import sequelize from "../db/config.js";
 import pool from "../db/index.js";
 import Cohorte from "../models/Cohorte.js";
@@ -237,11 +238,15 @@ export function postUser(req, res, next) {
         User.findOne({ where: { username } }) // check for uniqueness
             .then(async (user) => {
                 if (!user) {
+                    const hash = await bcrypt.hash(
+                        password,
+                        await bcrypt.genSalt(10)
+                    );
                     const newUser = new User({
                         noms,
                         email,
                         username,
-                        password,
+                        password: hash,
                         userId,
                         role,
                     });

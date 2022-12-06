@@ -1,3 +1,4 @@
+import bcrypt from "bcryptjs";
 import User from "../models/User.js";
 
 export function getLogin(req, res) {
@@ -18,8 +19,16 @@ export async function postLogin(req, res, next) {
                 username,
             },
         });
+        if (!user) {
+            return res.redirect("/login");
+        }
 
-        if (user && password === user.password) {
+        const verifiedPassword = await bcrypt.compare(
+            password,
+            user.dataValues.password
+        );
+
+        if (user && verifiedPassword) {
             req.session.user = user;
             res.cookie("session", user);
             return res.redirect("/admin");
