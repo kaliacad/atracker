@@ -58,7 +58,8 @@ export async function getAddStudent(req, res, next) {
     try {
         const cohortes = await Cohorte.findAll();
         const userId = req.user.id;
-        if (req.user.role !== 1 || req.user.role !== 2) {
+        console.log(req.user);
+        if (req.user.role !== 1 && req.user.role !== 2) {
             return res.redirect("/admin/students");
         }
 
@@ -82,13 +83,15 @@ export async function getStudents(req, res, next) {
     const page = +req.query.page || 1;
     const isAuth = (req.user.role === 1 || req.user.role === 2) ?? false;
     const userId = req.user.id || null;
+    const offset = (page - 1) * STUDENT_PER_PAGE;
+
     try {
         const students = await Student.findAll({
-            order: [["id", "DESC"]],
+            order: [["id", "ASC"]],
             limit: STUDENT_PER_PAGE,
-            offset: (page - 1) * STUDENT_PER_PAGE,
+            offset,
         });
-        const totalStudents = await Student.findAndCountAll();
+        const totalStudents = (await Student.findAndCountAll()).count;
 
         res.render("admin/students", {
             userId,
@@ -102,7 +105,7 @@ export async function getStudents(req, res, next) {
             nextPage: page + 1,
             previousPage: page - 1,
             isAuth,
-            lastPage: Math.ceil(totalStudents / STUDENT_PER_PAGE) || null,
+            lastPage: Math.ceil(totalStudents / STUDENT_PER_PAGE),
         });
     } catch (error) {
         const err = new Error(error);
@@ -189,8 +192,8 @@ export async function postAddStudent(req, res, next) {
         cohorteId,
     } = req.body;
     const userId = req.user.id || null;
-    if (req.user.role !== 1 || req.user.role !== 2) {
-        return res.redirect("admin/students");
+    if (req.user.role !== 1 && req.user.role !== 2) {
+        return res.redirect("/admin/students");
     }
     try {
         const { role } = req.user;
@@ -262,7 +265,7 @@ export function postUser(req, res, next) {
 }
 
 export async function postEditStudent(req, res, next) {
-    if (req.user.role !== 1 || req.user.role !== 2) {
+    if (req.user.role !== 1 && req.user.role !== 2) {
         return res.redirect("admin/students");
     }
     const { noms, email, studentId } = req.body;
@@ -282,7 +285,7 @@ export async function postEditStudent(req, res, next) {
 
 export async function postDeleleStudent(req, res, next) {
     try {
-        if (req.user.role !== 1 || req.user.role !== 2) {
+        if (req.user.role !== 1 && req.user.role !== 2) {
             return res.redirect("admin/students");
         }
         const { studentId } = req.body;
