@@ -132,14 +132,17 @@ export async function getUsers(req, res, next) {
 }
 
 export function getUserForm(req, res) {
+    const { role } = req.user;
     res.render("admin/form/user", {
         title: "Ajouter un utilisateur",
         userId: req.user,
+        role,
     });
 }
 
 export async function getSingleStudent(req, res, next) {
     const { role } = req.user;
+    const userId = req.user.id;
 
     const studentId = req.params.id;
     const isAuth = (req.user.role === 1 || req.user.role === 2) ?? false;
@@ -164,6 +167,7 @@ export async function getSingleStudent(req, res, next) {
 
         res.render("admin/one-student", {
             isAuth,
+            userId,
             student,
             presences,
             title: `${student.noms}`,
@@ -219,9 +223,9 @@ export function postUser(req, res, next) {
     const userId = req.user.id || null;
     try {
         User.findOne({ where: { username } }) // check for uniqueness
-            .then((user) => {
+            .then(async (user) => {
                 if (!user) {
-                    User.create({
+                    const newUser = new User({
                         noms,
                         email,
                         username,
@@ -229,6 +233,15 @@ export function postUser(req, res, next) {
                         userId,
                         role,
                     });
+                    await newUser.save();
+                    // User.create({
+                    //     noms,
+                    //     email,
+                    //     username,
+                    //     password,
+                    //     userId,
+                    //     role,
+                    // });
 
                     res.redirect("/admin/users");
                 } else {
@@ -329,29 +342,29 @@ export async function postAddPresence(req, res, next) {
     res.redirect("/admin/");
 }
 
-export async function getAddUser(req, res, next) {
-    const userId = req.user ? req.user.id : null;
-    const { role } = req.user;
+// export async function getAddUser(req, res, next) {
+//     const userId = req.user ? req.user.id : null;
+//     const { role } = req.user;
 
-    if (req.user.role !== 1) {
-        return res.redirect("admin/students");
-    }
-    try {
-        res.render("admin/add-user", {
-            userId,
-            title: "New attendancy",
-            role,
-        });
-    } catch (error) {
-        return next(error);
-    }
-}
+//     if (req.user.role !== 1) {
+//         return res.redirect("admin/students");
+//     }
+//     try {
+//         res.render("admin/add-user", {
+//             userId,
+//             title: "New attendancy",
+//             role,
+//         });
+//     } catch (error) {
+//         return next(error);
+//     }
+// }
 
-export async function postAddUser(req, res, next) {
-    try {
-        console.log(req.body);
-        res.redirect("/admin");
-    } catch (error) {
-        next(error);
-    }
-}
+// export async function postAddUser(req, res, next) {
+//     try {
+//         console.log(req.body);
+//         res.redirect("/admin");
+//     } catch (error) {
+//         next(error);
+//     }
+// }

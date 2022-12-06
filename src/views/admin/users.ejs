@@ -28,7 +28,10 @@
           <td class="text-center"><%= user.id %></td>
           <td class="text-center"><%= user.noms %></td>
           <td class="text-center"><%= user.email %></td>
-          <td class="text-center">admin</td>
+          <td class="text-center">
+            <%= user.role == 1? 'admin' : user.role == 2 ? 'attendance' : 'user'
+            %>
+          </td>
           <td class="d-flex justify-content-center">
             <a href="/admin/users/<%= user.id %>">
               <button class="btn btn-outline-primary btn-sm mx-1" type="button">
