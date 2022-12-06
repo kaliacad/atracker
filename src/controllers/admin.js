@@ -9,6 +9,7 @@ import Presence from "../models/Presence.js";
 import Student from "../models/Student.js";
 import User from "../models/User.js";
 
+
 const date = new Date().toISOString().split("T")[0];
 const { query } = pool;
 
@@ -135,8 +136,12 @@ export function getUserForm(req, res) {
     const { role } = req.user;
     res.render("admin/form/user", {
         title: "Ajouter un utilisateur",
+<<<<<<< HEAD
         userId: req.user,
         role,
+=======
+        userId: req.user.id,
+>>>>>>> eadb648882fab88d6354aecf158266789e0c5698
     });
 }
 
