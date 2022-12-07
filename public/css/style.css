@@ -1,12 +1,3 @@
-/* body {
-    background-color: grey;
-    width: 100vw;
-    min-height: 100vh;
-    height: 100%;
-    padding: 0;
-    margin: 0;
-} */
-
 .hero {
   background: linear-gradient(#6789d1da, #d1676ce5),
     url("../images/20220531_141233.jpg") fixed center center;
