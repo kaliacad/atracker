@@ -1,27 +1,62 @@
-<%- include('../includes/head.ejs')%>
-<%- include('../includes/header.ejs')%>
-    <section class="login container-fluid w-100 mt-0 flex-column  d-flex justify-content-center align-items-center">
-      <div class="offest-4 col-md-4">
-        <div class="card shadow w-100 border-danger">
-          <div class="card-body">
-            <form class="" method="POST" action="/login">
-              <h3 class="text-danger">Se connecter</h3>
-              <div class="form-group mb-2 mt-3">
-                <label for="username">Nom d'utilisateur</label>
-                <input id="username" class="form-control" type="text" name="username" />
-              </div>
-              <div class="form-group mb-2 mt-3">
-                <label for="password">Mot de passe</label>
-                <input id="password" class="form-control" type="password" name="password" />
-              </div>
-              <div class="form-group mb-2 mt-3">
-                <button class="btn btn-outline-danger" type="submit">
-                  Se connecter
-                </button>
-              </div>
-            </form>
+<%- include('../includes/head.ejs')%> <%- include('../includes/header.ejs')%>
+<section
+  class="login container-fluid w-100 mt-0 flex-column d-flex justify-content-center align-items-center"
+>
+  <div class="limiter" id="login">
+    <div
+      class="container-login100"
+      style="background-image: url(../images/20220531_141233.jpg)"
+    >
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6"></div>
+          <div class="col-md-5 col-md-offset-1">
+            <div class="wrap-login100">
+              <form
+                class="login100-form validate-form"
+                method="POST"
+                action="/login"
+              >
+                <span class="login100-form-title"> Connexion </span>
+                <span class="login100-form-subtitle m-b-16"> </span>
+                <div class="wrap-input100 validate-input m-b-16">
+                  <input
+                    class="input100"
+                    id="username"
+                    type="text"
+                    name="username"
+                    placeholder="Username"
+                  />
+                </div>
+                <div
+                  class="wrap-input100 validate-input m-b-16"
+                  data-validate="Password is required"
+                >
+                  <input
+                    class="input100"
+                    id="password"
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                  />
+                </div>
+                <div class="flex-sb-m w-full p-b-30">
+                  <div class="contact100-form-checkbox"></div>
+                  <small>
+                    <a href="#" class="txt1 text-danger text-decoration-none">
+                      Mot de passe oublié?
+                    </a>
+                  </small>
+                </div>
+                <div class="container-login100-form-btn p-t-25">
+                  <button class="login100-form-btn">SE CONNECTER</button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </div>
+</section>
 <%- include('../includes/footer.ejs')%>
