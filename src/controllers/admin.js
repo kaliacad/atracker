@@ -2,6 +2,7 @@
 /* eslint-disable no-restricted-globals */
 /* eslint-disable guard-for-in */
 /* eslint-disable consistent-return */
+import bcrypt from "bcryptjs";
 import sequelize from "../db/config.js";
 import pool from "../db/index.js";
 import Cohorte from "../models/Cohorte.js";
@@ -85,7 +86,8 @@ export async function getAddStudent(req, res, next) {
     try {
         const cohortes = await Cohorte.findAll();
         const userId = req.user.id;
-        if (req.user.role !== 1 || req.user.role !== 2) {
+        console.log(req.user);
+        if (req.user.role !== 1 && req.user.role !== 2) {
             return res.redirect("/admin/students");
         }
 
@@ -109,13 +111,16 @@ export async function getStudents(req, res, next) {
     const page = +req.query.page || 1;
     const isAuth = (req.user.role === 1 || req.user.role === 2) ?? false;
     const userId = req.user.id || null;
+    const offset = (page - 1) * STUDENT_PER_PAGE;
+
     try {
         const students = await Student.findAll({
-            order: [["id", "DESC"]],
+            order: [["id", "ASC"]],
             limit: STUDENT_PER_PAGE,
-            offset: (page - 1) * STUDENT_PER_PAGE,
+            offset,
         });
-        const totalStudents = await Student.findAndCountAll();
+
+        const totalStudents = (await Student.findAndCountAll()).count;
         res.render("admin/students", {
             userId,
             role,
@@ -128,7 +133,7 @@ export async function getStudents(req, res, next) {
             nextPage: page + 1,
             previousPage: page - 1,
             isAuth,
-            lastPage: Math.ceil(totalStudents.count / STUDENT_PER_PAGE),
+            lastPage: Math.ceil(totalStudents / STUDENT_PER_PAGE),
         });
     } catch (error) {
         const err = new Error(error);
@@ -138,7 +143,8 @@ export async function getStudents(req, res, next) {
 }
 
 export async function getUsers(req, res, next) {
-    const userId = req.user || null;
+    const userId = req.user.id || null;
+    const { role } = req.user;
 
     try {
         const users = await User.findAll({ order: [["noms", "ASC"]] });
@@ -147,6 +153,7 @@ export async function getUsers(req, res, next) {
             userId,
             users,
             title: "Liste des utilisateurs",
+            role,
         });
     } catch (error) {
         const err = new Error(error);
@@ -156,14 +163,17 @@ export async function getUsers(req, res, next) {
 }
 
 export function getUserForm(req, res) {
+    const { role } = req.user;
     res.render("admin/form/user", {
         title: "Ajouter un utilisateur",
-        userId: req.user,
+        userId: req.user.id,
+        role,
     });
 }
 
 export async function getSingleStudent(req, res, next) {
     const { role } = req.user;
+    const userId = req.user.id;
 
     const studentId = req.params.id;
     const isAuth = (req.user.role === 1 || req.user.role === 2) ?? false;
@@ -188,6 +198,7 @@ export async function getSingleStudent(req, res, next) {
 
         res.render("admin/one-student", {
             isAuth,
+            userId,
             student,
             presences,
             title: `${student.noms}`,
@@ -209,8 +220,8 @@ export async function postAddStudent(req, res, next) {
         cohorteId,
     } = req.body;
     const userId = req.user.id || null;
-    if (req.user.role !== 1 || req.user.role !== 2) {
-        return res.redirect("admin/students");
+    if (req.user.role !== 1 && req.user.role !== 2) {
+        return res.redirect("/admin/students");
     }
     try {
         const { role } = req.user;
@@ -232,26 +243,49 @@ export async function postAddStudent(req, res, next) {
 }
 
 export function postUser(req, res, next) {
-    const { noms, email, username, password } = req.body;
-    const userId = req.user || null;
+    const {
+        //
+        noms,
+        email,
+        username,
+        password,
+        password2,
+        role,
+    } = req.body;
+    const userId = req.user.id || null;
+    if (password !== password2) {
+        return res.render("admin/form/user", {
+            message: "les mots de passe ne correspondent pas ",
+            title: "Ajouter utilisateur",
+            userId,
+            role: req.user.role,
+        });
+    }
     try {
         User.findOne({ where: { username } }) // check for uniqueness
-            .then((user) => {
+            .then(async (user) => {
                 if (!user) {
-                    User.create({
+                    const hash = await bcrypt.hash(
+                        password,
+                        await bcrypt.genSalt(10)
+                    );
+                    const newUser = new User({
                         noms,
                         email,
                         username,
-                        password,
+                        password: hash,
                         userId,
+                        role,
                     });
+                    await newUser.save();
 
                     res.redirect("/admin/users");
                 } else {
-                    res.render("./admin/form/user", {
+                    res.render("admin/form/user", {
                         message: "Username already exists",
                         title: "Ajouter utilisateur",
                         userId,
+                        role: req.user.role,
                     });
                 }
             });
@@ -263,7 +297,7 @@ export function postUser(req, res, next) {
 }
 
 export async function postEditStudent(req, res, next) {
-    if (req.user.role !== 1 || req.user.role !== 2) {
+    if (req.user.role !== 1 && req.user.role !== 2) {
         return res.redirect("admin/students");
     }
     const { noms, email, studentId } = req.body;
@@ -283,7 +317,7 @@ export async function postEditStudent(req, res, next) {
 
 export async function postDeleleStudent(req, res, next) {
     try {
-        if (req.user.role !== 1 || req.user.role !== 2) {
+        if (req.user.role !== 1 && req.user.role !== 2) {
             return res.redirect("admin/students");
         }
         const { studentId } = req.body;
@@ -344,28 +378,3 @@ export async function postAddPresence(req, res, next) {
     res.redirect("/admin/");
 }
 
-export async function getAddUser(req, res, next) {
-    const userId = req.user ? req.user.id : null;
-    const { role } = req.user;
-
-    if (req.user.role !== 1) {
-        return res.redirect("admin/students");
-    }
-    try {
-        res.render("admin/add-user", {
-            userId,
-            title: "New attendancy",
-            role,
-        });
-    } catch (error) {
-        return next(error);
-    }
-}
-
-export async function postAddUser(req, res, next) {
-    try {
-        res.redirect("/admin");
-    } catch (error) {
-        next(error);
-    }
-}
