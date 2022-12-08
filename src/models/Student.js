@@ -2,6 +2,12 @@ import { DataTypes } from "sequelize";
 import sequelize from "../db/config.js";
 
 const Student = sequelize.define("student", {
+    id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        allowNull: false,
+        primaryKey: true,
+    },
     nom: {
         type: DataTypes.STRING,
         allowNull: false,

@@ -124,7 +124,7 @@ app.use(getNotFound);
 
 app.use((error, req, res) => {
     // eslint-disable-next-line no-console
-    console.log(error);
+    console.log({ message: error.message, stack: error.stack });
     res.redirect("/500");
 });
 
