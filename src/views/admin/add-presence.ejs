@@ -1,5 +1,4 @@
-<%- include('../includes/head.ejs')%> 
-<%- include('../includes/header.ejs')%>
+<%- include('../includes/head.ejs')%> <%- include('../includes/header.ejs')%>
 
 <div
   class="login container-fluid w-100 h-100 pt-5 mb-5 d-flex justify-content-center align-items-start"
@@ -54,9 +53,9 @@
             </tr>
           </thead>
           <tbody>
-            <% students.forEach(student => { %>
+            <% students.forEach((student, i) => { %>
             <tr>
-              <td class="text-center text-muted"><%= student.id %></td>
+              <td class="text-center text-muted"><%= i+1 %></td>
               <td class="text-center" colspan="2">
                 <%= student.prenom %> <%= student.nom %>
               </td>

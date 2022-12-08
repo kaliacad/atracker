@@ -1,14 +1,17 @@
 /* eslint-disable no-console */
 import { getTestMessageUrl } from "nodemailer";
+import { Sequelize } from "sequelize";
 import User from "../../models/Student.js";
-import pool from "../../db/index.js";
+// import pool from "../../db/index.js";
 import transporter from "../emailTransport.js";
+import Presence from "../../models/Presence.js";
 
-const { query } = pool;
+// const { query } = pool;
 
 export default async () => {
     const date = new Date().toISOString().split("T")[0];
     let usersEmail;
+    let presences;
     let contentMail = `
     <p>
         En date du ${date} la situation des présences pour la classe dev GDA se présente comme suit :<br/>
@@ -19,11 +22,38 @@ export default async () => {
         usersEmail = users.map((user) => user.email);
         // eslint-disable-next-line quotes
         usersEmail = usersEmail.join('","');
-        const response = await query(
-            "select presences.presence, COUNT (presences.presence)  from presences WHERE CAST(createdat AS DATE) = $1  group by presences.presence, presences.isMatin",
+        /* const response = await Presence.query(
+            `select presences.presence, COUNT (presences.presence)
+              from presences WHERE CAST(createdat AS DATE) = ${date}
+              group by presences.presence, presences.isMatin`
+        ); */
+        presences = await Presence.findAll({
+            attributes: [
+                "presence",
+                "isMatin",
+                [Sequelize.fn("COUNT", Sequelize.col("presence")), "count"],
+            ],
+            where: {
+                [Sequelize.Op.and]: [
+                    Sequelize.where(
+                        Sequelize.fn("date", Sequelize.col("createdAt")),
+                        "=",
+                        date
+                    ),
+                ],
+            },
+        });
+        /* const response = await query(
+            "
+            select presences.presence, COUNT (presences.presence)
+            from presences WHERE CAST(createdat AS DATE) = $1
+            group by presences.presence, presences.isMatin",
             [date]
-        );
-        response.rows.forEach((element) => {
+         );
+        */
+        console.log("presence ==> ", presences);
+
+        presences.forEach((element) => {
             contentMail += `<li>${`${
                 element.isMatin ? "avat midi" : "apres midi"
             } : ${element.count} ${element.presence} `}</li>`;

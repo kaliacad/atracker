@@ -1,38 +1,41 @@
 /* eslint-disable no-console */
+import { Sequelize } from "sequelize";
 import transporter from "../emailTransport.js";
-import pool from "../../db/index.js";
-
-const { query } = pool;
+import Presence from "../../models/Presence.js";
 
 export default async (student) => {
     const date = new Date().toISOString().split("T")[0];
-    let presences;
     try {
         let template = `
-        <h1> ${student.noms} </h1>
+        <h1> ${student.nom} ${student.prenom}</h1>
         <p>
             Nous avons le réel plaisir de te faire parvenir ton status de présence pour 
         `;
 
-        const result = await query(
-            "SELECT * FROM presences where studentid= $1  AND CAST(createdat AS DATE) = $2",
-            [student.id, date]
-        );
-        presences = result.rows;
-
+        const presences = await Presence.findAll({
+            where: {
+                [Sequelize.Op.and]: [
+                    { studentId: student.id },
+                    // Sequelize.where("createdAt", "=", date),
+                    Sequelize.where(
+                        Sequelize.fn("date", Sequelize.col("createdAt")),
+                        "=",
+                        date
+                    ),
+                ],
+            },
+        });
         // we add the date of presence to template
-        template += ` 
-                ${presences[0].createdat.toISOString().split("T")[0]} :
+        template += `
+                ${new Date(presences[0].createdAt).toLocaleDateString()} :
             <ul>`;
         presences.forEach((presence) => {
-            // eslint-disable-next-line no-unused-vars
-            const datePresence = new Date(presence.createdat);
-
+            console.log({ student, presences: presence.dataValues });
             // we add description of presence tp template
             template += `
                 <li> ${presence.isMatin ? "Avant-midi" : "Apres-midi"} : ${
-    presence.presence
-} </li>`;
+                presence.presence
+            } </li>`;
         });
         template += `
     </ul>
@@ -54,13 +57,19 @@ export default async (student) => {
         // send mail with defined transport object
         // eslint-disable-next-line consistent-return
         transporter.sendMail(mailOptions, (error, info) => {
-            if (error) return console.log(error);
+            if (error) {
+                return console.log("error when sending mail", {
+                    message: error.message,
+                    stack: error.stack,
+                });
+            }
 
             console.log("Message sent: %s", info.response);
             // eslint-disable-next-line no-undef
             console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
         });
     } catch (error) {
-        console.log(error);
+        console.log("--------error----------");
+        console.log({ message: error.message, stack: error.stack });
     }
 };

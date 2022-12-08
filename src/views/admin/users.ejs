@@ -23,9 +23,9 @@
         </tr>
       </thead>
       <tbody>
-        <% users.forEach(user => { %>
+        <% users.forEach((user, i) => { %>
         <tr>
-          <td class="text-center"><%= user.id %></td>
+          <td class="text-center"><%= i+1 %></td>
           <td class="text-center"><%= user.noms %></td>
           <td class="text-center"><%= user.email %></td>
           <td class="text-center">
