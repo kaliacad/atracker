@@ -26,7 +26,6 @@ import { getInternalError, getNotFound } from "./controllers/error.js";
 import faker from "./db/faker.js";
 import sequelize from "./db/config.js";
 
-
 const app = express();
 
 // config
@@ -125,7 +124,7 @@ app.use(getNotFound);
 
 app.use((error, req, res) => {
     // eslint-disable-next-line no-console
-    console.log(error);
+    console.log({ message: error.message, stack: error.stack });
     res.redirect("/500");
 });
 

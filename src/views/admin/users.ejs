@@ -1,14 +1,11 @@
-<%- include('../includes/head.ejs')%> 
-<%- include('../includes/header.ejs')%>
+<%- include('../includes/head.ejs')%> <%- include('../includes/header.ejs')%>
 
 <div
   class="container w-100 h-100 mt-5 p-5 d-flex flex-column justify-content-center"
 >
   <div class="col-md-12 d-flex flex-column justify-content-center">
     <div class="d-flex flex-row w-100 justify-content-between">
-      <h3 class="text-center align-start text-secondary">
-        <%= title %>
-      </h3>
+      <h3 class="text-center align-start text-secondary"><%= title %></h3>
       <a href="/admin/add-user"
         ><button class="btn btn-outline-primary" type="button">
           Nouveau
@@ -26,12 +23,15 @@
         </tr>
       </thead>
       <tbody>
-        <% users.forEach(user => { %>
+        <% users.forEach((user, i) => { %>
         <tr>
-          <td class="text-center"><%= user.id %></td>
+          <td class="text-center"><%= i+1 %></td>
           <td class="text-center"><%= user.noms %></td>
           <td class="text-center"><%= user.email %></td>
-          <td class="text-center">admin</td>
+          <td class="text-center">
+            <%= user.role == 1? 'Super admin' : user.role == 2 ? 'admin' :
+            'attendance' %>
+          </td>
           <td class="d-flex justify-content-center">
             <a href="/admin/users/<%= user.id %>">
               <button class="btn btn-outline-primary btn-sm mx-1" type="button">

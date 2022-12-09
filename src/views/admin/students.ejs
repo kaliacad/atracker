@@ -25,9 +25,9 @@
           </tr>
         </thead>
         <tbody>
-          <% students && students.forEach(student => { %>
+          <% students && students.forEach((student, i) => { %>
           <tr>
-            <td class="text-start"><%= student.id %></td>
+            <td class="text-start"><%= i+1 %></td>
             <td class="text-start" colspan="2">
               <%= student.prenom %> <%= student.nom %>
             </td>

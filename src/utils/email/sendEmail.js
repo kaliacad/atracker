@@ -1,26 +1,25 @@
-import pool from "../../db/index.js";
 import sendCoachMail from "./sendCoachEmail.js";
 import sendStudentMail from "./sendStudentEmail.js";
+import Student from "../../models/Student.js";
 
-const { query } = pool;
+const timeTosend = "08:49:50";
 
 export default async () => {
     const value = new Date().toTimeString().split(" ")[0];
     try {
-        if (value === "16:50:00") {
+        if (value === timeTosend) {
             sendCoachMail();
-            const result = await query("SELECT * FROM students ");
-            const students = result.rows;
+            const students = await Student.findAll();
             students.forEach((student) => {
                 // we send email for each student after 1 sec
                 const executeMail = () => {
-                    sendStudentMail(student);
+                    sendStudentMail(student.dataValues);
                 };
                 setTimeout(executeMail, 1000);
             });
         }
     } catch (error) {
         // eslint-disable-next-line no-console
-        console.log(error);
+        console.log({ message: error.message, stack: error.stack });
     }
 };
