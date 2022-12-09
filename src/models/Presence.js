@@ -10,6 +10,7 @@ const Presence = sequelize.define("presence", {
     },
     presence: DataTypes.STRING,
     isMatin: DataTypes.BOOLEAN,
+    date: DataTypes.DATEONLY,
 });
 
 export default Presence;
