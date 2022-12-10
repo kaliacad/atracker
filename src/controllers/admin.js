@@ -4,14 +4,12 @@
 /* eslint-disable consistent-return */
 import bcrypt from "bcryptjs";
 import sequelize from "../db/config.js";
-import pool from "../db/index.js";
 import Cohorte from "../models/Cohorte.js";
 import Presence from "../models/Presence.js";
 import Student from "../models/Student.js";
 import User from "../models/User.js";
 
 const date = new Date().toISOString().split("T")[0];
-const { query } = pool;
 
 const STUDENT_PER_PAGE = 9;
 
@@ -186,16 +184,18 @@ export async function getSingleStudent(req, res, next) {
 
 export async function postAddStudent(req, res, next) {
     const {
-        //
         nom,
         prenom,
         email,
         cohorteId,
     } = req.body;
+
     const userId = req.user.id || null;
+
     if (req.user.role !== 1 && req.user.role !== 2) {
         return res.redirect("/admin/students");
     }
+
     try {
         const { role } = req.user;
         await Student.create({
@@ -217,7 +217,6 @@ export async function postAddStudent(req, res, next) {
 
 export function postUser(req, res, next) {
     const {
-        //
         noms,
         email,
         username,
@@ -225,7 +224,9 @@ export function postUser(req, res, next) {
         password2,
         role,
     } = req.body;
+
     const userId = req.user.id || null;
+
     if (password !== password2) {
         return res.render("admin/form/user", {
             message: "les mots de passe ne correspondent pas ",
@@ -234,6 +235,7 @@ export function postUser(req, res, next) {
             role: req.user.role,
         });
     }
+
     try {
         User.findOne({ where: { username } }) // check for uniqueness
             .then(async (user) => {
@@ -250,6 +252,7 @@ export function postUser(req, res, next) {
                         userId,
                         role,
                     });
+
                     await newUser.save();
 
                     res.redirect("/admin/users");

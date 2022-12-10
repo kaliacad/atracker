@@ -11,14 +11,17 @@ export function getLogin(req, res) {
 
 // eslint-disable-next-line consistent-return
 export async function postLogin(req, res, next) {
-    const { username } = req.body;
-    const { password } = req.body;
+    const { username, password } = req.body;
+
     try {
         const user = await User.findOne({
             where: {
                 username,
             },
         });
+
+        console.log("user does not exist", username);
+
         if (!user) {
             return res.redirect("/login");
         }
@@ -27,6 +30,7 @@ export async function postLogin(req, res, next) {
             password,
             user.dataValues.password
         );
+        console.log(password + " = " + verifiedPassword);
 
         if (user && verifiedPassword) {
             req.session.user = user;

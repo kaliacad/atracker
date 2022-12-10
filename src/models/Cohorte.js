@@ -1,10 +1,10 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../db/config.js";
 
-const Cohorte = sequelize.define("cohorte", {
+const Cohorte = sequelize.define("Cohorte", {
     id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
         allowNull: false,
         primaryKey: true,
     },
