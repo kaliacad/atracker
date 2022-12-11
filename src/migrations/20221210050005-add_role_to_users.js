@@ -5,45 +5,13 @@ const Sequelizerc = require('../../.sequelizerc');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    // await queryInterface.sequelize.query(
-    //   'ALTER TABLE "users" ALTER COLUMN "password" TYPE VARCHAR(210)'
-    // ),
-
-    // /**
-    //  * Add missing columns to Users table
-    //  */
-    // await queryInterface.addColumn(
-    //   'users',
-    //   'id',
-    //   {
-    //     type: Sequelize.INTEGER,
-    //     primaryKey: true,
-    //     autoIncrement: true,
-    //     allowNull: false,
-    //   }
-    //  ),
-
-    //  await queryInterface.addColumn(
-    //   'users',
-    //   'role',
-    //   {
-    //     type: Sequelize.INTEGER,
-    //     allowNull: false,
-    //     defaultValue: 3,
-    //   }
-    //  ),
-    // await queryInterface.sequelize.query(
-    //   'ALTER TABLE "users" ADD CONSTRAINT "composite_pk" \
-    //   PRIMARY KEY ("id")'
-    // ),
-
      await queryInterface.addColumn(
       'users',
       'createdAt',
       {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: Sequelize.NOW
+        defaultValue: Sequelize.fn('NOW')
       }
      ),
 
@@ -53,7 +21,7 @@ module.exports = {
       {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: Sequelize.NOW
+        defaultValue: Sequelize.fn('NOW')
       }
      ),
     
@@ -98,12 +66,9 @@ module.exports = {
    ),
 
    await queryInterface.dropTable('Tests')
-
   },
 
   async down (queryInterface, Sequelize) {
-    // await queryInterface.removeColumn('users', 'id')
-    // await queryInterface.removeColumn('users', 'role')
     await queryInterface.removeColumn('users', 'createdAt')
     await queryInterface.removeColumn('users', 'updatedAt')
     await queryInterface.dropTable('cohorte')

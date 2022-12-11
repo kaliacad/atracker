@@ -57,7 +57,7 @@ export async function getAddStudent(req, res, next) {
     try {
         const cohortes = await Cohorte.findAll();
         const userId = req.user.id;
-        console.log(req.user);
+
         if (req.user.role !== 1 && req.user.role !== 2) {
             return res.redirect("/admin/students");
         }
@@ -79,7 +79,7 @@ export async function getAddStudent(req, res, next) {
 export async function getStudents(req, res, next) {
     const { role } = req.user;
 
-    const page = +req.query.page || 1;
+    const page =+ req.query.page || 1;
     const isAuth = (req.user.role === 1 || req.user.role === 2) ?? false;
     const userId = req.user.id || null;
     const offset = (page - 1) * STUDENT_PER_PAGE;
@@ -90,8 +90,9 @@ export async function getStudents(req, res, next) {
             limit: STUDENT_PER_PAGE,
             offset,
         });
-        const totalStudents = (await Student.findAndCountAll()).count;
 
+        const totalStudents = (await Student.findAndCountAll()).count;
+console.log("count ", totalStudents);
         res.render("admin/students", {
             userId,
             role,
