@@ -1,5 +1,5 @@
-/** @type {import('sequelize-cli').Migration} */
-export default {
+/** @type {require('sequelize-cli').Migration} */
+module.exports = {
     async up(queryInterface, Sequelize) {
         /**
          * Add altering commands here.

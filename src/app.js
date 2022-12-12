@@ -1,6 +1,10 @@
 import express from "express";
 import { join } from "path";
 import * as url from "url";
+
+import dotenv from "dotenv"
+
+dotenv.config()
 // eslint-disable-next-line import/no-extraneous-dependencies
 import morgan from "morgan";
 import session from "express-session";
@@ -23,7 +27,6 @@ import { getInternalError, getNotFound } from "./controllers/error.js";
 // use routes
 
 // eslint-disable-next-line no-unused-vars
-import faker from "./db/faker.js";
 import sequelize from "./db/config.js";
 
 const app = express();
