@@ -145,12 +145,13 @@ export function getUserForm(req, res) {
 }
 
 export async function getSingleStudent(req, res, next) {
+    console.log("single user");
     const { role } = req.user;
     const userId = req.user.id;
 
     const studentId = req.params.id;
     const isAuth = (req.user.role === 1 || req.user.role === 2) ?? false;
-    if (isNaN(studentId)) return res.redirect("/not-found");
+    // if (isNaN(studentId)) return res.redirect("/not-found");
     try {
         const student = await Student.findOne({
             where: { id: studentId },
