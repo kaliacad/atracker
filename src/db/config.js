@@ -1,6 +1,8 @@
+/* eslint-disable import/no-cycle */
 import { Sequelize } from "sequelize";
-import dotenv from "dotenv";
 
-dotenv.config();
+import connectionString from "../settings.js";
 
-export default new Sequelize(process.env.POSTGRES_URI, {});
+const sequelize = new Sequelize(connectionString, {});
+
+export default sequelize;

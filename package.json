@@ -9,7 +9,11 @@
     "start": "nodemon ./",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint src/**/*.js",
-    "lint:fix": "eslint . src/**/*.js --fix"
+    "lint:fix": "eslint . src/**/*.js --fix",
+    "migrate:up": "npx sequelize-cli db:migrate",
+    "migrate:undo": "npx sequelize-cli db:migrate:undo",
+    "seed:up": "npx sequelize-cli db:seed:all",
+    "seed:undo": "npx sequelize-cli db:seed:undo"
   },
   "keywords": [],
   "author": [
@@ -39,6 +43,7 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "babel-register": "^6.26.0",
     "eslint": "^8.28.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",

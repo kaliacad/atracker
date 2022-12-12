@@ -4,14 +4,12 @@
 /* eslint-disable consistent-return */
 import bcrypt from "bcryptjs";
 import sequelize from "../db/config.js";
-import pool from "../db/index.js";
 import Cohorte from "../models/Cohorte.js";
 import Presence from "../models/Presence.js";
 import Student from "../models/Student.js";
 import User from "../models/User.js";
 
 const date = new Date().toISOString().split("T")[0];
-const { query } = pool;
 
 const STUDENT_PER_PAGE = 9;
 
@@ -59,7 +57,7 @@ export async function getAddStudent(req, res, next) {
     try {
         const cohortes = await Cohorte.findAll();
         const userId = req.user.id;
-        console.log(req.user);
+
         if (req.user.role !== 1 && req.user.role !== 2) {
             return res.redirect("/admin/students");
         }
@@ -92,8 +90,8 @@ export async function getStudents(req, res, next) {
             limit: STUDENT_PER_PAGE,
             offset,
         });
-        const totalStudents = (await Student.findAndCountAll()).count;
 
+        const totalStudents = (await Student.findAndCountAll()).count;
         res.render("admin/students", {
             userId,
             role,
@@ -193,10 +191,13 @@ export async function postAddStudent(req, res, next) {
         email,
         cohorteId,
     } = req.body;
+
     const userId = req.user.id || null;
+
     if (req.user.role !== 1 && req.user.role !== 2) {
         return res.redirect("/admin/students");
     }
+
     try {
         const { role } = req.user;
         await Student.create({
@@ -226,7 +227,9 @@ export function postUser(req, res, next) {
         password2,
         role,
     } = req.body;
+
     const userId = req.user.id || null;
+
     if (password !== password2) {
         return res.render("admin/form/user", {
             message: "les mots de passe ne correspondent pas ",
@@ -235,6 +238,7 @@ export function postUser(req, res, next) {
             role: req.user.role,
         });
     }
+
     try {
         User.findOne({ where: { username } }) // check for uniqueness
             .then(async (user) => {
@@ -251,6 +255,7 @@ export function postUser(req, res, next) {
                         userId,
                         role,
                     });
+
                     await newUser.save();
 
                     res.redirect("/admin/users");
@@ -274,13 +279,14 @@ export async function postEditStudent(req, res, next) {
     if (req.user.role !== 1 && req.user.role !== 2) {
         return res.redirect("admin/students");
     }
+    // eslint-disable-next-line no-unused-vars
     const { noms, email, studentId } = req.body;
     try {
-        await query("UPDATE students SET noms= $1, email=$2  WHERE id=$3", [
-            noms,
-            email,
-            studentId,
-        ]);
+        // await query("UPDATE students SET noms= $1, email=$2  WHERE id=$3", [
+        //     noms,
+        //     email,
+        //     studentId,
+        // ]);
         res.redirect(`/admin/students/${studentId}`);
     } catch (error) {
         const err = new Error(error);

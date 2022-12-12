@@ -1,5 +1,6 @@
-/** @type {import('sequelize-cli').Migration} */
-export default {
+/* eslint-disable no-unused-vars */
+/** @type {require('sequelize-cli').Migration} */
+module.exports = {
     async up(queryInterface, Sequelize) {
         /**
          * Add altering commands here.

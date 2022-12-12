@@ -1,30 +1,40 @@
 import express from "express";
 import { join } from "path";
 import * as url from "url";
+
+import dotenv from "dotenv";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import morgan from "morgan";
 import session from "express-session";
 import cookieParser from "cookie-parser";
 import sendEmail from "./utils/email/sendEmail.js";
+import sequelize from "./db/config.js";
 
 // routes
 import adminRoutes from "./routes/admin.js";
 import authRoutes from "./routes/auth.js";
 import publicRoutes from "./routes/public.js";
 
-// models
-import User from "./models/User.js";
-import Student from "./models/Student.js";
-import Presence from "./models/Presence.js";
-import Cohorte from "./models/Cohorte.js";
-
 // error controller
 import { getInternalError, getNotFound } from "./controllers/error.js";
 // use routes
 
 // eslint-disable-next-line no-unused-vars
-import faker from "./db/faker.js";
-import sequelize from "./db/config.js";
+import dbInit from "./db/init.js";
+
+dbInit();
+
+try {
+    await sequelize.authenticate();
+    sequelize.sync({ force: true });
+    // eslint-disable-next-line no-console
+    console.log("connection to db etablished ");
+} catch (error) {
+    // eslint-disable-next-line no-console
+    console.log("Unable to connect to the database", error);
+}
+
+dotenv.config();
 
 const app = express();
 
@@ -33,38 +43,9 @@ app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-// database relations
-User.hasMany(Student, {
-    onDelete: "RESTRICT",
-    onUpdate: "RESTRICT",
-});
-Student.belongsTo(User);
-
-Cohorte.hasMany(Student, {
-    onDelete: "RESTRICT",
-    onUpdate: "RESTRICT",
-});
-Student.belongsTo(Cohorte);
-
-Student.hasMany(Presence, {
-    onDelete: "RESTRICT",
-    onUpdate: "RESTRICT",
-});
-Presence.belongsTo(Student);
-
 // const __filename = url.fileURLToPath(import.meta.url);
 // eslint-disable-next-line no-underscore-dangle
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
-
-try {
-    await sequelize.authenticate();
-    sequelize.sync({ alter: true });
-    // eslint-disable-next-line no-console
-    console.log("connection to db etablished ");
-} catch (error) {
-    // eslint-disable-next-line no-console
-    console.log("Unable to connect to the database", error);
-}
 
 app.use(
     session({
