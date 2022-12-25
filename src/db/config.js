@@ -1,5 +1,8 @@
+/* eslint-disable import/no-cycle */
 import { Sequelize } from "sequelize";
 
-import connectionString from "../settings.js"
+import connectionString from "../settings.js";
 
-export default new Sequelize(connectionString, {});
+const sequelize = new Sequelize(connectionString, {});
+
+export default sequelize;

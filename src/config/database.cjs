@@ -1,4 +1,4 @@
-require("dotenv").config()
+require("dotenv").config();
 
 const {
   DB_USER,
@@ -9,29 +9,29 @@ const {
   DB_PROD,
   DB_PROD_HOST,
   DB_HOST,
-  DIALECT
-} = process.env
+  DIALECT,
+} = process.env;
 
 module.exports = {
-development: {
+  development: {
     username: DB_USER,
     password: PASSWORD,
     database: DB,
     host: DB_HOST,
-    dialect: DIALECT
+    dialect: DIALECT,
   },
   test: {
     username: DB_USER,
     password: PASSWORD,
     database: DB,
     host: DB_HOST,
-    dialect: DIALECT
+    dialect: DIALECT,
   },
   production: {
     username: DB_PROD_USER,
     password: DB_PROD_PASSWORD,
     database: DB_PROD,
     host: DB_PROD_HOST,
-    dialect: DIALECT
-  }
-}
+    dialect: DIALECT,
+  },
+};
