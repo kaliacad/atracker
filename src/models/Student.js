@@ -1,10 +1,10 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../db/config.js";
 
-const Student = sequelize.define("student", {
+const Student = sequelize.define("Student", {
     id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
         allowNull: false,
         primaryKey: true,
     },

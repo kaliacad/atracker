@@ -1,16 +1,15 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../db/config.js";
 
-const Presence = sequelize.define("presence", {
+const Presence = sequelize.define("Presence", {
     id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
         allowNull: false,
         primaryKey: true,
     },
     presence: DataTypes.STRING,
     isMatin: DataTypes.BOOLEAN,
-    date: DataTypes.DATEONLY,
 });
 
 export default Presence;

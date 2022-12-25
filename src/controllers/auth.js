@@ -30,7 +30,7 @@ export async function postLogin(req, res, next) {
             password,
             user.dataValues.password
         );
-        console.log(`${password} = ${verifiedPassword}`);
+        console.log(password + " = " + verifiedPassword);
 
         if (user && verifiedPassword) {
             req.session.user = user;
