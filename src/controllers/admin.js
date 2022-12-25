@@ -25,7 +25,6 @@ export async function getIndex(req, res, next) {
             where: { createdAt: date }, // i make here great than
             group: "presence",
         });
-
         const allPresences = (
             await Presence.findAll({
                 attributes: [
@@ -37,34 +36,8 @@ export async function getIndex(req, res, next) {
                 order: ["presence"],
             })
         ).map((ele) => ele.dataValues);
-
-        const beforeNoonPresences = allPresences.filter(
-            (pres) => pres.isMatin
-        )[0];
-        const afterNoonPresences = allPresences.filter(
-            (pres) => !pres.isMatin
-        )[0];
-        const studentsCounts = await Student.count();
-
         return res.render("admin/index", {
             presencesToday,
-            studentsCounts,
-            statistics: {
-                beforeNoon:
-                    (
-                        (beforeNoonPresences.total / studentsCounts) *
-                        100
-                    ).toFixed(2) || 0,
-                afterNoon:
-                    ((afterNoonPresences.total / studentsCounts) * 100).toFixed(
-                        2
-                    ) || 0,
-                glob: (
-                    ((beforeNoonPresences.total + afterNoonPresences.total) /
-                        (2 * studentsCounts)) *
-                    100
-                ).toFixed(2),
-            },
             date,
             allPresences,
             userId,
@@ -164,7 +137,7 @@ export function getUserForm(req, res) {
     const { role } = req.user;
     res.render("admin/form/user", {
         title: "Ajouter un utilisateur",
-        userId: req.user.id,
+        userId: req.user,
         role,
     });
 }
@@ -387,4 +360,3 @@ export async function postAddPresence(req, res, next) {
     }
     res.redirect("/admin/");
 }
-

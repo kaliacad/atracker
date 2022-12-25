@@ -71,30 +71,5 @@
       <% } %>
     </div>
   </div>
-  <div class="container shadow-sm d-flex justify-content-between card m-2 py-5">
-    <h5 class="text-black w-100 text-center">Statistiques</h5>
-    <div class="row d-flex justify-content-center mt-2">
-      <div class="col-md-2 px-3 p-sm-1 col-sm-6">
-        <% if(statistics.beforeNoon) {%>
-        <h5 class="card-text text-center text-danger">
-          <span class="lead">Avant midi : </span> <%= statistics.beforeNoon %> %
-        </h5>
-        <% } %> <% if(statistics.afterNoon) {%>
-        <h5 class="card-text text-center text-danger">
-          <span class="lead">Apres midi : </span> <%=statistics.afterNoon %> %
-        </h5>
-        <% } %>
-      </div>
-      <div class="col-md-2 px-3 p-sm-1 col-sm-6">
-        <% if(statistics.afterNoon) { %>
-
-        <h5 class="card-text text-center display-6 text-danger">
-          <%= ((Number(statistics.beforeNoon) + Number(statistics.afterNoon)) /
-          2).toFixed(2) %> %
-        </h5>
-        <% } %>
-      </div>
-    </div>
-  </div>
   <%- include('../includes/footer.ejs')%>
 </div>
