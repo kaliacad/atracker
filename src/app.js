@@ -26,7 +26,7 @@ dbInit();
 
 try {
     await sequelize.authenticate();
-    sequelize.sync({ alter: true });
+    // sequelize.sync({ alter: true });
     // eslint-disable-next-line no-console
     console.log("connection to db etablished ");
 } catch (error) {
