@@ -79,7 +79,7 @@ export async function getAddStudent(req, res, next) {
 export async function getStudents(req, res, next) {
     const { role } = req.user;
 
-    const page = +req.query.page || 1;
+    const page =+ req.query.page || 1;
     const isAuth = (req.user.role === 1 || req.user.role === 2) ?? false;
     const userId = req.user.id || null;
     const offset = (page - 1) * STUDENT_PER_PAGE;
@@ -92,6 +92,7 @@ export async function getStudents(req, res, next) {
         });
 
         const totalStudents = (await Student.findAndCountAll()).count;
+console.log("count ", totalStudents);
         res.render("admin/students", {
             userId,
             role,
@@ -143,13 +144,12 @@ export function getUserForm(req, res) {
 }
 
 export async function getSingleStudent(req, res, next) {
-    console.log("single user");
     const { role } = req.user;
     const userId = req.user.id;
 
     const studentId = req.params.id;
     const isAuth = (req.user.role === 1 || req.user.role === 2) ?? false;
-    // if (isNaN(studentId)) return res.redirect("/not-found");
+    if (isNaN(studentId)) return res.redirect("/not-found");
     try {
         const student = await Student.findOne({
             where: { id: studentId },
@@ -185,7 +185,6 @@ export async function getSingleStudent(req, res, next) {
 
 export async function postAddStudent(req, res, next) {
     const {
-        //
         nom,
         prenom,
         email,
@@ -219,7 +218,6 @@ export async function postAddStudent(req, res, next) {
 
 export function postUser(req, res, next) {
     const {
-        //
         noms,
         email,
         username,
@@ -279,14 +277,13 @@ export async function postEditStudent(req, res, next) {
     if (req.user.role !== 1 && req.user.role !== 2) {
         return res.redirect("admin/students");
     }
-    // eslint-disable-next-line no-unused-vars
     const { noms, email, studentId } = req.body;
     try {
-        // await query("UPDATE students SET noms= $1, email=$2  WHERE id=$3", [
-        //     noms,
-        //     email,
-        //     studentId,
-        // ]);
+        await query("UPDATE students SET noms= $1, email=$2  WHERE id=$3", [
+            noms,
+            email,
+            studentId,
+        ]);
         res.redirect(`/admin/students/${studentId}`);
     } catch (error) {
         const err = new Error(error);
@@ -334,24 +331,21 @@ export async function getAddPresence(req, res, next) {
 
 export async function postAddPresence(req, res, next) {
     const students = req.body;
-    let isMatin;
-    let datePresence;
+    let studentId;
+    let presence;
     // eslint-disable-next-line no-restricted-syntax
     for (const i in students) {
+        studentId = +i;
+        presence = students[i];
+
+        if (isNaN(studentId)) break;
         try {
-            const studentId = i;
-            const presence = students[i];
-            if (i === "isMatin") isMatin = presence;
-            else if (i === "date") datePresence = presence || new Date();
-            else {
-                // eslint-disable-next-line no-await-in-loop
-                await Presence.create({
-                    studentId,
-                    presence,
-                    isMatin,
-                    date: datePresence,
-                });
-            }
+            // eslint-disable-next-line no-await-in-loop
+            await Presence.create({
+                studentId,
+                presence,
+                isMatin: students.isMatin,
+            });
         } catch (error) {
             const err = new Error(error);
             err.httpStatusCode = 500;
