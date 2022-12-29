@@ -1,10 +1,13 @@
+/* eslint-disable no-console */
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-unused-expressions */
 import express from "express";
-import { join } from "path";
+import * as path from "path";
 import * as url from "url";
+import * as fs from "fs";
 
-import dotenv from "dotenv"
+import dotenv from "dotenv";
 
-dotenv.config()
 // eslint-disable-next-line import/no-extraneous-dependencies
 import morgan from "morgan";
 import session from "express-session";
@@ -29,10 +32,21 @@ import { getInternalError, getNotFound } from "./controllers/error.js";
 // eslint-disable-next-line no-unused-vars
 import sequelize from "./db/config.js";
 
+dotenv.config();
+
 const app = express();
+const { join } = path;
+
+// const __filename = url.fileURLToPath(import.meta.url);
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
+const accessLogStream = fs.createWriteStream(join(__dirname, "access.log"), {
+    flags: "a",
+});
 
 // config
-app.use(morgan("dev"));
+app.get("env") === "production"
+    ? app.use(morgan("combined", { stream: accessLogStream }))
+    : app.use(morgan("dev", { stream: accessLogStream }));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
@@ -55,30 +69,19 @@ Student.hasMany(Presence, {
 });
 Presence.belongsTo(Student);
 
-// const __filename = url.fileURLToPath(import.meta.url);
-// eslint-disable-next-line no-underscore-dangle
-const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
-
 try {
     await sequelize.authenticate();
-    sequelize.sync({ alter: true });
-    // eslint-disable-next-line no-console
+    sequelize.sync({ alter: false });
     console.log("connection to db etablished ");
 } catch (error) {
-    // eslint-disable-next-line no-console
     console.log("Unable to connect to the database", error);
 }
 
 app.use(
     session({
-        // store: new (require("connect-pg-simple")(session))({
-        //     // Insert connect-pg-simple options here
-        //     pool : require('./db/pool')
-        // }),
         secret: "secret word",
         resave: true,
         cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 }, // 30 days
-        // Insert express-session options here
         saveUninitialized: false,
     })
 );
@@ -114,7 +117,6 @@ app.use((req, res, next) => {
     next();
 });
 app.use(async (req, res, next) => {
-    // await faker();
     next();
 });
 
@@ -126,7 +128,6 @@ app.get("/500", getInternalError);
 app.use(getNotFound);
 
 app.use((error, req, res) => {
-    // eslint-disable-next-line no-console
     console.log({ message: error.message, stack: error.stack });
     res.redirect("/500");
 });
@@ -138,6 +139,5 @@ const autocall = () => {
 setInterval(() => {
     autocall();
 }, 1000);
-// autocall()
 
 export default app;
