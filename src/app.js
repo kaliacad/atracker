@@ -1,10 +1,10 @@
 import express from "express";
-import { join } from "path";
+import * as path from "path";
 import * as url from "url";
+import * as fs from "fs";
 
-import dotenv from "dotenv"
+import dotenv from "dotenv";
 
-dotenv.config()
 // eslint-disable-next-line import/no-extraneous-dependencies
 import morgan from "morgan";
 import session from "express-session";
@@ -29,10 +29,21 @@ import { getInternalError, getNotFound } from "./controllers/error.js";
 // eslint-disable-next-line no-unused-vars
 import sequelize from "./db/config.js";
 
+dotenv.config();
+
 const app = express();
+const { join } = path;
+
+// const __filename = url.fileURLToPath(import.meta.url);
+// eslint-disable-next-line no-underscore-dangle
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
+
+const accessLogStream = fs.createWriteStream(join(__dirname, "access.log"), {
+    flags: "a",
+});
 
 // config
-app.use(morgan("dev"));
+app.use(morgan("combined", { stream: accessLogStream }));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
@@ -55,13 +66,9 @@ Student.hasMany(Presence, {
 });
 Presence.belongsTo(Student);
 
-// const __filename = url.fileURLToPath(import.meta.url);
-// eslint-disable-next-line no-underscore-dangle
-const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
-
 try {
     await sequelize.authenticate();
-    sequelize.sync({ alter: true });
+    sequelize.sync({ alter: false });
     // eslint-disable-next-line no-console
     console.log("connection to db etablished ");
 } catch (error) {
