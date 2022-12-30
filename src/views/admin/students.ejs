@@ -1,14 +1,11 @@
-<%- include('../includes/head.ejs')%> 
-<%- include('../includes/header.ejs')%>
+<%- include('../includes/head.ejs')%> <%- include('../includes/header.ejs')%>
 
 <div
   class="container w-100 h-100 mt-5 p-5 d-flex flex-column justify-content-center"
 >
   <div class="col-md-12 d-flex flex-column justify-content-center">
     <div class="d-flex flex-row w-100 justify-content-between">
-      <h3 class="text-center align-start text-secondary">
-        <%= title %>
-      </h3>
+      <h3 class="text-center align-start text-secondary"><%= title %></h3>
       <a href="/admin/add-student"
         ><button class="btn btn-outline-primary" type="button">
           Nouveau
@@ -25,11 +22,12 @@
         </tr>
       </thead>
       <tbody>
-        <% students.forEach(student => { %>
+        <% students.forEach((student, i) => { %>
         <tr>
-          <td><%= student.id %></td>
+          <td><%= i+1 %></td>
           <td>
-            <%= student.prenom.charAt(0).toUpperCase() + student.prenom.slice(1) +" " + student.nom.toUpperCase() %>
+            <%= student.prenom.charAt(0).toUpperCase() + student.prenom.slice(1)
+            +" " + student.nom.toUpperCase() %>
           </td>
           <td><%= student.email %></td>
           <td class="d-flex">

@@ -87,7 +87,7 @@ export async function getStudents(req, res, next) {
 
     try {
         const students = await Student.findAll({
-            order: [["id", "ASC"]],
+            order: [["nom", "ASC"]],
             limit: STUDENT_PER_PAGE,
             offset,
         });
