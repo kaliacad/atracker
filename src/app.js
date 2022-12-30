@@ -20,14 +20,13 @@ import authRoutes from "./routes/auth.js";
 import publicRoutes from "./routes/public.js";
 
 // models
-import User from "./models/User.js";
-import Student from "./models/Student.js";
-import Presence from "./models/Presence.js";
-import Cohorte from "./models/Cohorte.js";
+import user from "./models/user.js";
+import student from "./models/student.js";
+import presence from "./models/presence.js";
+import cohorte from "./models/cohorte.js";
 
 // error controller
 import { getInternalError, getNotFound } from "./controllers/error.js";
-// use routes
 
 // eslint-disable-next-line no-unused-vars
 import sequelize from "./db/config.js";
@@ -37,8 +36,9 @@ dotenv.config();
 const app = express();
 const { join } = path;
 
-// const __filename = url.fileURLToPath(import.meta.url);
+// eslint-disable-next-line no-underscore-dangle
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
+
 const accessLogStream = fs.createWriteStream(join(__dirname, "access.log"), {
     flags: "a",
 });
@@ -51,23 +51,23 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // database relations
-User.hasMany(Student, {
+user.hasMany(student, {
     onDelete: "RESTRICT",
     onUpdate: "RESTRICT",
 });
-Student.belongsTo(User);
+student.belongsTo(user);
 
-Cohorte.hasMany(Student, {
+cohorte.hasMany(student, {
     onDelete: "RESTRICT",
     onUpdate: "RESTRICT",
 });
-Student.belongsTo(Cohorte);
+student.belongsTo(cohorte);
 
-Student.hasMany(Presence, {
+student.hasMany(presence, {
     onDelete: "RESTRICT",
     onUpdate: "RESTRICT",
 });
-Presence.belongsTo(Student);
+presence.belongsTo(student);
 
 try {
     await sequelize.authenticate();
@@ -90,7 +90,7 @@ app.use(
 app.set("view engine", "ejs");
 app.set("views", join(__dirname, "views"));
 
-// bootstrap include
+// Bootstrap 5 include
 app.use(
     "/css",
     express.static(join(__dirname, "..", "node_modules/bootstrap/dist/css"))

@@ -4,10 +4,10 @@
 /* eslint-disable consistent-return */
 import bcrypt from "bcryptjs";
 import sequelize from "../db/config.js";
-import Cohorte from "../models/Cohorte.js";
-import Presence from "../models/Presence.js";
-import Student from "../models/Student.js";
-import User from "../models/User.js";
+import Cohorte from "../models/cohorte.js";
+import Presence from "../models/presence.js";
+import Student from "../models/student.js";
+import User from "../models/user.js";
 
 const date = new Date().toISOString().split("T")[0];
 
@@ -151,13 +151,13 @@ export async function getSingleStudent(req, res, next) {
     const isAuth = (req.user.role === 1 || req.user.role === 2) ?? false;
     if (isNaN(studentId)) return res.redirect("/not-found");
     try {
-        const student = await Student.findOne({
+        const student = await student.findOne({
             where: { id: studentId },
-            include: Student.belongsTo(Cohorte),
+            include: student.belongsTo(cohorte),
         });
 
         const presences = (
-            await Presence.findAll({
+            await presence.findAll({
                 attributes: [
                     "presence",
                     "isMatin",
@@ -199,7 +199,7 @@ export async function postAddStudent(req, res, next) {
 
     try {
         const { role } = req.user;
-        await Student.create({
+        await student.create({
             nom,
             prenom,
             email,
@@ -238,7 +238,7 @@ export function postUser(req, res, next) {
     }
 
     try {
-        User.findOne({ where: { username } }) // check for uniqueness
+        user.findOne({ where: { username } }) // check for uniqueness
             .then(async (user) => {
                 if (!user) {
                     const hash = await bcrypt.hash(

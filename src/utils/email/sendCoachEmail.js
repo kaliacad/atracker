@@ -1,10 +1,10 @@
 /* eslint-disable no-console */
 import { getTestMessageUrl } from "nodemailer";
 import { Sequelize } from "sequelize";
-import User from "../../models/Student.js";
+// import User from "../../models/student.js";
 // import pool from "../../db/index.js";
 import transporter from "../emailTransport.js";
-import Presence from "../../models/Presence.js";
+import presence from "../../models/presence.js";
 
 // const { query } = pool;
 
@@ -18,7 +18,7 @@ export default async () => {
         <ul>
     `;
     try {
-        const users = (await User.findAll()).map((ele) => ele.dataValues);
+        const users = (await user.findAll()).map((ele) => ele.dataValues);
         usersEmail = users.map((user) => user.email);
         // eslint-disable-next-line quotes
         usersEmail = usersEmail.join('","');
@@ -51,7 +51,6 @@ export default async () => {
             [date]
          );
         */
-        console.log("presence ==> ", presences);
 
         presences.forEach((element) => {
             contentMail += `<li>${`${

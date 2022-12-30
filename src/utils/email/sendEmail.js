@@ -1,6 +1,6 @@
 import sendCoachMail from "./sendCoachEmail.js";
 import sendStudentMail from "./sendStudentEmail.js";
-import Student from "../../models/Student.js";
+import student from "../../models/student.js";
 
 const timeTosend = "08:49:50";
 
@@ -9,7 +9,7 @@ export default async () => {
     try {
         if (value === timeTosend) {
             sendCoachMail();
-            const students = await Student.findAll();
+            const students = await student.findAll();
             students.forEach((student) => {
                 // we send email for each student after 1 sec
                 const executeMail = () => {
