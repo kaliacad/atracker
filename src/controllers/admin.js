@@ -1,3 +1,4 @@
+/* eslint-disable object-curly-newline */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable no-restricted-globals */
 /* eslint-disable guard-for-in */
@@ -79,7 +80,7 @@ export async function getAddStudent(req, res, next) {
 export async function getStudents(req, res, next) {
     const { role } = req.user;
 
-    const page =+ req.query.page || 1;
+    const page = +req.query.page || 1;
     const isAuth = (req.user.role === 1 || req.user.role === 2) ?? false;
     const userId = req.user.id || null;
     const offset = (page - 1) * STUDENT_PER_PAGE;
@@ -92,7 +93,7 @@ export async function getStudents(req, res, next) {
         });
 
         const totalStudents = (await Student.findAndCountAll()).count;
-console.log("count ", totalStudents);
+        console.log("count ", totalStudents);
         res.render("admin/students", {
             userId,
             role,
@@ -151,13 +152,13 @@ export async function getSingleStudent(req, res, next) {
     const isAuth = (req.user.role === 1 || req.user.role === 2) ?? false;
     if (isNaN(studentId)) return res.redirect("/not-found");
     try {
-        const student = await student.findOne({
+        const student = await Student.findOne({
             where: { id: studentId },
-            include: student.belongsTo(cohorte),
+            include: Student.belongsTo(Cohorte),
         });
 
         const presences = (
-            await presence.findAll({
+            await Presence.findAll({
                 attributes: [
                     "presence",
                     "isMatin",
@@ -184,12 +185,7 @@ export async function getSingleStudent(req, res, next) {
 }
 
 export async function postAddStudent(req, res, next) {
-    const {
-        nom,
-        prenom,
-        email,
-        cohorteId,
-    } = req.body;
+    const { nom, prenom, email, cohorteId } = req.body;
 
     const userId = req.user.id || null;
 
@@ -199,7 +195,7 @@ export async function postAddStudent(req, res, next) {
 
     try {
         const { role } = req.user;
-        await student.create({
+        await Student.create({
             nom,
             prenom,
             email,
@@ -217,14 +213,7 @@ export async function postAddStudent(req, res, next) {
 }
 
 export function postUser(req, res, next) {
-    const {
-        noms,
-        email,
-        username,
-        password,
-        password2,
-        role,
-    } = req.body;
+    const { noms, email, username, password, password2, role } = req.body;
 
     const userId = req.user.id || null;
 
@@ -238,7 +227,7 @@ export function postUser(req, res, next) {
     }
 
     try {
-        user.findOne({ where: { username } }) // check for uniqueness
+        User.findOne({ where: { username } }) // check for uniqueness
             .then(async (user) => {
                 if (!user) {
                     const hash = await bcrypt.hash(

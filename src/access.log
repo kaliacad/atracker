@@ -8,3 +8,46 @@
 ::1 - - [29/Dec/2022:11:29:36 +0000] "GET /js/bootstrap.min.js HTTP/1.1" 304 - "http://localhost:8000/admin/users" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
 ::1 - - [29/Dec/2022:11:29:36 +0000] "GET /css/style.css HTTP/1.1" 304 - "http://localhost:8000/admin/users" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
 ::1 - - [29/Dec/2022:11:29:37 +0000] "GET /js/bootstrap.min.js HTTP/1.1" 304 - "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
+[0mGET / [36m304[0m 24.143 ms - -[0m
+[0mGET /css/style.css [32m200[0m 5.754 ms - 5815[0m
+[0mGET /js/bootstrap.min.js [32m200[0m 26.538 ms - 60055[0m
+[0mGET /css/bootstrap.min.css [32m200[0m 19.222 ms - 193529[0m
+[0mGET /images/render.jpg [32m200[0m 4.417 ms - 1771231[0m
+[0mGET /images/20220531_141233.jpg [32m200[0m 6.091 ms - 3093325[0m
+[0mGET /js/bootstrap.min.js [32m200[0m 2.090 ms - 60055[0m
+[0mGET /favicon.ico [33m404[0m 10.918 ms - 2368[0m
+[0mGET /admin/students [32m200[0m 104.898 ms - 4983[0m
+[0mGET /css/bootstrap.min.css [36m304[0m 2.080 ms - -[0m
+[0mGET /css/style.css [36m304[0m 6.902 ms - -[0m
+[0mGET /js/bootstrap.min.js [36m304[0m 2.724 ms - -[0m
+[0mGET /js/bootstrap.min.js [36m304[0m 1.719 ms - -[0m
+[0mGET /admin/users [32m200[0m 14.512 ms - 4475[0m
+[0mGET /css/bootstrap.min.css [36m304[0m 1.555 ms - -[0m
+[0mGET /css/style.css [36m304[0m 9.562 ms - -[0m
+[0mGET /js/bootstrap.min.js [36m304[0m 2.962 ms - -[0m
+[0mGET /js/bootstrap.min.js [36m304[0m 1.285 ms - -[0m
+[0mGET /admin/students [36m304[0m 50.565 ms - -[0m
+[0mGET /css/style.css [36m304[0m 1.526 ms - -[0m
+[0mGET /css/bootstrap.min.css [36m304[0m 1.822 ms - -[0m
+[0mGET /js/bootstrap.min.js [36m304[0m 3.573 ms - -[0m
+[0mGET /js/bootstrap.min.js [36m304[0m 1.585 ms - -[0m
+[0mGET /admin/add-presence [32m200[0m 9.912 ms - 7511[0m
+[0mGET /css/bootstrap.min.css [36m304[0m 3.155 ms - -[0m
+[0mGET /js/bootstrap.min.js [36m304[0m 3.582 ms - -[0m
+[0mGET /css/style.css [36m304[0m 6.615 ms - -[0m
+[0mGET /js/bootstrap.min.js [36m304[0m 1.331 ms - -[0m
+[0mGET /admin [32m200[0m 34.555 ms - 4836[0m
+[0mGET /css/style.css [36m304[0m 3.036 ms - -[0m
+[0mGET /css/bootstrap.min.css [36m304[0m 3.889 ms - -[0m
+[0mGET /js/bootstrap.min.js [36m304[0m 2.621 ms - -[0m
+[0mGET /js/bootstrap.min.js [36m304[0m 1.018 ms - -[0m
+[0mGET /admin/students [36m304[0m 141.540 ms - -[0m
+[0mGET /css/style.css [36m304[0m 4.174 ms - -[0m
+[0mGET /css/bootstrap.min.css [36m304[0m 2.432 ms - -[0m
+[0mGET /js/bootstrap.min.js [36m304[0m 2.260 ms - -[0m
+[0mGET /js/bootstrap.min.js [36m304[0m 1.468 ms - -[0m
+::1 - - [30/Dec/2022:11:47:36 +0000] "GET /admin/students HTTP/1.1" 200 10258 "http://localhost:8000/admin" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
+::1 - - [30/Dec/2022:11:47:36 +0000] "GET /css/bootstrap.min.css HTTP/1.1" 304 - "http://localhost:8000/admin/students" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
+::1 - - [30/Dec/2022:11:47:36 +0000] "GET /css/style.css HTTP/1.1" 304 - "http://localhost:8000/admin/students" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
+::1 - - [30/Dec/2022:11:47:36 +0000] "GET /js/bootstrap.min.js HTTP/1.1" 304 - "http://localhost:8000/admin/students" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
+::1 - - [30/Dec/2022:11:47:37 +0000] "GET /js/bootstrap.min.js HTTP/1.1" 304 - "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
