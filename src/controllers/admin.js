@@ -17,13 +17,27 @@ const STUDENT_PER_PAGE = 9;
 export async function getIndex(req, res, next) {
     const userId = req.user.id;
     const { role } = req.user;
+    const today = new Date();
     try {
         const presencesToday = await Presence.findAll({
             attributes: [
                 "presence",
                 [sequelize.fn("COUNT", sequelize.col("presence")), "total"],
             ],
-            where: { createdAt: date }, // i make here great than
+            // where: { $now: { createdAt: date } }, // i make here great than
+            // where: {
+            //     $eval: sequelize.compare(
+            //         sequelize.fn("createdAt"),
+            //         sequelize.fn("GETDATE"),
+            //         "="
+            //     ),
+            // },
+            where: sequelize.where(
+                sequelize.fn("date", sequelize.col("createdAt")),
+                "=",
+                today
+            ),
+            // where: { today: { $gt: sequelize.fn("createdAt") } },
             group: "presence",
         });
         const allPresences = (
@@ -37,6 +51,7 @@ export async function getIndex(req, res, next) {
                 order: ["presence"],
             })
         ).map((ele) => ele.dataValues);
+        console.log({ presencesToday });
         return res.render("admin/index", {
             presencesToday,
             date,
@@ -87,7 +102,7 @@ export async function getStudents(req, res, next) {
 
     try {
         const students = await Student.findAll({
-            order: [["nom", "ASC"]],
+            order: [["createdAt", "ASC"]],
             limit: STUDENT_PER_PAGE,
             offset,
         });
@@ -150,7 +165,7 @@ export async function getSingleStudent(req, res, next) {
 
     const studentId = req.params.id;
     const isAuth = (req.user.role === 1 || req.user.role === 2) ?? false;
-    if (isNaN(studentId)) return res.redirect("/not-found");
+    if (!studentId) return res.redirect("/not-found");
     try {
         const student = await Student.findOne({
             where: { id: studentId },
@@ -322,18 +337,20 @@ export async function postAddPresence(req, res, next) {
     const students = req.body;
     let studentId;
     let presence;
+    const isMatin = students.isMatin || true;
     // eslint-disable-next-line no-restricted-syntax
     for (const i in students) {
         studentId = +i;
         presence = students[i];
 
-        if (isNaN(studentId)) break;
+        if (!studentId) break;
         try {
+            console.log({ studentId, presence, isMatin });
             // eslint-disable-next-line no-await-in-loop
             await Presence.create({
                 studentId,
                 presence,
-                isMatin: students.isMatin,
+                isMatin,
             });
         } catch (error) {
             const err = new Error(error);
