@@ -4,14 +4,12 @@
 /* eslint-disable consistent-return */
 import bcrypt from "bcryptjs";
 import sequelize from "../db/config.js";
-import pool from "../db/index.js";
-import Cohorte from "../models/Cohorte.js";
-import Presence from "../models/Presence.js";
-import Student from "../models/Student.js";
-import User from "../models/User.js";
+import Cohorte from "../models/cohorte.js";
+import Presence from "../models/presence.js";
+import Student from "../models/student.js";
+import User from "../models/user.js";
 
 const date = new Date().toISOString().split("T")[0];
-const { query } = pool;
 
 const STUDENT_PER_PAGE = 9;
 
@@ -59,7 +57,7 @@ export async function getAddStudent(req, res, next) {
     try {
         const cohortes = await Cohorte.findAll();
         const userId = req.user.id;
-        console.log(req.user);
+
         if (req.user.role !== 1 && req.user.role !== 2) {
             return res.redirect("/admin/students");
         }
@@ -81,7 +79,7 @@ export async function getAddStudent(req, res, next) {
 export async function getStudents(req, res, next) {
     const { role } = req.user;
 
-    const page = +req.query.page || 1;
+    const page =+ req.query.page || 1;
     const isAuth = (req.user.role === 1 || req.user.role === 2) ?? false;
     const userId = req.user.id || null;
     const offset = (page - 1) * STUDENT_PER_PAGE;
@@ -92,8 +90,9 @@ export async function getStudents(req, res, next) {
             limit: STUDENT_PER_PAGE,
             offset,
         });
-        const totalStudents = (await Student.findAndCountAll()).count;
 
+        const totalStudents = (await Student.findAndCountAll()).count;
+console.log("count ", totalStudents);
         res.render("admin/students", {
             userId,
             role,
@@ -152,13 +151,13 @@ export async function getSingleStudent(req, res, next) {
     const isAuth = (req.user.role === 1 || req.user.role === 2) ?? false;
     if (isNaN(studentId)) return res.redirect("/not-found");
     try {
-        const student = await Student.findOne({
+        const student = await student.findOne({
             where: { id: studentId },
-            include: Student.belongsTo(Cohorte),
+            include: student.belongsTo(cohorte),
         });
 
         const presences = (
-            await Presence.findAll({
+            await presence.findAll({
                 attributes: [
                     "presence",
                     "isMatin",
@@ -186,19 +185,21 @@ export async function getSingleStudent(req, res, next) {
 
 export async function postAddStudent(req, res, next) {
     const {
-        //
         nom,
         prenom,
         email,
         cohorteId,
     } = req.body;
+
     const userId = req.user.id || null;
+
     if (req.user.role !== 1 && req.user.role !== 2) {
         return res.redirect("/admin/students");
     }
+
     try {
         const { role } = req.user;
-        await Student.create({
+        await student.create({
             nom,
             prenom,
             email,
@@ -217,7 +218,6 @@ export async function postAddStudent(req, res, next) {
 
 export function postUser(req, res, next) {
     const {
-        //
         noms,
         email,
         username,
@@ -225,7 +225,9 @@ export function postUser(req, res, next) {
         password2,
         role,
     } = req.body;
+
     const userId = req.user.id || null;
+
     if (password !== password2) {
         return res.render("admin/form/user", {
             message: "les mots de passe ne correspondent pas ",
@@ -234,8 +236,9 @@ export function postUser(req, res, next) {
             role: req.user.role,
         });
     }
+
     try {
-        User.findOne({ where: { username } }) // check for uniqueness
+        user.findOne({ where: { username } }) // check for uniqueness
             .then(async (user) => {
                 if (!user) {
                     const hash = await bcrypt.hash(
@@ -250,6 +253,7 @@ export function postUser(req, res, next) {
                         userId,
                         role,
                     });
+
                     await newUser.save();
 
                     res.redirect("/admin/users");

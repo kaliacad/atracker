@@ -1,7 +1,11 @@
 import { Sequelize } from "sequelize";
-import dotenv from "dotenv";
 
-dotenv.config();
+import connectionString from "../settings.js"
 
-console.log("db uri", process.env.POSTGRES_URI);
-export default new Sequelize(process.env.POSTGRES_URI, {});
+export default new Sequelize(connectionString, {
+    "logging": false,
+    define: {
+        // All tables won't have "createdAt" and "updatedAt" Auto fields.
+        timestamps: false
+    }
+});
