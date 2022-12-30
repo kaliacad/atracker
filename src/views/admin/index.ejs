@@ -1,5 +1,4 @@
-<%- include('../includes/head.ejs')%> 
-<%- include('../includes/header.ejs')%>
+<%- include('../includes/head.ejs')%> <%- include('../includes/header.ejs')%>
 
 <div
   class="login container-fluid w-100 d-flex flex-column justify-content-center align-items-center mb-2 p-5 bg-light"
@@ -16,8 +15,11 @@
       <div class="col-md-2 px-3 p-sm-1 col-sm-6">
         <div class="card bg-light m-1">
           <div class="card-body">
-            <h1 class="text-center text-danger"><%= presence.count %></h1>
+            <h1 class="text-center text-danger"><%= presence.total %></h1>
             <p class="card-text text-center"><%= presence.presence %></p>
+            <h6 class="text-center">
+              <%= presence.isMatin ? 'Avant midi': 'Apres midi' %>
+            </h6>
           </div>
         </div>
       </div>
@@ -37,9 +39,9 @@
         <div class="card bg-light m-1">
           <div class="card-body">
             <h1 class="text-center text-danger"><%= pres.total %></h1>
-            <h5 class="card-text text-center text-danger">
+            <h6 class="card-text text-center text-danger">
               <%= pres.presence %>
-            </h5>
+            </h6>
             <p class="text-center text-center">
               <%= pres.isMatin ? 'avant midi' : 'apres midi' %>
             </p>

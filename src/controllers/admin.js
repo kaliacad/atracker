@@ -1,3 +1,5 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable no-continue */
 /* eslint-disable object-curly-newline */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable no-restricted-globals */
@@ -19,27 +21,21 @@ export async function getIndex(req, res, next) {
     const { role } = req.user;
     const today = new Date();
     try {
-        const presencesToday = await Presence.findAll({
-            attributes: [
-                "presence",
-                [sequelize.fn("COUNT", sequelize.col("presence")), "total"],
-            ],
-            // where: { $now: { createdAt: date } }, // i make here great than
-            // where: {
-            //     $eval: sequelize.compare(
-            //         sequelize.fn("createdAt"),
-            //         sequelize.fn("GETDATE"),
-            //         "="
-            //     ),
-            // },
-            where: sequelize.where(
-                sequelize.fn("date", sequelize.col("createdAt")),
-                "=",
-                today
-            ),
-            // where: { today: { $gt: sequelize.fn("createdAt") } },
-            group: "presence",
-        });
+        const presencesToday = (
+            await Presence.findAll({
+                attributes: [
+                    "presence",
+                    "isMatin",
+                    [sequelize.fn("COUNT", sequelize.col("presence")), "total"],
+                ],
+                where: sequelize.where(
+                    sequelize.fn("date", sequelize.col("createdAt")),
+                    "=",
+                    today
+                ),
+                group: ["presence", "isMatin"],
+            })
+        ).map((ele) => ele.dataValues);
         const allPresences = (
             await Presence.findAll({
                 attributes: [
@@ -51,7 +47,6 @@ export async function getIndex(req, res, next) {
                 order: ["presence"],
             })
         ).map((ele) => ele.dataValues);
-        console.log({ presencesToday });
         return res.render("admin/index", {
             presencesToday,
             date,
@@ -108,7 +103,6 @@ export async function getStudents(req, res, next) {
         });
 
         const totalStudents = (await Student.findAndCountAll()).count;
-        console.log("count ", totalStudents);
         res.render("admin/students", {
             userId,
             role,
@@ -337,15 +331,21 @@ export async function postAddPresence(req, res, next) {
     const students = req.body;
     let studentId;
     let presence;
-    const isMatin = students.isMatin || true;
+    let isMatin;
     // eslint-disable-next-line no-restricted-syntax
     for (const i in students) {
-        studentId = +i;
+        if (i !== "isMatin") {
+            studentId = i;
+            presence = students[i];
+        } else if (i == "isMatin") {
+            isMatin = students[i];
+        } else {
+            continue;
+        }
         presence = students[i];
 
         if (!studentId) break;
         try {
-            console.log({ studentId, presence, isMatin });
             // eslint-disable-next-line no-await-in-loop
             await Presence.create({
                 studentId,
