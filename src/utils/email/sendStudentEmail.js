@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { Sequelize } from "sequelize";
 import transporter from "../emailTransport.js";
-import Presence from "../../models/Presence.js";
+import presence from "../../models/presence.js";
 
 export default async (student) => {
     const date = new Date().toISOString().split("T")[0];
@@ -12,7 +12,7 @@ export default async (student) => {
             Nous avons le réel plaisir de te faire parvenir ton status de présence pour 
         `;
 
-        const presences = await Presence.findAll({
+        const presences = await presence.findAll({
             where: {
                 [Sequelize.Op.and]: [
                     { studentId: student.id },
