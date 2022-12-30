@@ -2,9 +2,9 @@ import express from "express";
 import { join } from "path";
 import * as url from "url";
 
-import dotenv from "dotenv"
+import dotenv from "dotenv";
 
-dotenv.config()
+dotenv.config();
 // eslint-disable-next-line import/no-extraneous-dependencies
 import morgan from "morgan";
 import session from "express-session";

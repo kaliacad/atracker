@@ -20,8 +20,6 @@ export async function postLogin(req, res, next) {
             },
         });
 
-        console.log("user does not exist", username);
-
         if (!user) {
             return res.redirect("/login");
         }
@@ -30,7 +28,6 @@ export async function postLogin(req, res, next) {
             password,
             user.dataValues.password
         );
-        console.log(password + " = " + verifiedPassword);
 
         if (user && verifiedPassword) {
             req.session.user = user;
