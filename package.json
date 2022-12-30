@@ -9,9 +9,14 @@
     "start": "nodemon ./",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint src/**/*.js",
-    "lint:fix": "eslint . src/**/*.js --fix"
+    "lint:fix": "eslint . src/**/*.js --fix",
+    "seed": "npx sequelize-cli db:seed:all",
+    "seed:revert": "npx sequelize-cli db:seed:undo",
+    "migrate:status": "npx sequelize-cli db:migrate:status",
+    "migrate:revert": "npx sequelize-cli db:migrate:undo",
+    "migrate": "npx sequelize-cli db:migrate"
   },
-  "keywords": [],
+  "keywords": ["education", "tracker"],
   "author": [
     "Abel",
     "cedric"

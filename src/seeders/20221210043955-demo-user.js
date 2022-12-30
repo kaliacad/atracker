@@ -22,7 +22,14 @@ module.exports = {
         ]);
     },
 
+<<<<<<< HEAD
     async down(queryInterface, Sequelize) {
         await queryInterface.bulkDelete("users", null, {});
     },
+=======
+  async down (queryInterface, Sequelize) {
+     await queryInterface.bulkDelete('users', null, {});
+    //  await queryInterface.delete
+  }
+>>>>>>> 78dd5c297bb8904871b034fcb87f097a81b7ab34
 };

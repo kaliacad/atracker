@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
-import User from "../models/User.js";
+
+import userModel from "../models/user.js";
 
 export function getLogin(req, res) {
     if (res.user) return res.redirect("/admin");
@@ -14,7 +15,7 @@ export async function postLogin(req, res, next) {
     const { username, password } = req.body;
 
     try {
-        const user = await User.findOne({
+        const user = await userModel.findOne({
             where: {
                 username,
             },
@@ -32,6 +33,7 @@ export async function postLogin(req, res, next) {
         if (user && verifiedPassword) {
             req.session.user = user;
             res.cookie("session", user);
+
             return res.redirect("/admin");
         }
         res.redirect("/login");
@@ -48,5 +50,6 @@ export function postLogout(req, res) {
     res.status(200).clearCookie("connect.sid", {
         path: "/",
     });
+    
     res.redirect("/login");
 }
