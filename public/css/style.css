@@ -62,7 +62,7 @@
   height: 100%;
   top: 0;
   left: 0;
-  background-color: #da4d4d81;
+  background: linear-gradient(#6789d1da, #d1676ce5);
 }
 
 #login .wrap-login100 {
