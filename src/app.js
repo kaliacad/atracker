@@ -28,8 +28,6 @@ import { getInternalError, getNotFound } from "./controllers/error.js";
 
 dotenv.config();
 
-dotenv.config();
-
 const app = express();
 const { join } = path;
 
@@ -68,7 +66,7 @@ presence.belongsTo(student);
 
 try {
     await sequelize.authenticate();
-    sequelize.sync({ force: true });
+    sequelize.sync({ alter: true });
     console.log("connection to db etablished ");
 } catch (error) {
     console.log("Unable to connect to the database", error);

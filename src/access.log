@@ -71,3 +71,7 @@
 [0mGET /js/bootstrap.min.js [32m200[0m 10.138 ms - 60055[0m
 [0mGET /images/20220531_141233.jpg [32m200[0m 1.598 ms - 3093325[0m
 [0mGET /favicon.ico [33m404[0m 7.092 ms - 1912[0m
+[0mGET /login [33m404[0m 3.609 ms - 1912[0m
+[0mGET /css/bootstrap.min.css [36m304[0m 2.196 ms - -[0m
+[0mGET /css/style.css [36m304[0m 6.933 ms - -[0m
+[0mGET /js/bootstrap.min.js [36m304[0m 2.535 ms - -[0m
