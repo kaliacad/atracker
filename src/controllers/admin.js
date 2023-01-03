@@ -77,7 +77,7 @@ export async function getAddStudent(req, res, next) {
 
 // eslint-disable-next-line consistent-return
 export async function getStudents(req, res, next) {
-    const { role } = req.user;
+    const role = req.user || null;
 
     const page = +req.query.page || 1;
     const isAuth = (req.user.role === 1 || req.user.role === 2) ?? false;
