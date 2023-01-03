@@ -22,7 +22,7 @@ export async function postLogin(req, res, next) {
         });
 
         if (!user) {
-            return res.redirect("/login");
+            return res.redirect("/");
         }
 
         const verifiedPassword = await bcrypt.compare(
@@ -36,7 +36,7 @@ export async function postLogin(req, res, next) {
 
             return res.redirect("/admin");
         }
-        res.redirect("/login");
+        res.redirect("/");
     } catch (error) {
         const err = new Error(error);
         err.httpStatusCode = 500;
@@ -50,6 +50,6 @@ export function postLogout(req, res) {
     res.status(200).clearCookie("connect.sid", {
         path: "/",
     });
-    
-    res.redirect("/login");
+
+    res.redirect("/");
 }
