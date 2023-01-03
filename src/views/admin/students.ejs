@@ -1,106 +1,65 @@
-<%- include('../includes/head.ejs')%> <%- include('../includes/header.ejs')%>
+<%- include('../includes/head.ejs')%> 
+<%- include('../includes/header.ejs')%>
 
-<div class="login container w-100 h-100 p-5 d-flex justify-content-center">
-  <div class="col-md-12 d-flex flex-column justify-content-start mt-5">
+<div
+  class="container w-100 h-100 mt-5 p-5 d-flex flex-column justify-content-center"
+>
+  <div class="col-md-12 d-flex flex-column justify-content-center">
     <div class="d-flex flex-row w-100 justify-content-between">
       <h3 class="text-center align-start text-secondary">
-        Listes des etudiants
+        <%= title %>
       </h3>
-      <% if(userId && isAuth) { %>
       <a href="/admin/add-student"
         ><button class="btn btn-outline-primary" type="button">
           Nouveau
         </button></a
       >
-      <% } %>
     </div>
-    <div class="overflow-auto">
-      <table class="table table-hover shadow-sm table-light p-2">
-        <thead class="thead-light">
-          <tr>
-            <th class="text-danger text-start">#</th>
-            <th class="text-danger text-start" colspan="2">noms</th>
-            <th class="text-danger text-start">email</th>
-            <th class="text-danger text-start">actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% students && students.forEach((student, i) => { %>
-          <tr>
-            <td class="text-start"><%= i+1 %></td>
-            <td class="text-start" colspan="2">
-              <%= student.prenom %> <%= student.nom %>
-            </td>
-            <td class="text-start"><%= student.email %></td>
-            <td class="d-flex justify-content-start">
-              <a href="/admin/students/<%= student.id %>">
-                <button
-                  class="btn btn-outline-primary btn-sm mx-1"
-                  type="button"
-                >
-                  voir
-                </button>
-              </a>
-              <% if(userId && isAuth) { %>
-              <form action="/admin/students/<%= student.id %>">
-                <input type="hidden" value="<%= student.id %>" />
-                <button
-                  class="btn btn-outline-danger btn-sm mx-1"
-                  type="button"
-                >
-                  désactiver
-                </button>
-              </form>
-              <% } %>
-            </td>
-          </tr>
-          <% }) %>
-        </tbody>
-        <tfoot>
-          <tr>
-            <th class="text-danger text-start">#</th>
-            <th class="text-danger text-start" colspan="2">noms</th>
-            <th class="text-danger text-start">email</th>
-            <th class="text-danger text-start">actions</th>
-          </tr>
-        </tfoot>
-      </table>
-    </div>
-    <!-- bottom butons -->
-    <div class="d-flex justify-content-center my-3">
-      <% if(!hasPreviousPage && previousPage > 1 ){ %>
-      <a href="/admin/students" class="btn btn-sm px-3 m-2 btn-outline-danger"
-        >1</a
-      >
-
-      <% }%> <% if(currentPage !== 1){ %>
-      <a
-        href="/admin/students?page=<%= previousPage %>"
-        class="btn btn-sm px-3 m-2 btn-outline-danger"
-        ><<</a
-      >
-
-      <% }%>
-      <a
-        href="/admin/students?page=<%= currentPage %>"
-        class="btn btn-sm px-3 m-2 btn-outline-danger active"
-        ><%= currentPage %></a
-      >
-      <% if (hasNextPage) { %>
-      <a
-        href="/admin/students?page=<%= nextPage %>"
-        class="btn btn-sm px-3 m-2 btn-outline-danger"
-        >>></a
-      >
-      <% } %> <% if (lastPage && lastPage !== currentPage && lastPage !==
-      nextPage) { %>
-      <a
-        href="/admin/students?page=<%= lastPage %>"
-        class="btn btn-sm px-3 m-2 btn-outline-danger"
-        ><%= lastPage %></a
-      >
-      <% } %>
-    </div>
+    <table class="table table-danger table-hover shadow p-2 rounded">
+      <thead class="thead-light">
+        <tr>
+          <th class="text-danger">#</th>
+          <th class="text-danger">Noms</th>
+          <th class="text-danger">Email</th>
+          <th class="text-danger">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% students.forEach(student => { %>
+        <tr>
+          <td><%= student.id %></td>
+          <td>
+            <%= student.prenom.charAt(0).toUpperCase() + student.prenom.slice(1) +" " + student.nom.toUpperCase() %>
+          </td>
+          <td><%= student.email %></td>
+          <td class="d-flex">
+            <a href="/admin/students/<%= student.id %>">
+              <button class="btn btn-outline-primary btn-sm mx-1" type="button">
+                voir
+              </button>
+            </a>
+            <a href="">
+              <button class="btn btn-outline-success btn-sm mx-1" type="button">
+                Editer
+              </button>
+            </a>
+            <button class="btn btn-outline-danger btn-sm mx-1" type="button">
+              Supprimer
+            </button>
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+      <tfoot>
+        <tr>
+          <th class="text-danger">#</th>
+          <th class="text-danger">Noms</th>
+          <th class="text-danger">Email</th>
+          <th class="text-danger">Actions</th>
+        </tr>
+      </tfoot>
+    </table>
   </div>
 </div>
+
 <%- include('../includes/footer.ejs')%>

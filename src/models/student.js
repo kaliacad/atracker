@@ -1,10 +1,11 @@
 import { DataTypes } from "sequelize";
+
 import sequelize from "../db/config.js";
 
-const Student = sequelize.define("Student", {
+const student = sequelize.define("student", {
     id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
         allowNull: false,
         primaryKey: true,
     },
@@ -27,4 +28,4 @@ const Student = sequelize.define("Student", {
     },
 });
 
-export default Student;
+export default student;
