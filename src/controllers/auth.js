@@ -36,7 +36,6 @@ export async function postLogin(req, res, next) {
 
             return res.redirect("/admin");
         }
-        res.redirect("/");
     } catch (error) {
         const err = new Error(error);
         err.httpStatusCode = 500;
