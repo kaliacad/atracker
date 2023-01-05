@@ -15,18 +15,20 @@
         </button></a
       >
     </div>
-    <table class="table table-danger table-hover shadow p-2 rounded">
+    <table class="table shadow p-2 rounded">
       <thead class="thead-light">
-        <tr>
-          <th class="text-danger">#</th>
-          <th class="text-danger">Noms</th>
-          <th class="text-danger">Email</th>
-          <th class="text-danger">Actions</th>
+        <tr class="text-danger" >
+          <th >#</th>
+          <th >#</th>
+          <th >Noms</th>
+          <th >Email</th>
+          <th >Actions</th>
         </tr>
       </thead>
       <tbody>
         <% students.forEach(student => { %>
-        <tr>
+        <tr  >
+          <td class=" flex justify-content-center  rounded-5 bg-success " ><%= student.prenom.charAt(0).toUpperCase() %></td>
           <td><%= student.id %></td>
           <td>
             <%= student.prenom.charAt(0).toUpperCase() + student.prenom.slice(1) +" " + student.nom.toUpperCase() %>
@@ -43,6 +45,7 @@
                 Editer
               </button>
             </a>
+            
             <button class="btn btn-outline-danger btn-sm mx-1" type="button">
               Supprimer
             </button>
