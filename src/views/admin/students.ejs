@@ -17,30 +17,33 @@
         <table class="table table-hover">
           <thead class="thead-light">
             <tr>
-              <th></th>
+              <th>#</th>
               <th>Noms</th>
               <th>Email</th>
+              <th>Photo</th>
               <th>Id</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody class=" font14 ">
-            <% students.forEach(student=> { %>
+            <% students.forEach((student, i)=> { %>
               <tr class=" ">
                 <td>
-                  <div class=" rounded-name-character">
-                    <%= student.prenom.charAt(0).toUpperCase() %>
-                  </div>
+                  <%= i + 1 %>
                 </td>
-
                 <td>
                   <%= student.prenom.charAt(0).toUpperCase() + student.prenom.slice(1) +" " + student.nom.toUpperCase() %>
                 </td>
           <td ><%= student.email %></td>
           <td>
-            <div class=" idContainer">
-                    <%= student.id %>
+            <div class=" rounded-name-character">
+                    <%= student.prenom.charAt(0).toUpperCase() %>
       </div>
+      </td>
+      <td>
+        <div class=" idContainer">
+          <%= student.id %>
+        </div>
 
       </td>
       <td class=" d-flex">
@@ -64,11 +67,12 @@
         </tbody>
         <tfoot>
           <tr>
-            <th class=""></th>
-            <th class="">Noms</th>
-            <th class="">Email</th>
-            <th class="">Id</th>
-            <th class="">Actions</th>
+            <th>#</th>
+            <th>Noms</th>
+            <th>Email</th>
+            <th>Photo</th>
+            <th>Id</th>
+            <th>Actions</th>
           </tr>
         </tfoot>
         </table>

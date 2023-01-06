@@ -1510,6 +1510,7 @@
 [0mGET /css/bootstrap.min.css [36m304[0m 1.282 ms - -[0m
 [0mGET /css/style.css [36m304[0m 5.789 ms - -[0m
 [0mGET /js/bootstrap.min.js [36m304[0m 2.938 ms - -[0m
+<<<<<<< HEAD
 [0mGET /admin/users [32m200[0m 1381.986 ms - 6821[0m
 [0mGET /css/bootstrap.min.css [36m304[0m 0.958 ms - -[0m
 [0mGET /css/style.css [32m200[0m 2.682 ms - 6281[0m
@@ -1578,3 +1579,5 @@
 [0mGET /css/style.css [36m304[0m 1.427 ms - -[0m
 [0mGET /css/bootstrap.min.css [36m304[0m 1.040 ms - -[0m
 [0mGET /js/bootstrap.min.js [36m304[0m 1.119 ms - -[0m
+=======
+>>>>>>> student_page_design
