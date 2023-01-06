@@ -4,7 +4,7 @@
   font-family: "Inter", sans-serif;
 }
 .font14 {
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .rounded-name-character {
@@ -23,6 +23,8 @@
   justify-content: start;
   align-items: center;
 }
+
+/* User Page Styles  */
 
 /* Other styles  */
 
