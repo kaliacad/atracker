@@ -1,9 +1,30 @@
+/* Student Page Styles  */
+
 .fontTable {
-  font-family: 'Inter', sans-serif; 
+  font-family: "Inter", sans-serif;
 }
-.font14{
+.font14 {
   font-size: 12px;
 }
+
+.rounded-name-character {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #b8b8b8;
+  color: black;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.center-table-text {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+/* Other styles  */
 
 .hero {
   background: linear-gradient(#6789d1da, #d1676ce5),
@@ -315,8 +336,6 @@ input {
   outline: none !important;
   border: none;
 }
-
-
 
 @media (max-width: 768px) {
   .container {

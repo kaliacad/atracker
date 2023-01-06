@@ -1,12 +1,12 @@
 <%- include('../includes/head.ejs')%>
   <%- include('../includes/header.ejs')%>
 
-    <div class="container fontTable w-100 h-100 mt-5 p-5 d-flex flex-column justify-content-center">
+    <div class="container fontTable w-100 h-100 mt-5 pt-5 d-flex flex-column justify-content-center">
       <div class="col-md-12 d-flex flex-column justify-content-center">
         <div class="d-flex flex-row w-100 justify-content-between">
-          <h3 class="text-center align-start text-secondary">
+          <h5 class="text-center align-start text-secondary">
             <%= title %>
-          </h3>
+          </h5>
           <a href="/admin/add-student"><button class="btn btn-outline-primary" type="button">
               Nouveau
             </button></a>
@@ -14,59 +14,69 @@
 
 
 
-        <table class="table shadow p-2 rounded">
+        <table class="table table-hover">
           <thead class="thead-light">
-            <tr class=" bg-$green-100">
-              <th></th>
+            <tr>
+              <th>#</th>
               <th>Noms</th>
               <th>Email</th>
+              <th>Photo</th>
               <th>Id</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody class=" font14 ">
-            <% students.forEach(student=> { %>
-              <tr>
-                <td class=" d-flex justify-content-center align-items-center rounded-circle bg-secondary opacity-50 ">
-                  <%= student.prenom.charAt(0).toUpperCase() %>
+            <% students.forEach((student, i)=> { %>
+              <tr class=" ">
+                <td>
+                  <%= i + 1 %>
                 </td>
-
                 <td>
                   <%= student.prenom.charAt(0).toUpperCase() + student.prenom.slice(1) +" " + student.nom.toUpperCase() %>
                 </td>
           <td ><%= student.email %></td>
           <td>
-            <%= student.id %>
-          </td>
-          <td class=" d-flex">
-                    <a href="/admin/students/<%= student.id %>">
-                      <button title="Voir" class="btn btn-outline-primary btn-sm mx-1" type="button">
-                        <i class="fa-solid fa-eye"></i>
-                      </button>
-                    </a>
-                    <a href="">
-                      <button title="Editer" class="btn btn-outline-success btn-sm mx-1" type="button">
-                        <i class="fa-solid fa-pen-to-square"></i>
-                      </button>
-                    </a>
-
-                    <button title="Supprimer" class="btn btn-outline-danger btn-sm mx-1" type="button">
-                      <i class="fa fa-trash-can"></i>
-                    </button>
-                </td>
-              </tr>
-              <% }) %>
-          </tbody>
-          <tfoot>
-            <tr>
-              <th class="">#</th>
-              <th class="">Noms</th>
-              <th class="">Email</th>
-              <th class="">Actions</th>
-            </tr>
-          </tfoot>
-        </table>
+            <div class=" rounded-name-character">
+                    <%= student.prenom.charAt(0).toUpperCase() %>
       </div>
+      </td>
+      <td>
+        <div class=" idContainer">
+          <%= student.id %>
+        </div>
+
+      </td>
+      <td class=" d-flex">
+        <a href="/admin/students/<%= student.id %>">
+          <button title="Voir" class="btn btn-outline-primary btn-sm mx-1" type="button">
+            <i class="fa-solid fa-eye"></i>
+          </button>
+        </a>
+        <a href="">
+          <button title="Editer" class="btn btn-outline-success btn-sm mx-1" type="button">
+            <i class="fa-solid fa-pen-to-square"></i>
+          </button>
+        </a>
+
+        <button title="Supprimer" class="btn btn-outline-danger btn-sm mx-1" type="button">
+          <i class="fa fa-trash-can"></i>
+        </button>
+      </td>
+      </tr>
+      <% }) %>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th>#</th>
+            <th>Noms</th>
+            <th>Email</th>
+            <th>Photo</th>
+            <th>Id</th>
+            <th>Actions</th>
+          </tr>
+        </tfoot>
+        </table>
+    </div>
     </div>
 
     <%- include('../includes/footer.ejs')%>
