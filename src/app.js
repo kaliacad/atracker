@@ -20,7 +20,7 @@ import authRoutes from "./routes/auth.js";
 import publicRoutes from "./routes/public.js";
 
 // models
-import user from "./models/user.js";
+import User from "./models/User.js";
 import student from "./models/student.js";
 import presence from "./models/presence.js";
 import cohorte from "./models/cohorte.js";
@@ -51,11 +51,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // database relations
-user.hasMany(student, {
+User.hasMany(student, {
     onDelete: "RESTRICT",
     onUpdate: "RESTRICT",
 });
-student.belongsTo(user);
+student.belongsTo(User);
 
 cohorte.hasMany(student, {
     onDelete: "RESTRICT",
@@ -71,7 +71,7 @@ presence.belongsTo(student);
 
 try {
     await sequelize.authenticate();
-    sequelize.sync({ alter: false });
+    sequelize.sync({ alter: true });
     console.log("connection to db etablished ");
 } catch (error) {
     console.log("Unable to connect to the database", error);

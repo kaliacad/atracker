@@ -14,10 +14,9 @@ import {
     postDeleleStudent,
     postEditStudent,
     getIndex,
-    getUsers,
-    postUser,
-    getUserForm,
 } from "../controllers/admin.js";
+
+import { all, create, form } from "../controllers/UserController.js"
 
 const router = Router();
 
@@ -36,8 +35,8 @@ router.post("/students/delete", isAuth, postDeleleStudent);
 router.post("/students/edit", postEditStudent);
 
 // users routes
-router.get("/users", isAuth, getUsers);
-router.get("/add-user", isAuth, getUserForm);
-router.post("/add-user", isAuth, postUser);
+router.get("/users", isAuth, all);
+router.get("/add-user", isAuth, form);
+router.post("/add-user", isAuth, create);
 
 export default router;
