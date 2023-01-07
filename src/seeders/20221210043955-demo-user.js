@@ -1,4 +1,5 @@
 'use strict';
+const { v4: uuidv4 } = require('uuid');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -9,6 +10,7 @@ module.exports = {
      * admin123
     */
    await queryInterface.bulkInsert('users', [{
+    id: uuidv4(),
     noms: 'Admin user',
     email: 'admin@gmail.com',
     username: 'admin',
@@ -20,7 +22,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-     await queryInterface.bulkDelete('users', null, {});
-    //  await queryInterface.delete
+     await queryInterface.bulkDelete('users', {username: "admin"}, {});
   }
 };

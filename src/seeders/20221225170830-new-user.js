@@ -1,12 +1,15 @@
 'use strict';
+const { v4: uuidv4 } = require('uuid');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
     /**
+     * username: user
      * password: admin123
      */
     await queryInterface.bulkInsert('users', [{
+      id: uuidv4(),
       noms: 'Normal user',
       email: 'normal@gmail.com',
       username: 'user',
@@ -18,11 +21,7 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    /**
-     * Add commands to revert seed here.
-     *
-     * Example:
-     * await queryInterface.bulkDelete('People', null, {});
-     */
+  
+     await queryInterface.bulkDelete('users', {username: "user"}, {});
   }
 };
