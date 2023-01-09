@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-unresolved
 import pool from "../db/pool.js";
 import { createStudentsTable, insertStudents } from "./queries.js";
 

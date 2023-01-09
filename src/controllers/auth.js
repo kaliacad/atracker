@@ -1,9 +1,10 @@
 import bcrypt from "bcryptjs";
 
-import userModel from "../models/user.js";
+import userModel from "../models/User.js";
 
 export function getLogin(req, res) {
     if (res.user) return res.redirect("/admin");
+    
     return res.render("auth/login", {
         title: "Login",
         userId: undefined,
@@ -22,7 +23,7 @@ export async function postLogin(req, res, next) {
         });
 
         if (!user) {
-            return res.redirect("/login");
+            return res.redirect("/");
         }
 
         const verifiedPassword = await bcrypt.compare(
@@ -33,13 +34,13 @@ export async function postLogin(req, res, next) {
         if (user && verifiedPassword) {
             req.session.user = user;
             res.cookie("session", user);
-
+console.log("session name" + req.session.user.password);
             return res.redirect("/admin");
         }
-        res.redirect("/login");
     } catch (error) {
         const err = new Error(error);
         err.httpStatusCode = 500;
+
         return next(err);
     }
 }
@@ -50,6 +51,6 @@ export function postLogout(req, res) {
     res.status(200).clearCookie("connect.sid", {
         path: "/",
     });
-    
-    res.redirect("/login");
+
+    res.redirect("/");
 }

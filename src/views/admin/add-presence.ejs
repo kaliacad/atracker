@@ -1,22 +1,32 @@
 <%- include('../includes/head.ejs')%> <%- include('../includes/header.ejs')%>
 
 <div
-  class="login container-fluid w-100 h-100 pt-5 mb-5 d-flex justify-content-center align-items-start"
+  class="login presence-section container-fluid w-100 h-100 pt-5 mb-5 d-flex justify-content-center align-items-start"
 >
   <div class="container mx-sm-1 mx-5">
     <form action="/admin/add-presence" method="POST">
       <div
-        class="d-flex flex-row w-100 justify-content-between flex-wrap align-items-center mt-5"
+        class="d-flex flex-columns flex-sm-row w-100 justify-content-between flex-wrap align-items-sm-center align-items-end mt-3"
       >
-        <h5 class="text-center align-start text-secondary">
+        <h3
+          class="text-center d-none d-sm-block align-start my-2 text-secondary"
+        >
           Faire la presence
-        </h5>
-        <p class="text-secondary m-0"><%= new Date().toLocaleString() %></p>
-        <div class="border-danger">
+        </h3>
+        <p class="text-secondary m-0 d-none d-sm-block">
+          <%= new Date().toLocaleString() %>
+        </p>
+        <p>
+          <input
+            type="date"
+            name="date"
+            value=" <%= new Date().toLocaleString() %>"
+          />
+        </p>
+        <div class="border-danger my-2">
           <div class="form-check form-check-inline">
             <label class="form-check-label">
               <input
-                class="form-check-input"
                 type="radio"
                 name="isMatin"
                 id="isMatin"
@@ -26,26 +36,20 @@
               Matin
             </label>
           </div>
-          <div class="form-check form-check-inline">
+          <div class="form-check my-2 form-check-inline">
             <label class="form-check-label">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="isMatin"
-                id="isMatin"
-                value="false"
-              />
+              <input type="radio" name="isMatin" id="isMatin" value="false" />
               Apres midi
             </label>
           </div>
         </div>
       </div>
-      <div class="overflow-auto">
+      <div class="presence-table overflow-auto">
         <table class="table table-light table-hover shadow-sm p-2">
           <thead class="thead-light">
             <tr>
               <th class="text-danger text-center">#</th>
-              <th class="text-danger text-center" colspan="2">noms</th>
+              <th class="text-danger text-start" colspan="2">Noms</th>
               <th class="text-danger text-center">Present</th>
               <th class="text-danger text-center">R (justifié)</th>
               <th class="text-danger text-center">A (justifié)</th>
@@ -56,7 +60,7 @@
             <% students.forEach((student, i) => { %>
             <tr>
               <td class="text-center text-muted"><%= i+1 %></td>
-              <td class="text-center" colspan="2">
+              <td class="text-start" colspan="2">
                 <%= student.prenom %> <%= student.nom %>
               </td>
               <td class="text-center">
@@ -107,7 +111,7 @@
           </tfoot>
         </table>
       </div>
-      <div class="form-group d-flex justify-content-center">
+      <div class="form-group d-flex justify-content-end">
         <button class="btn btn-danger px-5" type="submit">Enregistrer</button>
       </div>
     </form>
