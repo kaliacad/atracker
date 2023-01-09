@@ -92,7 +92,6 @@ export async function getStudents(req, res, next) {
         });
 
         const totalStudents = (await Student.findAndCountAll()).count;
-        console.log("count ", totalStudents);
         res.render("admin/students", {
             userId,
             role,
