@@ -1,68 +1,82 @@
-<%- include('../includes/head.ejs')%> 
-<%- include('../includes/header.ejs')%>
+<%- include('../includes/head.ejs')%>
+  <%- include('../includes/header.ejs')%>
 
-<div
-  class="container w-100 h-100 mt-5 p-5 d-flex flex-column justify-content-center"
->
-  <div class="col-md-12 d-flex flex-column justify-content-center">
-    <div class="d-flex flex-row w-100 justify-content-between">
-      <h3 class="text-center align-start text-secondary">
-        <%= title %>
-      </h3>
-      <a href="/admin/add-student"
-        ><button class="btn btn-outline-primary" type="button">
-          Nouveau
-        </button></a
-      >
-    </div>
-    <table class="table shadow p-2 rounded">
-      <thead class="thead-light">
-        <tr class="text-danger" >
-          <th >#</th>
-          <th >#</th>
-          <th >Noms</th>
-          <th >Email</th>
-          <th >Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% students.forEach(student => { %>
-        <tr  >
-          <td class=" flex justify-content-center  rounded-5 bg-success " ><%= student.prenom.charAt(0).toUpperCase() %></td>
-          <td><%= student.id %></td>
+    <div class="container fontTable w-100 h-100 mt-5 pt-5 d-flex flex-column justify-content-center">
+      <div class="col-md-12 d-flex flex-column justify-content-center">
+        <div class="d-flex flex-row w-100 justify-content-between">
+          <h5 class="text-center align-start text-secondary">
+            <%= title %>
+          </h5>
+          <a href="/admin/add-student"><button class="btn btn-outline-primary" type="button">
+              Nouveau
+            </button></a>
+        </div>
+
+
+
+        <table class="table table-hover">
+          <thead class="thead-light">
+            <tr>
+              <th>#</th>
+              <th>Noms</th>
+              <th>Email</th>
+              <th>Photo</th>
+              <th>Id</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody class=" font14 ">
+            <% students.forEach((student, i)=> { %>
+              <tr class=" ">
+                <td>
+                  <%= i + 1 %>
+                </td>
+                <td>
+                  <%= student.prenom.charAt(0).toUpperCase() + student.prenom.slice(1) +" " + student.nom.toUpperCase() %>
+                </td>
+          <td ><%= student.email %></td>
           <td>
-            <%= student.prenom.charAt(0).toUpperCase() + student.prenom.slice(1) +" " + student.nom.toUpperCase() %>
-          </td>
-          <td><%= student.email %></td>
-          <td class="d-flex">
-            <a href="/admin/students/<%= student.id %>">
-              <button class="btn btn-outline-primary btn-sm mx-1" type="button">
-                voir
-              </button>
-            </a>
-            <a href="">
-              <button class="btn btn-outline-success btn-sm mx-1" type="button">
-                Editer
-              </button>
-            </a>
-            
-            <button class="btn btn-outline-danger btn-sm mx-1" type="button">
-              Supprimer
-            </button>
-          </td>
-        </tr>
-        <% }) %>
-      </tbody>
-      <tfoot>
-        <tr>
-          <th class="text-danger">#</th>
-          <th class="text-danger">Noms</th>
-          <th class="text-danger">Email</th>
-          <th class="text-danger">Actions</th>
-        </tr>
-      </tfoot>
-    </table>
-  </div>
-</div>
+            <div class=" rounded-name-character">
+                    <%= student.prenom.charAt(0).toUpperCase() %>
+      </div>
+      </td>
+      <td>
+        <div class=" idContainer">
+          <%= student.id %>
+        </div>
 
-<%- include('../includes/footer.ejs')%>
+      </td>
+      <td class=" d-flex">
+        <a href="/admin/students/<%= student.id %>">
+          <button title="Voir" class="btn btn-outline-primary btn-sm mx-1" type="button">
+            <i class="fa-solid fa-eye"></i>
+          </button>
+        </a>
+        <a href="">
+          <button title="Editer" class="btn btn-outline-success btn-sm mx-1" type="button">
+            <i class="fa-solid fa-pen-to-square"></i>
+          </button>
+        </a>
+
+        <button title="Supprimer" class="btn btn-outline-danger btn-sm mx-1" type="button">
+          <i class="fa fa-trash-can"></i>
+        </button>
+      </td>
+      </tr>
+      <% }) %>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th>#</th>
+            <th>Noms</th>
+            <th>Email</th>
+            <th>Photo</th>
+            <th>Id</th>
+            <th>Actions</th>
+          </tr>
+        </tfoot>
+        </table>
+    </div>
+    </div>
+
+    <%- include('../includes/footer.ejs')%>
