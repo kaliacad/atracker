@@ -7,7 +7,7 @@
   "scripts": {
     "runQuery": "node ./src/utils/runQuery",
     "start": "nodemon ./",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha — timeout 100000",
     "lint": "eslint src/**/*.js",
     "lint:fix": "eslint . src/**/*.js --fix",
     "seed": "npx sequelize-cli db:seed:all",
@@ -16,7 +16,10 @@
     "migrate:revert": "npx sequelize-cli db:migrate:undo",
     "migrate": "npx sequelize-cli db:migrate"
   },
-  "keywords": ["education", "tracker"],
+  "keywords": [
+    "education",
+    "tracker"
+  ],
   "author": [
     "Abel",
     "cedric"
@@ -35,6 +38,7 @@
     "express": "^4.18.1",
     "express-pg-session": "^1.1.0",
     "express-session": "^1.17.3",
+    "mocha": "^10.2.0",
     "morgan": "^1.10.0",
     "nodemailer": "^6.7.6",
     "nodemon": "^2.0.18",

@@ -9,4 +9,5 @@ We are using Sequelize as it allows us to better track db migration thanks to `s
 - `npm migrate:revert`: revert migration
 - `npm seed`: seed db with dummy data (as for now, you'll have an admin user with admin123 as password)
 - `npm seed:revert`: revert seeding
+- `npx sequelize-cli db:seed(:undo) --seed filaName.js`: execute a specific seed file
 
