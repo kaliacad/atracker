@@ -97,7 +97,7 @@ export async function getStudents(req, res, next) {
 
     try {
         const students = await Student.findAll({
-            order: [["createdAt", "ASC"]],
+            // order: [["createdAt", "ASC"]],
             limit: STUDENT_PER_PAGE,
             offset,
         });
