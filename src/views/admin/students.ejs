@@ -21,7 +21,7 @@
               <th>Noms</th>
               <th>Email</th>
               <th>Photo</th>
-              <th>Id</th>
+              <!-- <th>Id</th> -->
               <th>Actions</th>
             </tr>
           </thead>
@@ -40,12 +40,12 @@
                     <%= student.prenom.charAt(0).toUpperCase() %>
       </div>
       </td>
-      <td>
+      <!-- <td>
         <div class=" idContainer">
           <%= student.id %>
         </div>
 
-      </td>
+      </td> -->
       <td class=" d-flex">
         <a href="/admin/students/<%= student.id %>">
           <button title="Voir" class="btn btn-outline-primary btn-sm mx-1" type="button">
@@ -71,7 +71,7 @@
             <th>Noms</th>
             <th>Email</th>
             <th>Photo</th>
-            <th>Id</th>
+            <!-- <th>Id</th> -->
             <th>Actions</th>
           </tr>
         </tfoot>
