@@ -1,5 +1,4 @@
-import User, { saveUser } from "../models/User.js";
-import { findUsers, findUserByUsername } from "../models/User.js";
+import { findUsers, findUserByUsername, saveUser } from "../models/User.js"
 
 export async function all(req, res, next) {
     try {

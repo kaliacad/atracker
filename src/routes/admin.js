@@ -16,16 +16,12 @@ import {
     getIndex,
 } from "../controllers/admin.js";
 
-import { all, create, form } from "../controllers/UserController.js"
-
 const router = Router();
 
 router.get("/", isAuth, getIndex);
 
 // students route
 router.get("/add-student", isAuth, getAddStudent);
-// router.get("/add-user", isAuth, getAddUser);
-// router.post("/add-user", isAuth, postAddUser);
 router.post("/add-student", isAuth, postAddStudent);
 router.get("/add-presence", isAuth, getAddPresence);
 router.post("/add-presence", isAuth, postAddPresence);
@@ -33,10 +29,5 @@ router.get("/students", getStudents);
 router.get("/students/:id", getSingleStudent);
 router.post("/students/delete", isAuth, postDeleleStudent);
 router.post("/students/edit", postEditStudent);
-
-// users routes
-router.get("/users", isAuth, all);
-router.get("/add-user", isAuth, form);
-router.post("/add-user", isAuth, create);
 
 export default router;

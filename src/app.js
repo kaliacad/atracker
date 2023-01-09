@@ -7,7 +7,6 @@ import * as url from "url";
 import * as fs from "fs";
 
 import dotenv from "dotenv";
-
 // eslint-disable-next-line import/no-extraneous-dependencies
 import morgan from "morgan";
 import session from "express-session";
@@ -16,20 +15,17 @@ import sendEmail from "./utils/email/sendEmail.js";
 
 // routes
 import adminRoutes from "./routes/admin.js";
-import authRoutes from "./routes/auth.js";
-import publicRoutes from "./routes/public.js";
+import appRouter from "./routes/index.js"
 
 // models
 import User from "./models/User.js";
 import student from "./models/student.js";
 import presence from "./models/presence.js";
 import cohorte from "./models/cohorte.js";
-
 // error controller
-import { getInternalError, getNotFound } from "./controllers/error.js";
-
 // eslint-disable-next-line no-unused-vars
 import sequelize from "./db/config.js";
+import { getInternalError, getNotFound } from "./controllers/error.js";
 
 dotenv.config();
 
@@ -120,9 +116,8 @@ app.use(async (req, res, next) => {
     next();
 });
 
-app.use(authRoutes);
 app.use("/admin", adminRoutes);
-app.use(publicRoutes);
+app.use(appRouter)
 
 app.get("/500", getInternalError);
 app.use(getNotFound);

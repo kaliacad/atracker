@@ -63,7 +63,7 @@ export async function getAddStudent(req, res, next) {
 
         res.render("admin/add-student", {
             userId,
-            title: "New student",
+            title: "Nouvel étudiant",
             cohortes,
             role,
         });
@@ -76,9 +76,9 @@ export async function getAddStudent(req, res, next) {
 
 // eslint-disable-next-line consistent-return
 export async function getStudents(req, res, next) {
-    const { role } = req.user;
+    const role = req.user || null;
 
-    const page =+ req.query.page || 1;
+    const page = +req.query.page || 1;
     const isAuth = (req.user.role === 1 || req.user.role === 2) ?? false;
     const userId = req.user.id || null;
     const offset = (page - 1) * STUDENT_PER_PAGE;
@@ -91,7 +91,6 @@ export async function getStudents(req, res, next) {
         });
 
         const totalStudents = (await Student.findAndCountAll()).count;
-console.log("count ", totalStudents);
         res.render("admin/students", {
             userId,
             role,
@@ -121,13 +120,13 @@ export async function getSingleStudent(req, res, next) {
     const isAuth = (req.user.role === 1 || req.user.role === 2) ?? false;
     if (isNaN(studentId)) return res.redirect("/not-found");
     try {
-        const student = await student.findOne({
+        const student = await Student.findOne({
             where: { id: studentId },
-            include: student.belongsTo(cohorte),
+            include: Student.belongsTo(Cohorte),
         });
 
         const presences = (
-            await presence.findAll({
+            await Presence.findAll({
                 attributes: [
                     "presence",
                     "isMatin",
@@ -154,12 +153,7 @@ export async function getSingleStudent(req, res, next) {
 }
 
 export async function postAddStudent(req, res, next) {
-    const {
-        nom,
-        prenom,
-        email,
-        cohorteId,
-    } = req.body;
+    const { nom, prenom, email, cohorteId } = req.body;
 
     const userId = req.user.id || null;
 
@@ -169,7 +163,7 @@ export async function postAddStudent(req, res, next) {
 
     try {
         const { role } = req.user;
-        await student.create({
+        await Student.create({
             nom,
             prenom,
             email,
