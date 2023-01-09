@@ -12,12 +12,13 @@ import morgan from "morgan";
 import session from "express-session";
 import cookieParser from "cookie-parser";
 import sendEmail from "./utils/email/sendEmail.js";
+
 // routes
 import adminRoutes from "./routes/admin.js";
-import authRoutes from "./routes/auth.js";
+import appRouter from "./routes/index.js"
 
 // models
-import user from "./models/user.js";
+import User from "./models/User.js";
 import student from "./models/student.js";
 import presence from "./models/presence.js";
 import cohorte from "./models/cohorte.js";
@@ -46,11 +47,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // database relations
-user.hasMany(student, {
+User.hasMany(student, {
     onDelete: "RESTRICT",
     onUpdate: "RESTRICT",
 });
-student.belongsTo(user);
+student.belongsTo(User);
 
 cohorte.hasMany(student, {
     onDelete: "RESTRICT",
@@ -115,8 +116,8 @@ app.use(async (req, res, next) => {
     next();
 });
 
-app.use(authRoutes);
 app.use("/admin", adminRoutes);
+app.use(appRouter)
 
 app.get("/500", getInternalError);
 app.use(getNotFound);
