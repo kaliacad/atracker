@@ -2,12 +2,11 @@
 /* eslint-disable no-restricted-globals */
 /* eslint-disable guard-for-in */
 /* eslint-disable consistent-return */
-import bcrypt from "bcryptjs";
 import sequelize from "../db/config.js";
+
 import Cohorte from "../models/cohorte.js";
 import Presence from "../models/presence.js";
 import Student from "../models/student.js";
-import User from "../models/user.js";
 
 const date = new Date().toISOString().split("T")[0];
 
@@ -64,7 +63,7 @@ export async function getAddStudent(req, res, next) {
 
         res.render("admin/add-student", {
             userId,
-            title: "New student",
+            title: "Nouvel étudiant",
             cohortes,
             role,
         });
@@ -111,35 +110,6 @@ export async function getStudents(req, res, next) {
         err.httpStatusCode = 500;
         return next(err);
     }
-}
-
-export async function getUsers(req, res, next) {
-    const userId = req.user.id || null;
-    const { role } = req.user;
-
-    try {
-        const users = await User.findAll({ order: [["noms", "ASC"]] });
-
-        res.render("admin/users", {
-            userId,
-            users,
-            title: "Liste des utilisateurs",
-            role,
-        });
-    } catch (error) {
-        const err = new Error(error);
-        err.httpStatusCode = 500;
-        return next(err);
-    }
-}
-
-export function getUserForm(req, res) {
-    const { role } = req.user;
-    res.render("admin/form/user", {
-        title: "Ajouter un utilisateur",
-        userId: req.user,
-        role,
-    });
 }
 
 export async function getSingleStudent(req, res, next) {
@@ -203,56 +173,6 @@ export async function postAddStudent(req, res, next) {
         });
 
         res.redirect("/admin/students");
-    } catch (error) {
-        const err = new Error(error);
-        err.httpStatusCode = 500;
-        return next(err);
-    }
-}
-
-export function postUser(req, res, next) {
-    const { noms, email, username, password, password2, role } = req.body;
-
-    const userId = req.user.id || null;
-
-    if (password !== password2) {
-        return res.render("admin/form/user", {
-            message: "les mots de passe ne correspondent pas ",
-            title: "Ajouter utilisateur",
-            userId,
-            role: req.user.role,
-        });
-    }
-
-    try {
-        User.findOne({ where: { username } }) // check for uniqueness
-            .then(async (user) => {
-                if (!user) {
-                    const hash = await bcrypt.hash(
-                        password,
-                        await bcrypt.genSalt(10)
-                    );
-                    const newUser = new User({
-                        noms,
-                        email,
-                        username,
-                        password: hash,
-                        userId,
-                        role,
-                    });
-
-                    await newUser.save();
-
-                    res.redirect("/admin/users");
-                } else {
-                    res.render("admin/form/user", {
-                        message: "Username already exists",
-                        title: "Ajouter utilisateur",
-                        userId,
-                        role: req.user.role,
-                    });
-                }
-            });
     } catch (error) {
         const err = new Error(error);
         err.httpStatusCode = 500;
