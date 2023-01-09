@@ -4,14 +4,25 @@
   class="login presence-section container-fluid w-100 h-100 pt-5 mb-5 d-flex justify-content-center align-items-start"
 >
   <div class="container mx-sm-1 mx-5">
-    <form action="" method="post">
+    <form action="/admin/add-presence" method="POST">
       <div
-        class="d-flex flex-columns  flex-sm-row w-100 justify-content-between flex-wrap align-items-sm-center align-items-end mt-3"
+        class="d-flex flex-columns flex-sm-row w-100 justify-content-between flex-wrap align-items-sm-center align-items-end mt-3"
       >
-        <h3 class="text-center d-none d-sm-block align-start my-2 text-secondary">
+        <h3
+          class="text-center d-none d-sm-block align-start my-2 text-secondary"
+        >
           Faire la presence
         </h3>
-        <p class="text-secondary m-0 d-none d-sm-block "><%= new Date().toLocaleString() %></p>
+        <p class="text-secondary m-0 d-none d-sm-block">
+          <%= new Date().toLocaleString() %>
+        </p>
+        <p>
+          <input
+            type="date"
+            name="date"
+            value=" <%= new Date().toLocaleString() %>"
+          />
+        </p>
         <div class="border-danger my-2">
           <div class="form-check form-check-inline">
             <label class="form-check-label">
@@ -27,12 +38,7 @@
           </div>
           <div class="form-check my-2 form-check-inline">
             <label class="form-check-label">
-              <input
-                type="radio"
-                name="isMatin"
-                id="isMatin"
-                value="false"
-              />
+              <input type="radio" name="isMatin" id="isMatin" value="false" />
               Apres midi
             </label>
           </div>
@@ -57,7 +63,7 @@
               <td class="text-start" colspan="2">
                 <%= student.prenom %> <%= student.nom %>
               </td>
-              <td class="text-center ">
+              <td class="text-center">
                 <input
                   type="radio"
                   name="<%= student.id%>"
