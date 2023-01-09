@@ -345,3 +345,11 @@ input {
     padding: 27px;
   }
 }
+
+.presence-table tbody{
+  font-weight: 300;
+}
+
+.presence-section input[type='radio']{
+  accent-color: black
+}
