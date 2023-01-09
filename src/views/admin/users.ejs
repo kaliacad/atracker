@@ -13,42 +13,43 @@
             </button>
           </a>
         </div>
-        <table class="table table-hover">
+        <table class="table table-hover   ">
           <thead class="thead-light">
             <tr>
               <th>#</th>
               <th>Noms</th>
               <th>Nom d'utilisateur</th>
               <th>Email</th>
-              <th>Photo</th>
               <th>Role</th>
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody class=" font14">
+          <tbody class="font14">
             <% users.forEach((user, i)=> { %>
               <tr>
-                <td>
+                <td class=" align-middle ">
                   <%= i + 1 %>
                 </td>
                 <td>
-                  <%= user.noms %>
-                </td>
-                <td>
-                  <%= user.username %>
-                </td>
-                <td>
-                  <%= user.email %>
-                </td>
-                <td>
-                  <div class=" rounded-name-character">
-                    <%= user.noms.charAt(0).toUpperCase() %>
+                  <div class="d-flex align-items-center gap-2 ">
+                    <div class=" rounded-name-character">
+                      <%= user.noms.charAt(0).toUpperCase() %>
+                    </div>
+                    <div>
+                      <%= user.noms %>
+                    </div>
                   </div>
                 </td>
-                <td>
+                <td class="align-middle">
+                  <%= user.username %>
+                </td>
+                <td class="align-middle">
+                  <%= user.email %>
+                </td>
+                <td class="align-middle">
                   <%= user.role==1? 'Super admin' : user.role==2 ? 'admin' : 'attendance' %>
                 </td>
-                <td class="d-flex">
+                <td class=" align-middle">
                   <a href="/admin/users/<%= user.id %>">
                     <button class="btn btn-outline-primary btn-sm mx-1" type="button">
                       <i class="fa-solid fa-eye"></i>
