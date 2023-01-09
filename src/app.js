@@ -7,7 +7,6 @@ import * as url from "url";
 import * as fs from "fs";
 
 import dotenv from "dotenv";
-
 // eslint-disable-next-line import/no-extraneous-dependencies
 import morgan from "morgan";
 import session from "express-session";
@@ -16,20 +15,17 @@ import sendEmail from "./utils/email/sendEmail.js";
 
 // routes
 import adminRoutes from "./routes/admin.js";
-import authRoutes from "./routes/auth.js";
-import publicRoutes from "./routes/public.js";
+import appRouter from "./routes/index.js"
 
 // models
-import user from "./models/user.js";
+import User from "./models/User.js";
 import student from "./models/student.js";
 import presence from "./models/presence.js";
 import cohorte from "./models/cohorte.js";
-
 // error controller
-import { getInternalError, getNotFound } from "./controllers/error.js";
-
 // eslint-disable-next-line no-unused-vars
 import sequelize from "./db/config.js";
+import { getInternalError, getNotFound } from "./controllers/error.js";
 
 dotenv.config();
 
@@ -51,11 +47,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // database relations
-user.hasMany(student, {
+User.hasMany(student, {
     onDelete: "RESTRICT",
     onUpdate: "RESTRICT",
 });
-student.belongsTo(user);
+student.belongsTo(User);
 
 cohorte.hasMany(student, {
     onDelete: "RESTRICT",
@@ -71,7 +67,7 @@ presence.belongsTo(student);
 
 try {
     await sequelize.authenticate();
-    sequelize.sync({ alter: false });
+    sequelize.sync({ alter: true });
     console.log("connection to db etablished ");
 } catch (error) {
     console.log("Unable to connect to the database", error);
@@ -120,9 +116,8 @@ app.use(async (req, res, next) => {
     next();
 });
 
-app.use(authRoutes);
 app.use("/admin", adminRoutes);
-app.use(publicRoutes);
+app.use(appRouter)
 
 app.get("/500", getInternalError);
 app.use(getNotFound);
