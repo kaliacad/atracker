@@ -24,8 +24,6 @@
   align-items: center;
 }
 
-/* Other styles  */
-
 .hero {
   background: linear-gradient(#6789d1da, #d1676ce5),
     url("../images/20220531_141233.jpg") fixed center center;
