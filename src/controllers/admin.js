@@ -248,30 +248,29 @@ export async function getAddPresence(req, res, next) {
 }
 
 export async function postAddPresence(req, res, next) {
-    const students = req.body;
+    const presenceObj = req.body;
     let studentId;
     let presence;
     let isMatin;
     // eslint-disable-next-line no-restricted-syntax
-    for (const i in students) {
-        if (i !== "isMatin") {
-            studentId = i;
-            presence = students[i];
-        } else if (i == "isMatin") {
-            isMatin = students[i];
-        } else {
-            continue;
-        }
-        presence = students[i];
+    for (const property in presenceObj) {
 
-        if (!studentId) break;
+        if (property !== "isMatin" && property !== "date") {
+            studentId = property;
+            presence = presenceObj[property];
+        } 
+        
+        if (property == "isMatin") isMatin = presenceObj[property];
+
         try {
             // eslint-disable-next-line no-await-in-loop
-            await Presence.create({
-                studentId,
-                presence,
-                isMatin,
-            });
+            if(studentId) {
+                await Presence.create({
+                    studentId,
+                    presence,
+                    isMatin,
+                });
+            }
         } catch (error) {
             const err = new Error(error);
             err.httpStatusCode = 500;
