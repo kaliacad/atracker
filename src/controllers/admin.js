@@ -254,15 +254,19 @@ export async function postAddPresence(req, res, next) {
     let isMatin;
     // eslint-disable-next-line no-restricted-syntax
     for (const i in students) {
-        if (i !== "isMatin") {
+        console.log({ i, value: students[i] });
+        if (i == "date") {
+            continue;
+        } else if (i !== "isMatin") {
             studentId = i;
             presence = students[i];
         } else if (i == "isMatin") {
             isMatin = students[i];
+            continue;
         } else {
             continue;
         }
-        presence = students[i];
+        // presence = students[i];
 
         if (!studentId) break;
         try {
