@@ -1,5 +1,5 @@
-## Attendancy book - GDA 
-Attendy tracker app for a bootcamp.
+## Attendance book - GDA 
+Attendance tracker app for a bootcamp or school.
 
 ### Working with the database migration
 We are using Sequelize as it allows us to better track db migration thanks to `sequelize-cli` (to be installed as dev dep)
@@ -11,3 +11,5 @@ We are using Sequelize as it allows us to better track db migration thanks to `s
 - `npm seed:revert`: revert seeding
 - `npx sequelize-cli db:seed(:undo) --seed filaName.js`: execute a specific seed file
 
+## License
+This is an open source app licensed under the MIT license.
