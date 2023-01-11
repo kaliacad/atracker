@@ -950,3 +950,7 @@
 [0mGET /css/style.css [36m304[0m 1.531 ms - -[0m
 [0mGET /css/bootstrap.min.css [36m304[0m 1.495 ms - -[0m
 [0mGET /js/bootstrap.min.js [36m304[0m 1.009 ms - -[0m
+[0mGET /admin/students [36m304[0m 5386.956 ms - -[0m
+[0mGET /css/style.css [32m200[0m 6.592 ms - 6343[0m
+[0mGET /css/bootstrap.min.css [36m304[0m 1.417 ms - -[0m
+[0mGET /js/bootstrap.min.js [36m304[0m 1.403 ms - -[0m

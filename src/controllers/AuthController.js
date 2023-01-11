@@ -1,32 +1,28 @@
 import bcrypt from "bcryptjs";
+import { findUserByUsername } from "../models/User.js"
+import { comparePassword } from "../utils/helper.util.js";
 
 import userModel from "../models/User.js";
 
-export function getLogin(req, res) {
+export function form(req, res) {
     if (res.user) return res.redirect("/admin");
     
     return res.render("auth/login", {
-        title: "Login",
+        title: "Connexion",
         userId: undefined,
     });
 }
 
 // eslint-disable-next-line consistent-return
-export async function postLogin(req, res, next) {
+export async function login(req, res, next) {
     const { username, password } = req.body;
 
     try {
-        const user = await userModel.findOne({
-            where: {
-                username,
-            },
-        });
+        const user = await findUserByUsername(username)
 
-        if (!user) {
-            return res.redirect("/");
-        }
+        if (!user) return res.redirect("/");
 
-        const verifiedPassword = await bcrypt.compare(
+        const verifiedPassword = await comparePassword(
             password,
             user.dataValues.password
         );
@@ -34,7 +30,7 @@ export async function postLogin(req, res, next) {
         if (user && verifiedPassword) {
             req.session.user = user;
             res.cookie("session", user);
-console.log("session name" + req.session.user.password);
+
             return res.redirect("/admin");
         }
     } catch (error) {
@@ -45,7 +41,7 @@ console.log("session name" + req.session.user.password);
     }
 }
 
-export function postLogout(req, res) {
+export function logout(req, res) {
     req.session.destroy();
     res.cookie("session", undefined);
     res.status(200).clearCookie("connect.sid", {
