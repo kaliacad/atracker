@@ -46,7 +46,7 @@ export async function getIndex(req, res, next) {
                 order: ["presence"],
             })
         ).map((ele) => ele.dataValues);
-        return res.render("admin/index", {
+        return res.render("myaccount/index", {
             presencesToday,
             date,
             allPresences,
@@ -69,10 +69,10 @@ export async function getAddStudent(req, res, next) {
         const userId = req.user.id;
 
         if (req.user.role !== 1 && req.user.role !== 2) {
-            return res.redirect("/admin/students");
+            return res.redirect("/myaccount/students");
         }
 
-        res.render("admin/add-student", {
+        res.render("myaccount/add-student", {
             userId,
             title: "Nouvel étudiant",
             cohortes,
@@ -102,7 +102,7 @@ export async function getStudents(req, res, next) {
         });
 
         const totalStudents = (await Student.findAndCountAll()).count;
-        res.render("admin/students", {
+        res.render("myaccount/students", {
             userId,
             role,
             students,
@@ -148,7 +148,7 @@ export async function getSingleStudent(req, res, next) {
             })
         ).map((element) => element.dataValues);
 
-        res.render("admin/one-student", {
+        res.render("myaccount/one-student", {
             isAuth,
             userId,
             student,
@@ -169,7 +169,7 @@ export async function postAddStudent(req, res, next) {
     const userId = req.user.id || null;
 
     if (req.user.role !== 1 && req.user.role !== 2) {
-        return res.redirect("/admin/students");
+        return res.redirect("/myaccount/students");
     }
 
     try {
@@ -183,7 +183,7 @@ export async function postAddStudent(req, res, next) {
             role,
         });
 
-        res.redirect("/admin/students");
+        res.redirect("/myaccount/students");
     } catch (error) {
         const err = new Error(error);
         err.httpStatusCode = 500;
@@ -193,7 +193,7 @@ export async function postAddStudent(req, res, next) {
 
 export async function postEditStudent(req, res, next) {
     if (req.user.role !== 1 && req.user.role !== 2) {
-        return res.redirect("admin/students");
+        return res.redirect("myaccount/students");
     }
     const { noms, email, studentId } = req.body;
     try {
@@ -202,7 +202,7 @@ export async function postEditStudent(req, res, next) {
             email,
             studentId,
         ]);
-        res.redirect(`/admin/students/${studentId}`);
+        res.redirect(`/myaccount/students/${studentId}`);
     } catch (error) {
         const err = new Error(error);
         err.httpStatusCode = 500;
@@ -213,13 +213,13 @@ export async function postEditStudent(req, res, next) {
 export async function postDeleleStudent(req, res, next) {
     try {
         if (req.user.role !== 1 && req.user.role !== 2) {
-            return res.redirect("admin/students");
+            return res.redirect("myaccount/students");
         }
         const { studentId } = req.body;
 
         const student = await Student.findOne({ where: { id: studentId } });
         await student.destroy();
-        res.redirect("/admin/students");
+        res.redirect("/myaccount/students");
     } catch (error) {
         const err = new Error(error);
         err.httpStatusCode = 500;
@@ -234,7 +234,7 @@ export async function getAddPresence(req, res, next) {
 
         const students = await Student.findAll({});
 
-        res.render("admin/add-presence", {
+        res.render("myaccount/add-presence", {
             userId,
             students,
             title: "New attendancy",
@@ -254,17 +254,16 @@ export async function postAddPresence(req, res, next) {
     let isMatin;
     // eslint-disable-next-line no-restricted-syntax
     for (const property in presenceObj) {
-
         if (property !== "isMatin" && property !== "date") {
             studentId = property;
             presence = presenceObj[property];
-        } 
-        
+        }
+
         if (property == "isMatin") isMatin = presenceObj[property];
 
         try {
             // eslint-disable-next-line no-await-in-loop
-            if(studentId) {
+            if (studentId) {
                 await Presence.create({
                     studentId,
                     presence,
@@ -277,5 +276,5 @@ export async function postAddPresence(req, res, next) {
             return next(err);
         }
     }
-    res.redirect("/admin/");
+    res.redirect("/myaccount/");
 }

@@ -15,7 +15,7 @@ import sendEmail from "./utils/email/sendEmail.js";
 
 // routes
 import adminRoutes from "./routes/admin.js";
-import appRouter from "./routes/index.js"
+import appRouter from "./routes/index.js";
 
 // models
 import User from "./models/User.js";
@@ -116,8 +116,8 @@ app.use(async (req, res, next) => {
     next();
 });
 
-app.use("/admin", adminRoutes);
-app.use(appRouter)
+app.use("/myaccount", adminRoutes);
+app.use(appRouter);
 
 app.get("/500", getInternalError);
 app.use(getNotFound);
