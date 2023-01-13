@@ -262,8 +262,8 @@ export async function postAddPresence(req, res, next) {
         if (property == "isMatin") isMatin = presenceObj[property];
 
         try {
-            // eslint-disable-next-line no-await-in-loop
             if (studentId) {
+                // eslint-disable-next-line no-await-in-loop
                 await Presence.create({
                     studentId,
                     presence,
