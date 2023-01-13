@@ -5,6 +5,7 @@
 /* eslint-disable no-restricted-globals */
 /* eslint-disable guard-for-in */
 /* eslint-disable consistent-return */
+import { QueryTypes } from "sequelize";
 import sequelize from "../db/config.js";
 
 import Cohorte from "../models/cohorte.js";
@@ -115,7 +116,7 @@ export async function getStudents(req, res, next) {
             previousPage: page - 1,
             isAuth,
             lastPage: Math.ceil(totalStudents / STUDENT_PER_PAGE),
-            toast: req.flash("toast")[0]
+            toast: req.flash("toast")[0],
         });
     } catch (error) {
         const err = new Error(error);
@@ -199,13 +200,20 @@ export async function postEditStudent(req, res, next) {
     if (req.user.role !== 1 && req.user.role !== 2) {
         return res.redirect("admin/students");
     }
-    const { noms, email, studentId } = req.body;
+    const { nom, prenom, email, studentId } = req.body;
     try {
-        await query("UPDATE students SET noms= $1, email=$2  WHERE id=$3", [
-            noms,
-            email,
-            studentId,
-        ]);
+        await sequelize.query(
+            "UPDATE students SET nom= :nom,  prenom = :prenom, email = :email WHERE id= :studentId",
+            {
+                replacements: {
+                    nom,
+                    prenom,
+                    email,
+                    studentId,
+                },
+                type: QueryTypes.UPDATE,
+            }
+        );
         res.redirect(`/admin/students/${studentId}`);
     } catch (error) {
         const err = new Error(error);
