@@ -115,6 +115,7 @@ export async function getStudents(req, res, next) {
             previousPage: page - 1,
             isAuth,
             lastPage: Math.ceil(totalStudents / STUDENT_PER_PAGE),
+            toast: req.flash("toast")[0]
         });
     } catch (error) {
         const err = new Error(error);
@@ -183,7 +184,15 @@ export async function postAddStudent(req, res, next) {
             role,
         });
 
+
         res.redirect("/myaccount/students");
+
+        req.flash("toast", {
+            message: `Student ${email} created successfully`,
+            severity: "success",
+        });
+        res.redirect("/myaccount/students");
+
     } catch (error) {
         const err = new Error(error);
         err.httpStatusCode = 500;

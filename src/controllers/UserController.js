@@ -13,7 +13,12 @@ export async function all(req, res, next) {
                 title: "Liste des utilisateurs",
                 userId,
                 role,
+
             });
+
+                toast: req.flash("toast")[0]
+            })
+
         }
     } catch (error) {
         const err = new Error(error);
@@ -49,9 +54,18 @@ export async function create(req, res, next) {
                     role,
                 };
 
+
                 const newUser = await saveUser(userData);
 
                 if (newUser) res.redirect("/myaccount/users");
+
+                if (newUser) {
+                    req.flash("toast", {
+                        message: `User ${username} created successfully`,
+                        severity: "success",
+                    });
+                    res.redirect("/myaccount/users");
+             
             }
         } else {
             res.render("myaccount/form/user", {
