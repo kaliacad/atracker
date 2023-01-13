@@ -7,7 +7,7 @@
   <div class="col-md-12 d-flex flex-column justify-content-center">
     <div class="d-flex flex-row w-100 justify-content-between">
       <h5 class="text-center align-start text-secondary"><%= title %></h5>
-      <a href="/admin/add-student"
+      <a href="/myaccount/add-student"
         ><button class="btn btn-outline-primary" type="button">
           Nouveau
         </button></a
@@ -50,7 +50,7 @@
 
                 </td> -->
                 <td class="align-middle">
-                  <a href="/admin/students/<%= student.id %>">
+                  <a href="/myaccount/students/<%= student.id %>">
                     <button title="Voir" class="btn btn-outline-primary btn-sm mx-1" type="button">
                       <i class="fa-solid fa-eye"></i>
                     </button>
@@ -95,31 +95,31 @@
     <!-- bottom butons -->
         <div class="d-flex justify-content-center my-3">
           <% if(!hasPreviousPage && previousPage > 1 ){ %>
-          <a href="/admin/students" class="btn btn-sm px-3 m-2 btn-outline-danger"
+          <a href="/myaccount/students" class="btn btn-sm px-3 m-2 btn-outline-danger"
             >1</a
           >
           <% }%> <% if(currentPage !== 1){ %>
           <a
-            href="/admin/students?page=<%= previousPage %>"
+            href="/myaccount/students?page=<%= previousPage %>"
             class="btn btn-sm px-3 m-2 btn-outline-danger"
             ><i class="fa fa-arrow-left" aria-hidden="true"></i
           ></a>
           <% }%>
           <a
-            href="/admin/students?page=<%= currentPage %>"
+            href="/myaccount/students?page=<%= currentPage %>"
             class="btn btn-sm px-3 m-2 btn-outline-danger active"
             ><%= currentPage %></a
           >
           <% if (hasNextPage) { %>
           <a
-            href="/admin/students?page=<%= nextPage %>"
+            href="/myaccount/students?page=<%= nextPage %>"
             class="btn btn-sm px-3 m-2 btn-outline-danger"
             ><i class="fa fa-arrow-right" aria-hidden="true"></i
           ></a>
           <% } %> <% if (lastPage && lastPage !== currentPage && lastPage !==
           nextPage) { %>
           <a
-            href="/admin/students?page=<%= lastPage %>"
+            href="/myaccount/students?page=<%= lastPage %>"
             class="btn btn-sm px-3 m-2 btn-outline-danger"
             ><%= lastPage %></a
           >

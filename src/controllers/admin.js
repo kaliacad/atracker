@@ -47,7 +47,7 @@ export async function getIndex(req, res, next) {
                 order: ["presence"],
             })
         ).map((ele) => ele.dataValues);
-        return res.render("admin/index", {
+        return res.render("myaccount/index", {
             presencesToday,
             date,
             allPresences,
@@ -70,10 +70,10 @@ export async function getAddStudent(req, res, next) {
         const userId = req.user.id;
 
         if (req.user.role !== 1 && req.user.role !== 2) {
-            return res.redirect("/admin/students");
+            return res.redirect("/myaccount/students");
         }
 
-        res.render("admin/add-student", {
+        res.render("myaccount/add-student", {
             userId,
             title: "Nouvel étudiant",
             cohortes,
@@ -103,7 +103,7 @@ export async function getStudents(req, res, next) {
         });
 
         const totalStudents = (await Student.findAndCountAll()).count;
-        res.render("admin/students", {
+        res.render("myaccount/students", {
             userId,
             role,
             students,
@@ -150,7 +150,7 @@ export async function getSingleStudent(req, res, next) {
             })
         ).map((element) => element.dataValues);
 
-        res.render("admin/one-student", {
+        res.render("myaccount/one-student", {
             isAuth,
             userId,
             student,
@@ -171,7 +171,7 @@ export async function postAddStudent(req, res, next) {
     const userId = req.user.id || null;
 
     if (req.user.role !== 1 && req.user.role !== 2) {
-        return res.redirect("/admin/students");
+        return res.redirect("/myaccount/students");
     }
 
     try {
@@ -184,11 +184,14 @@ export async function postAddStudent(req, res, next) {
             cohorteId,
             role,
         });
+
+        res.redirect("/myaccount/students");
+
         req.flash("toast", {
             message: `Student ${email} created successfully`,
             severity: "success",
         });
-        res.redirect("/admin/students");
+        res.redirect("/myaccount/students");
     } catch (error) {
         const err = new Error(error);
         err.httpStatusCode = 500;
@@ -198,7 +201,7 @@ export async function postAddStudent(req, res, next) {
 
 export async function postEditStudent(req, res, next) {
     if (req.user.role !== 1 && req.user.role !== 2) {
-        return res.redirect("admin/students");
+        return res.redirect("myaccount/students");
     }
     const { nom, prenom, email, studentId } = req.body;
     try {
@@ -214,7 +217,7 @@ export async function postEditStudent(req, res, next) {
                 type: QueryTypes.UPDATE,
             }
         );
-        res.redirect(`/admin/students/${studentId}`);
+        res.redirect(`//myaccount/students/${studentId}`);
     } catch (error) {
         const err = new Error(error);
         err.httpStatusCode = 500;
@@ -225,7 +228,7 @@ export async function postEditStudent(req, res, next) {
 export async function postDesactivateStudent(req, res, next) {
     try {
         if (req.user.role !== 1 && req.user.role !== 2) {
-            return res.redirect("admin/students");
+            return res.redirect("myaccount/students");
         }
         const { studentId } = req.body;
 
@@ -240,7 +243,11 @@ export async function postDesactivateStudent(req, res, next) {
                 type: QueryTypes.UPDATE,
             }
         );
-        res.redirect("/admin/students");
+        req.flash("toast", {
+            message: `Student ${student.dataValues.name} desactivate successfully`,
+            severity: "danger",
+        });
+        res.redirect("/myaccount/students");
     } catch (error) {
         const err = new Error(error);
         err.httpStatusCode = 500;
@@ -251,7 +258,7 @@ export async function postDesactivateStudent(req, res, next) {
 export async function postActivateStudent(req, res, next) {
     try {
         if (req.user.role !== 1 && req.user.role !== 2) {
-            return res.redirect("admin/students");
+            return res.redirect("/myaccount/students");
         }
         const { studentId } = req.body;
 
@@ -266,7 +273,11 @@ export async function postActivateStudent(req, res, next) {
                 type: QueryTypes.UPDATE,
             }
         );
-        res.redirect("/admin/students");
+        req.flash("toast", {
+            message: `Student ${student.dataValues.name} activate successfully`,
+            severity: "success",
+        });
+        res.redirect("//myaccount/students");
     } catch (error) {
         const err = new Error(error);
         err.httpStatusCode = 500;
@@ -281,7 +292,7 @@ export async function getAddPresence(req, res, next) {
 
         const students = await Student.findAll({ where: { isactif: "true" } });
 
-        res.render("admin/add-presence", {
+        res.render("myaccount/add-presence", {
             userId,
             students,
             title: "New attendancy",
@@ -323,9 +334,5 @@ export async function postAddPresence(req, res, next) {
             return next(err);
         }
     }
-    req.flash("toast", {
-        message: "Attendaces added",
-        severity: "success",
-    });
-    res.redirect("/admin/");
+    res.redirect("/myaccount/");
 }
