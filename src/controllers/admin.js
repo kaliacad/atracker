@@ -222,7 +222,7 @@ export async function postEditStudent(req, res, next) {
     }
 }
 
-export async function postDeleleStudent(req, res, next) {
+export async function postDesactivateStudent(req, res, next) {
     try {
         if (req.user.role !== 1 && req.user.role !== 2) {
             return res.redirect("admin/students");
@@ -230,7 +230,42 @@ export async function postDeleleStudent(req, res, next) {
         const { studentId } = req.body;
 
         const student = await Student.findOne({ where: { id: studentId } });
-        await student.destroy();
+        await sequelize.query(
+            "UPDATE students SET isactif= :isActif WHERE id= :studentId",
+            {
+                replacements: {
+                    isActif: false,
+                    studentId: student.dataValues.id,
+                },
+                type: QueryTypes.UPDATE,
+            }
+        );
+        res.redirect("/admin/students");
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+}
+
+export async function postActivateStudent(req, res, next) {
+    try {
+        if (req.user.role !== 1 && req.user.role !== 2) {
+            return res.redirect("admin/students");
+        }
+        const { studentId } = req.body;
+
+        const student = await Student.findOne({ where: { id: studentId } });
+        await sequelize.query(
+            "UPDATE students SET isactif= :isActif WHERE id= :studentId",
+            {
+                replacements: {
+                    isActif: true,
+                    studentId: student.dataValues.id,
+                },
+                type: QueryTypes.UPDATE,
+            }
+        );
         res.redirect("/admin/students");
     } catch (error) {
         const err = new Error(error);
@@ -244,7 +279,7 @@ export async function getAddPresence(req, res, next) {
         const userId = req.user.id;
         const { role } = req.user;
 
-        const students = await Student.findAll({});
+        const students = await Student.findAll({ where: { isactif: "true" } });
 
         res.render("admin/add-presence", {
             userId,
@@ -288,5 +323,9 @@ export async function postAddPresence(req, res, next) {
             return next(err);
         }
     }
+    req.flash("toast", {
+        message: "Attendaces added",
+        severity: "success",
+    });
     res.redirect("/admin/");
 }

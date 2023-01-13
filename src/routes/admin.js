@@ -11,8 +11,9 @@ import {
     postAddPresence,
     getStudents,
     getSingleStudent,
-    postDeleleStudent,
+    postDesactivateStudent,
     postEditStudent,
+    postActivateStudent,
     getIndex,
 } from "../controllers/admin.js";
 
@@ -26,8 +27,9 @@ router.post("/add-student", isAuth, postAddStudent);
 router.get("/add-presence", isAuth, getAddPresence);
 router.post("/add-presence", isAuth, postAddPresence);
 router.get("/students", getStudents);
+router.post("/students/desactivate", isAuth, postDesactivateStudent);
+router.post("/students/activate", isAuth, postActivateStudent);
 router.get("/students/:id", getSingleStudent);
-router.post("/students/delete", isAuth, postDeleleStudent);
 router.post("/students/edit", postEditStudent);
 
 export default router;

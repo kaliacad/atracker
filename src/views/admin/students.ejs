@@ -60,10 +60,23 @@
                       <i class="fa-solid fa-pen-to-square"></i>
                     </button>
                   </a>
-
-                  <button title="Supprimer" class="btn btn-outline-danger btn-sm mx-1" type="button">
-                    <i class="fa fa-trash-can"></i>
-                  </button>
+                  <% if(student.isactif == true) { %>
+                    <form action="/admin/students/desactivate" class="mx-1" style="display: inline;" method="POST">
+                      <input  type="text" name="studentId" value="<%= student.id%>" hidden/>
+                      <button title="Desactiver" class="btn btn-outline-danger btn-sm " type="submit">
+                        <!-- <i class="fa fa-trash-can"></i> -->
+                        <i class="fa fa-lock" aria-hidden="true"></i>
+                      </button>
+                    </form>
+                  <% } else { %>
+                    <form action="/admin/students/activate" class="mx-1" style="display: inline;" method="POST">
+                      <input  type="text" name="studentId"  value="<%= student.id%>" hidden/>
+                      <button title="Activer" class="btn btn-outline-success btn-sm " type="submit">
+                        <i class="fa fa-unlock" aria-hidden="true"></i>
+                      </button>
+                    </form>
+                  <% } %>
+                  
                 </td>
               </tr>
               <% }) %>

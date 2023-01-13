@@ -1,3 +1,4 @@
 node_modules
 .env
 src/access.log
+*/**/access.log

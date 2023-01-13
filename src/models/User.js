@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 
 import sequelize from "../db/config.js";
-import { createPassword } from "../utils/helper.util.js"
+import { createPassword } from "../utils/helper.util.js";
 
 const userSchema = {
     id: {
@@ -29,18 +29,19 @@ const userSchema = {
         type: DataTypes.INTEGER,
         allowNull: false,
         defaultValue: 3,
-    }
+    },
 };
 
-const User = sequelize.define('user', userSchema, { timestamps: true })
+const User = sequelize.define("user", userSchema, { timestamps: true });
 
 // util functions on User model
-export const findUsers = User.findAll()
+export const findUsers = User.findAll();
 
-export const findUserByUsername = username => User.findOne({ where: { username, } })
+export const findUserByUsername = (username) =>
+    User.findOne({ where: { username } });
 
-export const saveUser = async userData => {
-    const hashPassword = await createPassword(userData.password)
+export const saveUser = async (userData) => {
+    const hashPassword = await createPassword(userData.password);
     const user = {
         noms: userData.noms,
         email: userData.email,
@@ -50,8 +51,7 @@ export const saveUser = async userData => {
         role: userData.role,
     };
 
-    return new User(user).save()
-
-}
+    return new User(user).save();
+};
 
 export default User;
