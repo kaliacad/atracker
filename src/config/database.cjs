@@ -4,6 +4,7 @@ const {
   DB_USER,
   PASSWORD,
   DB,
+  DB_TEST,
   DB_PROD_USER,
   DB_PROD_PASSWORD,
   DB_PROD,
@@ -13,7 +14,7 @@ const {
 } = process.env
 
 module.exports = {
-development: {
+  development: {
     username: DB_USER,
     password: PASSWORD,
     database: DB,
@@ -23,7 +24,7 @@ development: {
   test: {
     username: DB_USER,
     password: PASSWORD,
-    database: DB,
+    database: DB_TEST,
     host: DB_HOST,
     dialect: DIALECT
   },
