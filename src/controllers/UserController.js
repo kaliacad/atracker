@@ -26,51 +26,51 @@ export async function all(req, res, next) {
 }
 
 export async function create(req, res, next) {
+    const { password, password2, username } = req.body;
+    const userId = req.user.id || null;
+    const { role } = req.user;
+
+    if (password !== password2) {
+        return res.render("myaccount/form/user", {
+            message: "les mots de passe ne correspondent pas ",
+            // title: "Ajouter utilisateur",
+            userId,
+            role,
+        });
+    }
+
     try {
-        const { password, password2, username } = req.body;
 
         const userExist = await findUserByUsername(username);
 
         if (!userExist) {
-            const userId = req.user.id || null;
-            const { role } = req.user;
+            const userData = {
+                noms: req.body.noms,
+                email: req.body.email,
+                username,
+                password,
+                id: userId,
+                role,
+            };
 
-            if (password !== password2) {
-                return res.render("myaccount/form/user", {
-                    message: "les mots de passe ne correspondent pas ",
-                    title: "Ajouter utilisateur",
-                    userId,
-                    role,
+
+            const newUser = await saveUser(userData);
+
+            if (newUser) {
+                req.flash("toast", {
+                    message: `Utilisateur ${username} ajouté avec success`,
+                    severity: "success",
                 });
-            } else {
-                const userData = {
-                    noms: req.body.noms,
-                    email: req.body.email,
-                    username,
-                    password,
-                    id: userId,
-                    role,
-                };
 
+                res.redirect("/myaccount/users");
 
-                const newUser = await saveUser(userData);
-
-                //if (newUser) res.redirect("/myaccount/users");
-
-                if (newUser) {
-                    req.flash("toast", {
-                        message: `User ${username} created successfully`,
-                        severity: "success",
-                    });
-                    res.redirect("/myaccount/users");
-             
-                } else {
-                    res.render("myaccount/form/user", {
-                    message: "Username already exists",
-                    title: "Ajouter utilisateur",
-                    userId,
-                    role,
-                });
+            }
+        } else {
+            res.render("myaccount/form/user", {
+                message: "L'utilisateur existe déjà dans le système",
+                userId,
+                role,
+            });
         }
     } catch (error) {
         const err = new Error(error);

@@ -1,84 +1,56 @@
-<%- include('../../includes/head.ejs') %> <%-
-include('../../includes/header.ejs')%>
+<%- include('../../includes/head.ejs') %>
+  <%- include('../../includes/header.ejs')%>
 
-<section
-  class="login container-fluid w-100 mt-0 d-flex justify-content-center align-items-center"
->
-  <% if(this.message) {%>
-  <h3><%= message %></h3>
-  <% } %>
-  <div class="offest-4 col-md-4">
-    <div class="card bg-light shadow w-100 w-sm-80 border-danger">
-      <div class="card-body">
-        <h4 class="card-title text-danger"><%= title %></h4>
-        <form action="/myaccount/add-user" method="post">
-          <div class="form-group mt-4">
-            <label for="noms">Noms</label>
-            <input
-              id="noms"
-              class="form-control"
-              type="text"
-              name="noms"
-              required
-            />
-          </div>
-          <div class="form-group mt-4">
-            <label for="email">Email</label>
-            <input
-              id="email"
-              class="form-control"
-              type="email"
-              name="email"
-              required
-            />
-          </div>
-          <div class="form-group mt-4">
-            <label for="username">Nom d'utilisateur</label>
-            <input
-              id="username"
-              class="form-control"
-              type="username"
-              name="username"
-              required
-            />
-          </div>
-          <div class="d-flex gap-1">
-            <div class="form-group mt-4">
-              <label for="password">Mot de passe</label>
-              <input
-                id="password"
-                class="form-control"
-                type="password"
-                name="password"
-                required
-              />
-            </div>
-            <div class="form-group mt-4">
-              <label for="password2">Mot de passe (confirmer)</label>
-              <input
-                id="password2"
-                class="form-control"
-                type="password"
-                name="password2"
-                required
-              />
+    <section class="login container-fluid w-100 mt-0 d-flex justify-content-center align-items-center">
+      <% if(message != "undefined") {%>
+        <h3>
+          <%= message %>
+        </h3>
+        <% } %>
+          <div class="offest-4 col-md-4">
+            <div class="card bg-light shadow w-100 w-sm-80 border-danger">
+              <div class="card-body">
+                <h4 class="card-title text-danger">
+                  <%= typeof title != 'undefined' ? title : 'Ajouter utilisateur' %>
+                </h4>
+                <form action="/myaccount/add-user" method="post">
+                  <div class="form-group mt-4">
+                    <label for="noms">Noms</label>
+                    <input id="noms" class="form-control" type="text" name="noms" required />
+                  </div>
+                  <div class="form-group mt-4">
+                    <label for="email">Email</label>
+                    <input id="email" class="form-control" type="email" name="email" required />
+                  </div>
+                  <div class="form-group mt-4">
+                    <label for="username">Nom d'utilisateur</label>
+                    <input id="username" class="form-control" type="username" name="username" required />
+                  </div>
+                  <div class="d-flex gap-1">
+                    <div class="form-group mt-4">
+                      <label for="password">Mot de passe</label>
+                      <input id="password" class="form-control" type="password" name="password" required />
+                    </div>
+                    <div class="form-group mt-4">
+                      <label for="password2">Mot de passe (confirmer)</label>
+                      <input id="password2" class="form-control" type="password" name="password2" required />
+                    </div>
+                  </div>
+                  <div class="form-group mt-4">
+                    <label for="role">role</label>
+                    <select name="role" id="role" class="form-control">
+                      <option value="1">Super admin</option>
+                      <option value="2">Admin</option>
+                      <option value="3">Chargé des presences</option>
+                    </select>
+                  </div>
+                  <input type="hidden" name="userId" value="<%= userId %>" />
+                  <div class="form-group mt-4">
+                    <button class="btn btn-danger" type="submit">Enregistrer</button>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
-          <div class="form-group mt-4">
-            <label for="role">role</label>
-            <select name="role" id="role" class="form-control">
-              <option value="1">Super admin</option>
-              <option value="2">Admin</option>
-              <option value="3">Chargé des presences</option>
-            </select>
-          </div>
-          <input type="hidden" name="userId" value="<%= userId %>" />
-          <div class="form-group mt-4">
-            <button class="btn btn-danger" type="submit">Enregistrer</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</section>
-<%- include('../../includes/footer.ejs')%>
+    </section>
+    <%- include('../../includes/footer.ejs')%>
