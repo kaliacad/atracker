@@ -55,7 +55,7 @@ export async function create(req, res, next) {
 
                 const newUser = await saveUser(userData);
 
-                if (newUser) res.redirect("/myaccount/users");
+                //if (newUser) res.redirect("/myaccount/users");
 
                 if (newUser) {
                     req.flash("toast", {
@@ -64,14 +64,13 @@ export async function create(req, res, next) {
                     });
                     res.redirect("/myaccount/users");
              
-            }
-        } else {
-            res.render("myaccount/form/user", {
-                message: "Username already exists",
-                title: "Ajouter utilisateur",
-                userId,
-                role,
-            });
+                } else {
+                    res.render("myaccount/form/user", {
+                    message: "Username already exists",
+                    title: "Ajouter utilisateur",
+                    userId,
+                    role,
+                });
         }
     } catch (error) {
         const err = new Error(error);
