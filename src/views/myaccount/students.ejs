@@ -60,10 +60,23 @@
                       <i class="fa-solid fa-pen-to-square"></i>
                     </button>
                   </a>
-
-                  <button title="Supprimer" class="btn btn-outline-danger btn-sm mx-1" type="button">
-                    <i class="fa fa-trash-can"></i>
-                  </button>
+                  <% if(student.isactif == true) { %>
+                    <form action="/admin/students/desactivate" class="mx-1" style="display: inline;" method="POST">
+                      <input  type="text" name="studentId" value="<%= student.id%>" hidden/>
+                      <button title="Desactiver" class="btn btn-outline-danger btn-sm " type="submit">
+                        <!-- <i class="fa fa-trash-can"></i> -->
+                        <i class="fa fa-lock" aria-hidden="true"></i>
+                      </button>
+                    </form>
+                  <% } else { %>
+                    <form action="/admin/students/activate" class="mx-1" style="display: inline;" method="POST">
+                      <input  type="text" name="studentId"  value="<%= student.id%>" hidden/>
+                      <button title="Activer" class="btn btn-outline-success btn-sm " type="submit">
+                        <i class="fa fa-unlock" aria-hidden="true"></i>
+                      </button>
+                    </form>
+                  <% } %>
+                  
                 </td>
               </tr>
               <% }) %>
@@ -78,6 +91,40 @@
             </tr>
           </tfoot>
         </table>
+
+    <!-- bottom butons -->
+        <div class="d-flex justify-content-center my-3">
+          <% if(!hasPreviousPage && previousPage > 1 ){ %>
+          <a href="/myaccount/students" class="btn btn-sm px-3 m-2 btn-outline-danger"
+            >1</a
+          >
+          <% }%> <% if(currentPage !== 1){ %>
+          <a
+            href="/myaccount/students?page=<%= previousPage %>"
+            class="btn btn-sm px-3 m-2 btn-outline-danger"
+            ><i class="fa fa-arrow-left" aria-hidden="true"></i
+          ></a>
+          <% }%>
+          <a
+            href="/myaccount/students?page=<%= currentPage %>"
+            class="btn btn-sm px-3 m-2 btn-outline-danger active"
+            ><%= currentPage %></a
+          >
+          <% if (hasNextPage) { %>
+          <a
+            href="/myaccount/students?page=<%= nextPage %>"
+            class="btn btn-sm px-3 m-2 btn-outline-danger"
+            ><i class="fa fa-arrow-right" aria-hidden="true"></i
+          ></a>
+          <% } %> <% if (lastPage && lastPage !== currentPage && lastPage !==
+          nextPage) { %>
+          <a
+            href="/myaccount/students?page=<%= lastPage %>"
+            class="btn btn-sm px-3 m-2 btn-outline-danger"
+            ><%= lastPage %></a
+          >
+          <% } %>
+        </div>
       </div>
     </div>
   </div>

@@ -1,3 +1,5 @@
+/* eslint-disable consistent-return */
+/* eslint-disable no-unused-vars */
 import { findUsers, findUserByUsername, saveUser } from "../models/User.js";
 
 export async function all(req, res, next) {
@@ -13,10 +15,9 @@ export async function all(req, res, next) {
                 title: "Liste des utilisateurs",
                 userId,
                 role,
-                toast: req.flash("toast")[0]
-
             });
 
+            // toast: req.flash("toast")[0]
         }
     } catch (error) {
         const err = new Error(error);
@@ -42,35 +43,36 @@ export async function create(req, res, next) {
                     userId,
                     role,
                 });
+            }
+            const userData = {
+                noms: req.body.noms,
+                email: req.body.email,
+                username,
+                password,
+                id: userId,
+                role,
+            };
+
+            const newUser = await saveUser(userData);
+
+            if (newUser) {
+                req.flash("toast", {
+                    message: `User ${username} created successfully`,
+                    severity: "success",
+                });
+                res.redirect("/myaccount/users");
             } else {
-                const userData = {
-                    noms: req.body.noms,
-                    email: req.body.email,
-                    username,
-                    password,
-                    id: userId,
-                    role,
-                };
-
-
-                const newUser = await saveUser(userData);
-
-                //if (newUser) res.redirect("/myaccount/users");
-
-                if (newUser) {
-                    req.flash("toast", {
-                        message: `User ${username} created successfully`,
-                        severity: "success",
-                    });
-                    res.redirect("/myaccount/users");
-             
-                } else {
-                    res.render("myaccount/form/user", {
+                req.flash("toast", {
+                    message: "Username already exists",
+                    severity: "error",
+                });
+                res.render("myaccount/form/user", {
                     message: "Username already exists",
                     title: "Ajouter utilisateur",
                     userId,
                     role,
                 });
+            }
         }
     } catch (error) {
         const err = new Error(error);

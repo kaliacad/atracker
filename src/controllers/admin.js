@@ -5,6 +5,7 @@
 /* eslint-disable no-restricted-globals */
 /* eslint-disable guard-for-in */
 /* eslint-disable consistent-return */
+import { QueryTypes } from "sequelize";
 import sequelize from "../db/config.js";
 
 import Cohorte from "../models/cohorte.js";
@@ -115,7 +116,7 @@ export async function getStudents(req, res, next) {
             previousPage: page - 1,
             isAuth,
             lastPage: Math.ceil(totalStudents / STUDENT_PER_PAGE),
-            toast: req.flash("toast")[0]
+            toast: req.flash("toast")[0],
         });
     } catch (error) {
         const err = new Error(error);
@@ -184,7 +185,6 @@ export async function postAddStudent(req, res, next) {
             role,
         });
 
-
         res.redirect("/myaccount/students");
 
         req.flash("toast", {
@@ -192,7 +192,6 @@ export async function postAddStudent(req, res, next) {
             severity: "success",
         });
         res.redirect("/myaccount/students");
-
     } catch (error) {
         const err = new Error(error);
         err.httpStatusCode = 500;
@@ -204,14 +203,21 @@ export async function postEditStudent(req, res, next) {
     if (req.user.role !== 1 && req.user.role !== 2) {
         return res.redirect("myaccount/students");
     }
-    const { noms, email, studentId } = req.body;
+    const { nom, prenom, email, studentId } = req.body;
     try {
-        await query("UPDATE students SET noms= $1, email=$2  WHERE id=$3", [
-            noms,
-            email,
-            studentId,
-        ]);
-        res.redirect(`/myaccount/students/${studentId}`);
+        await sequelize.query(
+            "UPDATE students SET nom= :nom,  prenom = :prenom, email = :email WHERE id= :studentId",
+            {
+                replacements: {
+                    nom,
+                    prenom,
+                    email,
+                    studentId,
+                },
+                type: QueryTypes.UPDATE,
+            }
+        );
+        res.redirect(`//myaccount/students/${studentId}`);
     } catch (error) {
         const err = new Error(error);
         err.httpStatusCode = 500;
@@ -219,7 +225,7 @@ export async function postEditStudent(req, res, next) {
     }
 }
 
-export async function postDeleleStudent(req, res, next) {
+export async function postDesactivateStudent(req, res, next) {
     try {
         if (req.user.role !== 1 && req.user.role !== 2) {
             return res.redirect("myaccount/students");
@@ -227,8 +233,51 @@ export async function postDeleleStudent(req, res, next) {
         const { studentId } = req.body;
 
         const student = await Student.findOne({ where: { id: studentId } });
-        await student.destroy();
+        await sequelize.query(
+            "UPDATE students SET isactif= :isActif WHERE id= :studentId",
+            {
+                replacements: {
+                    isActif: false,
+                    studentId: student.dataValues.id,
+                },
+                type: QueryTypes.UPDATE,
+            }
+        );
+        req.flash("toast", {
+            message: `Student ${student.dataValues.name} desactivate successfully`,
+            severity: "danger",
+        });
         res.redirect("/myaccount/students");
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+}
+
+export async function postActivateStudent(req, res, next) {
+    try {
+        if (req.user.role !== 1 && req.user.role !== 2) {
+            return res.redirect("/myaccount/students");
+        }
+        const { studentId } = req.body;
+
+        const student = await Student.findOne({ where: { id: studentId } });
+        await sequelize.query(
+            "UPDATE students SET isactif= :isActif WHERE id= :studentId",
+            {
+                replacements: {
+                    isActif: true,
+                    studentId: student.dataValues.id,
+                },
+                type: QueryTypes.UPDATE,
+            }
+        );
+        req.flash("toast", {
+            message: `Student ${student.dataValues.name} activate successfully`,
+            severity: "success",
+        });
+        res.redirect("//myaccount/students");
     } catch (error) {
         const err = new Error(error);
         err.httpStatusCode = 500;
@@ -241,7 +290,7 @@ export async function getAddPresence(req, res, next) {
         const userId = req.user.id;
         const { role } = req.user;
 
-        const students = await Student.findAll({});
+        const students = await Student.findAll({ where: { isactif: "true" } });
 
         res.render("myaccount/add-presence", {
             userId,
@@ -271,8 +320,8 @@ export async function postAddPresence(req, res, next) {
         if (property == "isMatin") isMatin = presenceObj[property];
 
         try {
-            // eslint-disable-next-line no-await-in-loop
             if (studentId) {
+                // eslint-disable-next-line no-await-in-loop
                 await Presence.create({
                     studentId,
                     presence,
