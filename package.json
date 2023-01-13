@@ -31,6 +31,7 @@
     "body-parser": "^1.20.0",
     "bootstrap": "^5.2.0-beta1",
     "chalk": "^5.0.1",
+    "connect-flash": "^0.1.1",
     "connect-pg-simple": "^7.0.0",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.1",

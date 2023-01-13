@@ -11,6 +11,7 @@ import dotenv from "dotenv";
 import morgan from "morgan";
 import session from "express-session";
 import cookieParser from "cookie-parser";
+import flash from "connect-flash";
 import sendEmail from "./utils/email/sendEmail.js";
 
 // routes
@@ -81,6 +82,7 @@ app.use(
         saveUninitialized: false,
     })
 );
+app.use(flash());
 
 // templates views
 app.set("view engine", "ejs");

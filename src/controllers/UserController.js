@@ -12,7 +12,8 @@ export async function all(req, res, next) {
                 users: allUsers,
                 title: "Liste des utilisateurs",
                 userId,
-                role
+                role,
+                toast: req.flash("toast")[0]
             })
         }
     } catch (error) {
@@ -51,7 +52,13 @@ export async function create(req, res, next) {
     
                 const newUser = await saveUser(userData)
 
-                if (newUser) res.redirect("/admin/users");
+                if (newUser) {
+                    req.flash("toast", {
+                        message: `User ${username} created successfully`,
+                        severity: "success",
+                    });
+                    res.redirect("/admin/users");
+                }
             }
             
         } else {

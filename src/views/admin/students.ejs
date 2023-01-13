@@ -1,4 +1,5 @@
-<%- include('../includes/head.ejs')%> <%- include('../includes/header.ejs')%>
+<%- include('../includes/head.ejs')%>
+  <%- include('../includes/header.ejs')%>
 
 <div
   class="container fontTable w-100 h-100 mt-5 pt-5 d-flex flex-column justify-content-center"
@@ -13,108 +14,71 @@
       >
     </div>
 
-    <table class="table table-hover">
-      <thead class="thead-light">
-        <tr>
-          <th>#</th>
-          <th>Noms</th>
-          <th>Email</th>
-          <th>Photo</th>
-          <th>Id</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody class="font14">
-        <% students.forEach((student, i)=> { %>
-        <tr class=" ">
-          <td><%= i + 1 %></td>
-          <td>
-            <%= student.prenom.charAt(0).toUpperCase() + student.prenom.slice(1)
-            +" " + student.nom.toUpperCase() %>
-          </td>
-          <td><%= student.email %></td>
-          <td>
-            <div class="rounded-name-character">
-              <%= student.prenom.charAt(0).toUpperCase() %>
-            </div>
-          </td>
-          <td>
-            <div class="idContainer"><%= student.id %></div>
-          </td>
-          <td class="d-flex">
-            <a href="/admin/students/<%= student.id %>">
-              <button
-                title="Voir"
-                class="btn btn-outline-primary btn-sm mx-1"
-                type="button"
-              >
-                <i class="fa-solid fa-eye"></i>
-              </button>
-            </a>
-            <a href="">
-              <button
-                title="Editer"
-                class="btn btn-outline-success btn-sm mx-1"
-                type="button"
-              >
-                <i class="fa-solid fa-pen-to-square"></i>
-              </button>
-            </a>
 
-            <button
-              title="Supprimer"
-              class="btn btn-outline-danger btn-sm mx-1"
-              type="button"
-            >
-              <i class="fa fa-trash-can"></i>
-            </button>
-          </td>
-        </tr>
-        <% }) %>
-      </tbody>
-      <tfoot>
-        <tr>
-          <th>#</th>
-          <th>Noms</th>
-          <th>Email</th>
-          <th>Photo</th>
-          <th>Id</th>
-          <th>Actions</th>
-        </tr>
-      </tfoot>
-    </table>
-    <!-- bottom butons -->
-    <div class="d-flex justify-content-center my-3">
-      <% if(!hasPreviousPage && previousPage > 1 ){ %>
-      <a href="/admin/students" class="btn btn-sm px-3 m-2 btn-outline-danger"
-        >1</a
-      >
-      <% }%> <% if(currentPage !== 1){ %>
-      <a
-        href="/admin/students?page=<%= previousPage %>"
-        class="btn btn-sm px-3 m-2 btn-outline-danger"
-        ><i class="fa fa-arrow-left" aria-hidden="true"></i
-      ></a>
-      <% }%>
-      <a
-        href="/admin/students?page=<%= currentPage %>"
-        class="btn btn-sm px-3 m-2 btn-outline-danger active"
-        ><%= currentPage %></a
-      >
-      <% if (hasNextPage) { %>
-      <a
-        href="/admin/students?page=<%= nextPage %>"
-        class="btn btn-sm px-3 m-2 btn-outline-danger"
-        ><i class="fa fa-arrow-right" aria-hidden="true"></i
-      ></a>
-      <% } %> <% if (lastPage && lastPage !== currentPage && lastPage !==
-      nextPage) { %>
-      <a
-        href="/admin/students?page=<%= lastPage %>"
-        class="btn btn-sm px-3 m-2 btn-outline-danger"
-        ><%= lastPage %></a
-      >
-      <% } %>
+
+        <table class="table table-hover">
+          <thead class="thead-light">
+            <tr>
+              <th>#</th>
+              <th>Noms</th>
+              <th>Email</th>
+              <!-- <th>Id</th> -->
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody class=" font14 ">
+            <% students.forEach((student, i)=> { %>
+              <tr class=" align-middle">
+                <td>
+                  <%= i + 1 %>
+                </td>
+                <td>
+                  <div class=" d-flex gap-2 align-items-center " >
+                    <div class=" rounded-name-character">
+                      <%= student.prenom.charAt(0).toUpperCase() %>
+                    </div>
+                    <div>
+                      <%= student.prenom.charAt(0).toUpperCase() + student.prenom.slice(1) +" " + student.nom.toUpperCase() %>
+                    </div>
+                  </div>
+                </td>
+                <td ><%= student.email %></td>
+      <!-- <td>
+                  <div class=" idContainer">
+                        <%= student.id %>
+                    </div>
+
+                </td> -->
+                <td class="align-middle">
+                  <a href="/admin/students/<%= student.id %>">
+                    <button title="Voir" class="btn btn-outline-primary btn-sm mx-1" type="button">
+                      <i class="fa-solid fa-eye"></i>
+                    </button>
+                  </a>
+                  <a href="">
+                    <button title="Editer" class="btn btn-outline-success btn-sm mx-1" type="button">
+                      <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+                  </a>
+
+                  <button title="Supprimer" class="btn btn-outline-danger btn-sm mx-1" type="button">
+                    <i class="fa fa-trash-can"></i>
+                  </button>
+                </td>
+              </tr>
+              <% }) %>
+          </tbody>
+          <tfoot>
+            <tr>
+              <th>#</th>
+              <th>Noms</th>
+              <th>Email</th>
+              <!-- <th>Id</th> -->
+              <th>Actions</th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
     </div>
   </div>
 </div>
