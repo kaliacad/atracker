@@ -13,11 +13,9 @@ export async function all(req, res, next) {
                 title: "Liste des utilisateurs",
                 userId,
                 role,
+                toast: req.flash("toast")[0]
 
             });
-
-                toast: req.flash("toast")[0]
-            })
 
         }
     } catch (error) {
