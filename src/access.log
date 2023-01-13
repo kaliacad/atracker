@@ -981,3 +981,21 @@
 [0mGET /css/style.css [36m304[0m 3.862 ms - -[0m
 [0mGET /css/bootstrap.min.css [36m304[0m 1.338 ms - -[0m
 [0mGET /js/bootstrap.min.js [36m304[0m 1.543 ms - -[0m
+::1 - - [13/Jan/2023:05:44:59 +0000] "GET / HTTP/1.1" 200 3941 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
+::1 - - [13/Jan/2023:05:45:00 +0000] "GET /css/style.css HTTP/1.1" 200 6343 "http://localhost:8000/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
+::1 - - [13/Jan/2023:05:45:00 +0000] "GET /css/bootstrap.min.css HTTP/1.1" 200 193529 "http://localhost:8000/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
+::1 - - [13/Jan/2023:05:45:00 +0000] "GET /js/bootstrap.min.js HTTP/1.1" 200 60055 "http://localhost:8000/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
+::1 - - [13/Jan/2023:05:45:00 +0000] "GET /js/bootstrap.min.js HTTP/1.1" 200 60055 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
+::1 - - [13/Jan/2023:05:45:00 +0000] "GET /images/20220531_141233.jpg HTTP/1.1" 200 3093325 "http://localhost:8000/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
+::1 - - [13/Jan/2023:05:45:01 +0000] "GET /favicon.ico HTTP/1.1" 404 3961 "http://localhost:8000/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
+::1 - - [13/Jan/2023:05:45:04 +0000] "POST / HTTP/1.1" 302 56 "http://localhost:8000/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
+::1 - - [13/Jan/2023:05:45:05 +0000] "GET /admin HTTP/1.1" 200 7890 "http://localhost:8000/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
+::1 - - [13/Jan/2023:05:45:06 +0000] "GET /css/bootstrap.min.css HTTP/1.1" 304 - "http://localhost:8000/admin" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
+::1 - - [13/Jan/2023:05:45:06 +0000] "GET /css/style.css HTTP/1.1" 304 - "http://localhost:8000/admin" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
+::1 - - [13/Jan/2023:05:45:06 +0000] "GET /js/bootstrap.min.js HTTP/1.1" 304 - "http://localhost:8000/admin" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
+::1 - - [13/Jan/2023:05:45:06 +0000] "GET /js/bootstrap.min.js HTTP/1.1" 304 - "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
+::1 - - [13/Jan/2023:05:46:24 +0000] "GET /admin/students HTTP/1.1" 200 18841 "http://localhost:8000/admin" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
+::1 - - [13/Jan/2023:05:46:24 +0000] "GET /css/bootstrap.min.css HTTP/1.1" 304 - "http://localhost:8000/admin/students" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
+::1 - - [13/Jan/2023:05:46:24 +0000] "GET /css/style.css HTTP/1.1" 304 - "http://localhost:8000/admin/students" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
+::1 - - [13/Jan/2023:05:46:24 +0000] "GET /js/bootstrap.min.js HTTP/1.1" 304 - "http://localhost:8000/admin/students" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
+::1 - - [13/Jan/2023:05:46:24 +0000] "GET /js/bootstrap.min.js HTTP/1.1" 304 - "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
