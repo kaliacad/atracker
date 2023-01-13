@@ -1,20 +1,24 @@
-import { findUsers, findUserByUsername, saveUser } from "../models/User.js"
+import { findUsers, findUserByUsername, saveUser } from "../models/User.js";
 
 export async function all(req, res, next) {
     try {
-        const allUsers = await findUsers
+        const allUsers = await findUsers;
 
         if (allUsers) {
-            const userId = req.user.id || null
-            const { role } = req.user
+            const userId = req.user.id || null;
+            const { role } = req.user;
 
-            res.render("admin/users", {
+            res.render("myaccount/users", {
                 users: allUsers,
                 title: "Liste des utilisateurs",
                 userId,
                 role,
+
+            });
+
                 toast: req.flash("toast")[0]
             })
+
         }
     } catch (error) {
         const err = new Error(error);
@@ -25,20 +29,20 @@ export async function all(req, res, next) {
 
 export async function create(req, res, next) {
     try {
-        const { password, password2, username } = req.body
+        const { password, password2, username } = req.body;
 
-        const userExist = await findUserByUsername(username)
+        const userExist = await findUserByUsername(username);
 
         if (!userExist) {
             const userId = req.user.id || null;
-            const { role } = req.user
+            const { role } = req.user;
 
             if (password !== password2) {
-                return res.render("admin/form/user", {
+                return res.render("myaccount/form/user", {
                     message: "les mots de passe ne correspondent pas ",
                     title: "Ajouter utilisateur",
                     userId,
-                    role
+                    role,
                 });
             } else {
                 const userData = {
@@ -47,27 +51,29 @@ export async function create(req, res, next) {
                     username,
                     password,
                     id: userId,
-                    role
-                }
-    
-                const newUser = await saveUser(userData)
+                    role,
+                };
+
+
+                const newUser = await saveUser(userData);
+
+                if (newUser) res.redirect("/myaccount/users");
 
                 if (newUser) {
                     req.flash("toast", {
                         message: `User ${username} created successfully`,
                         severity: "success",
                     });
-                    res.redirect("/admin/users");
-                }
+                    res.redirect("/myaccount/users");
+             
             }
-            
         } else {
-            res.render("admin/form/user", {
+            res.render("myaccount/form/user", {
                 message: "Username already exists",
                 title: "Ajouter utilisateur",
                 userId,
                 role,
-            })
+            });
         }
     } catch (error) {
         const err = new Error(error);
@@ -79,9 +85,9 @@ export async function create(req, res, next) {
 export async function form(req, res, next) {
     const { role } = req.user;
 
-    res.render("admin/form/user", {
+    res.render("myaccount/form/user", {
         title: "Ajouter un utilisateur",
         userId: req.user,
         role,
-    })
+    });
 }

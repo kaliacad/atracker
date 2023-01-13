@@ -1,12 +1,12 @@
 import bcrypt from "bcryptjs";
-import { findUserByUsername } from "../models/User.js"
+import { findUserByUsername } from "../models/User.js";
 import { comparePassword } from "../utils/helper.util.js";
 
 import userModel from "../models/User.js";
 
 export function form(req, res) {
-    if (res.user) return res.redirect("/admin");
-    
+    if (res.user) return res.redirect("/myaccount");
+
     return res.render("auth/login", {
         title: "Connexion",
         userId: undefined,
@@ -18,7 +18,7 @@ export async function login(req, res, next) {
     const { username, password } = req.body;
 
     try {
-        const user = await findUserByUsername(username)
+        const user = await findUserByUsername(username);
 
         if (!user) return res.redirect("/");
 
@@ -31,7 +31,7 @@ export async function login(req, res, next) {
             req.session.user = user;
             res.cookie("session", user);
 
-            return res.redirect("/admin");
+            return res.redirect("/myaccount");
         }
     } catch (error) {
         const err = new Error(error);
