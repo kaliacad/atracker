@@ -1,71 +1,26 @@
-<body>
-  <nav class="navbar navbar-expand-lg d-flex justify-content-center bg-danger text-light fixed-top">
-    <div class="container mx-2">
-      <a class="navbar-brand text-light" href="/myaccount">Attendacy GDA</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav text-light me-auto mb-2 mb-lg-0 d-flex justify-content-end w-100">
-          <% if(userId) { %>
-            <li class="nav-item">
-              <a class="nav-link text-light" aria-current="page" href="/myaccount">Dashboard</a>
-            </li>
+<!DOCTYPE html>
+<html lang="fr">
 
-            <li class="nav-item">
-              <a class="nav-link text-light" aria-current="page" href="/myaccount/students">Apprenants</a>
-            </li>
-            <% if(role===1) { %>
-              <li class="nav-item">
-                <a class="nav-link text-light" aria-current="page" href="/myaccount/users">Utilisateurs</a>
-              </li>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>
+    <%= typeof title != 'undefined' ? `Attendance - ${title}` : 'Attendace app' %>
+  </title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/brands.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/brands.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/regular.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/solid.min.css" />
 
-              <% }%>
+  <!-- Google font links  -->
 
-                <li class="nav-item">
-                  <a class="nav-link mr-5 text-light" href="/myaccount/add-presence">Présence</a>
-                </li>
-                <form class="nav-item" method="POST" action="/logout">
-                  <button class="nav-link p-1 text-sm text-light h-100 btn btn-outline-secondary" type="submit">
-                    Se deconnecter
-                  </button>
-                </form>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;600;700;800&display=swap" rel="stylesheet">
 
-                <% } else { %>
-
-                  <li class="nav-item">
-                    <a class="nav-link text-light" aria-current="page" href="/myaccount/students">Apprenants</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link text-sm-center text-light mr-5" href="/">Se connecter</a>
-                  </li>
-                  <% } %>
-        </ul>
-      </div>
-    </div>
-  </nav>
-  <div class="toast-container position-absolute p-3 top-0 start-50 translate-middle-x">
-    <% const { message, severity }=locals.toast ?? {}; %>
-      <div
-        class="toast align-items-center border-0 <%= severity === 'warning' ? 'text-dark' : 'text-white' %> <%= ['success', 'warning', 'danger'].includes(severity) ? `bg-${severity}` : 'bg-primary' %>"
-        role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
-        <div class="d-flex">
-          <div class="toast-body">
-            <%= message %>
-          </div>
-          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
-            aria-label="Close"></button>
-        </div>
-      </div>
-  </div>
-
-  <script>
-    // For showing toast if any on redirect
-    const showToast = "<%= !!locals.toast %>";
-    if (showToast == "true") {
-      const toastEl = document.querySelector(".toast");
-      const toastInstance = bootstrap.Toast.getOrCreateInstance(toastEl);
-      toastInstance.show();
-    }
-  </script>
+  <script src="/js/bootstrap.min.js"></script>
+</head>
