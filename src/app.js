@@ -15,7 +15,7 @@ import flash from "connect-flash";
 import sendEmail from "./utils/email/sendEmail.js";
 
 // routes
-import adminRoutes from "./routes/admin.js";
+// import adminRoutes from "./routes/admin.js";
 import appRouter from "./routes/index.js";
 
 // models
@@ -118,7 +118,6 @@ app.use(async (req, res, next) => {
     next();
 });
 
-app.use("/myaccount", adminRoutes);
 app.use(appRouter);
 
 app.get("/500", getInternalError);
