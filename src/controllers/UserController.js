@@ -33,7 +33,6 @@ export async function create(req, res, next) {
     if (password !== password2) {
         return res.render("myaccount/form/user", {
             message: "les mots de passe ne correspondent pas ",
-            // title: "Ajouter utilisateur",
             userId,
             role,
         });
@@ -49,7 +48,7 @@ export async function create(req, res, next) {
                 email: req.body.email,
                 username,
                 password,
-                id: userId,
+                id: req.body.id,
                 role,
             };
 
@@ -84,7 +83,7 @@ export async function form(req, res, next) {
 
     res.render("myaccount/form/user", {
         title: "Ajouter un utilisateur",
-        userId: req.user,
+        userId: req.user.id,
         role,
     });
 }

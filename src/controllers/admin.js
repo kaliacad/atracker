@@ -69,7 +69,7 @@ export async function getAddStudent(req, res, next) {
         const userId = req.user.id;
 
         if (req.user.role !== 1 && req.user.role !== 2) {
-            return res.redirect("/myaccount/students");
+            return res.redirect("/myaccount/students/all");
         }
 
         res.render("myaccount/add-student", {
@@ -168,13 +168,14 @@ export async function postAddStudent(req, res, next) {
     const { nom, prenom, email, cohorteId } = req.body;
 
     const userId = req.user.id || null;
+    const { role } = req.user
 
-    if (req.user.role !== 1 && req.user.role !== 2) {
-        return res.redirect("/myaccount/students");
+    // only super admin or admin can add a student
+    if (role !== 1 && role !== 2) {
+        return res.redirect("/myaccount/students/all");
     }
 
     try {
-        const { role } = req.user;
         await Student.create({
             nom,
             prenom,
@@ -184,14 +185,12 @@ export async function postAddStudent(req, res, next) {
             role,
         });
 
-
-        res.redirect("/myaccount/students");
-
         req.flash("toast", {
-            message: `Student ${email} created successfully`,
+            message: `L'étudiant ${prenom} ${nom} est ajouté avec succès`,
             severity: "success",
         });
-        res.redirect("/myaccount/students");
+
+        res.redirect("/myaccount/students/all");
 
     } catch (error) {
         const err = new Error(error);
@@ -201,6 +200,7 @@ export async function postAddStudent(req, res, next) {
 }
 
 export async function postEditStudent(req, res, next) {
+    // TODO create a helper function to check authorization 
     if (req.user.role !== 1 && req.user.role !== 2) {
         return res.redirect("myaccount/students");
     }
@@ -222,13 +222,14 @@ export async function postEditStudent(req, res, next) {
 export async function postDeleleStudent(req, res, next) {
     try {
         if (req.user.role !== 1 && req.user.role !== 2) {
-            return res.redirect("myaccount/students");
+            return res.redirect("myaccount/students/all");
         }
         const { studentId } = req.body;
 
         const student = await Student.findOne({ where: { id: studentId } });
         await student.destroy();
-        res.redirect("/myaccount/students");
+
+        res.redirect("/myaccount/students/all");
     } catch (error) {
         const err = new Error(error);
         err.httpStatusCode = 500;
@@ -246,7 +247,7 @@ export async function getAddPresence(req, res, next) {
         res.render("myaccount/add-presence", {
             userId,
             students,
-            title: "New attendancy",
+            title: "New attendance",
             role,
         });
     } catch (error) {
@@ -285,5 +286,5 @@ export async function postAddPresence(req, res, next) {
             return next(err);
         }
     }
-    res.redirect("/myaccount/");
+    res.redirect("/myaccount/summary");
 }
