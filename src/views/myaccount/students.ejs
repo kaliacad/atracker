@@ -83,36 +83,34 @@
 
     <!-- bottom butons -->
         <div class="d-flex justify-content-center my-3">
-          <% if(!hasPreviousPage && previousPage > 1 ){ %>
-          <a href="/myaccount/students" class="btn btn-sm px-3 m-2 btn-outline-danger"
-            >1</a
-          >
-          <% }%> <% if(currentPage !== 1){ %>
-          <a
-            href="/myaccount/students?page=<%= previousPage %>"
-            class="btn btn-sm px-3 m-2 btn-outline-danger"
-            ><i class="fa fa-arrow-left" aria-hidden="true"></i
-          ></a>
-          <% }%>
-          <a
-            href="/myaccount/students?page=<%= currentPage %>"
-            class="btn btn-sm px-3 m-2 btn-outline-danger active"
-            ><%= currentPage %></a
-          >
-          <% if (hasNextPage) { %>
-          <a
-            href="/myaccount/students?page=<%= nextPage %>"
-            class="btn btn-sm px-3 m-2 btn-outline-danger"
-            ><i class="fa fa-arrow-right" aria-hidden="true"></i
-          ></a>
-          <% } %> <% if (lastPage && lastPage !== currentPage && lastPage !==
-          nextPage) { %>
-          <a
-            href="/myaccount/students?page=<%= lastPage %>"
-            class="btn btn-sm px-3 m-2 btn-outline-danger"
-            ><%= lastPage %></a
-          >
-          <% } %>
+          <% if (lastPage > 0) { %>
+            <ul class="pagination text-center">
+                <% if (currentPage == 1) { %>
+                    <li class="btn btn-sm px-3 m-2 btn-outline-secondary disabled"><a>First</a></li>
+                <% } else { %>
+                    <li><a  class="btn btn-sm px-3 m-2 btn-outline-danger" href="/myaccount/students/all?page=1">First</a></li>
+                <% } %>
+                <% var i = (Number(currentPage) > 5 ? Number(currentPage) - 4 : 1) %>
+                <% if (i !== 1) { %>
+                    <li class="disabled"><a  class="btn btn-sm px-3 m-2 btn-outline-secondary disabled">...</a></li>
+                <% } %>
+                <% for (; i <= (Number(currentPage) + 4) && i <= lastPage; i++) { %>
+                    <% if (i == currentPage) { %>
+                        <li class="active"><a  class="btn btn-sm px-3 m-2 btn-outline-danger"><%= i %></a></li>
+                    <% } else { %>
+                        <li><a  class="btn btn-sm px-3 m-2 btn-outline-danger" href="/myaccount/students/all?page=<%= i %>"><%= i %></a></li>
+                    <% } %>
+                    <% if (i == Number(currentPage) + 4 && i < lastPage) { %>
+                        <li class="disabled"><a  class="btn btn-sm px-3 m-2 btn-outline-secondary disabled">...</a></li>
+                    <% } %>
+                <% } %>
+                <% if (currentPage == lastPage) { %>
+                    <li class="disabled"><a  class="btn btn-sm px-3 m-2 btn-outline-secondary disabled" >Last</a></li>
+                <% } else { %>
+                    <li><a  class="btn btn-sm px-3 m-2 btn-outline-danger" href="/myaccount/students/all?page=<%= lastPage %>">Last</a></li>
+                <% } %>
+            </ul>
+            <% } %>
         </div>
       </div>
     </div>

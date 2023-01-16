@@ -14,7 +14,7 @@ import Student from "../models/student.js";
 
 const date = new Date().toISOString().split("T")[0];
 
-const STUDENT_PER_PAGE = 9;
+const STUDENT_PER_PAGE = 10;
 
 export async function getIndex(req, res, next) {
     const userId = req.user.id;
@@ -110,10 +110,10 @@ export async function getStudents(req, res, next) {
             title: "Liste des étudiants",
             totalStudents,
             currentPage: page,
-            hasNextPage: STUDENT_PER_PAGE * page < totalStudents,
+            hasNextPage: STUDENT_PER_PAGE * page <= totalStudents,
             hasPreviousPage: page > 1,
             nextPage: page + 1,
-            previousPage: page - 1,
+            previousPage: page - 1 < 1 ? 1 : page - 1,
             isAuth,
             lastPage: Math.ceil(totalStudents / STUDENT_PER_PAGE),
             toast: req.flash("toast")[0],
