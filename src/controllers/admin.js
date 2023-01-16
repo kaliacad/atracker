@@ -70,7 +70,7 @@ export async function getAddStudent(req, res, next) {
         const userId = req.user.id;
 
         if (req.user.role !== 1 && req.user.role !== 2) {
-            return res.redirect("/myaccount/students");
+            return res.redirect("/myaccount/students/all");
         }
 
         res.render("myaccount/add-student", {
@@ -88,7 +88,7 @@ export async function getAddStudent(req, res, next) {
 
 // eslint-disable-next-line consistent-return
 export async function getStudents(req, res, next) {
-    const role = req.user || null;
+    const { role } = req.user || null;
 
     const page = +req.query.page || 1;
     const isAuth = (req.user.role === 1 || req.user.role === 2) ?? false;
@@ -97,12 +97,12 @@ export async function getStudents(req, res, next) {
 
     try {
         const students = await Student.findAll({
-            // order: [["createdAt", "ASC"]],
             limit: STUDENT_PER_PAGE,
             offset,
         });
 
         const totalStudents = (await Student.findAndCountAll()).count;
+
         res.render("myaccount/students", {
             userId,
             role,
@@ -169,13 +169,14 @@ export async function postAddStudent(req, res, next) {
     const { nom, prenom, email, cohorteId } = req.body;
 
     const userId = req.user.id || null;
+    const { role } = req.user;
 
-    if (req.user.role !== 1 && req.user.role !== 2) {
-        return res.redirect("/myaccount/students");
+    // only super admin or admin can add a student
+    if (role !== 1 && role !== 2) {
+        return res.redirect("/myaccount/students/all");
     }
 
     try {
-        const { role } = req.user;
         await Student.create({
             nom,
             prenom,
@@ -185,13 +186,12 @@ export async function postAddStudent(req, res, next) {
             role,
         });
 
-        res.redirect("/myaccount/students");
-
         req.flash("toast", {
-            message: `Student ${email} created successfully`,
+            message: `L'étudiant ${prenom} ${nom} est ajouté avec succès`,
             severity: "success",
         });
-        res.redirect("/myaccount/students");
+
+        res.redirect("/myaccount/students/all");
     } catch (error) {
         const err = new Error(error);
         err.httpStatusCode = 500;
@@ -200,6 +200,7 @@ export async function postAddStudent(req, res, next) {
 }
 
 export async function postEditStudent(req, res, next) {
+    // TODO create a helper function to check authorization
     if (req.user.role !== 1 && req.user.role !== 2) {
         return res.redirect("myaccount/students");
     }
@@ -228,26 +229,14 @@ export async function postEditStudent(req, res, next) {
 export async function postDesactivateStudent(req, res, next) {
     try {
         if (req.user.role !== 1 && req.user.role !== 2) {
-            return res.redirect("myaccount/students");
+            return res.redirect("myaccount/students/all");
         }
         const { studentId } = req.body;
 
         const student = await Student.findOne({ where: { id: studentId } });
-        await sequelize.query(
-            "UPDATE students SET isactif= :isActif WHERE id= :studentId",
-            {
-                replacements: {
-                    isActif: false,
-                    studentId: student.dataValues.id,
-                },
-                type: QueryTypes.UPDATE,
-            }
-        );
-        req.flash("toast", {
-            message: `Student ${student.dataValues.name} desactivate successfully`,
-            severity: "danger",
-        });
-        res.redirect("/myaccount/students");
+        await student.destroy();
+
+        res.redirect("/myaccount/students/all");
     } catch (error) {
         const err = new Error(error);
         err.httpStatusCode = 500;
@@ -295,7 +284,7 @@ export async function getAddPresence(req, res, next) {
         res.render("myaccount/add-presence", {
             userId,
             students,
-            title: "New attendancy",
+            title: "New attendance",
             role,
         });
     } catch (error) {
@@ -334,5 +323,5 @@ export async function postAddPresence(req, res, next) {
             return next(err);
         }
     }
-    res.redirect("/myaccount/");
+    res.redirect("/myaccount/summary");
 }

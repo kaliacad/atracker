@@ -5,8 +5,8 @@ import { form, login, logout } from "../controllers/AuthController.js";
 
 const router = Router();
 
-router.get("/", form);
 router.post("/", login);
+router.get("/", form);
 router.post("/logout", logout);
 
 export default router;

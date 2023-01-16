@@ -27,29 +27,28 @@ export async function all(req, res, next) {
 }
 
 export async function create(req, res, next) {
-    try {
-        const { password, password2, username } = req.body;
+    const { password, password2, username } = req.body;
+    const userId = req.user.id || null;
+    const { role } = req.user;
 
+    if (password !== password2) {
+        return res.render("myaccount/form/user", {
+            message: "les mots de passe ne correspondent pas ",
+            userId,
+            role,
+        });
+    }
+
+    try {
         const userExist = await findUserByUsername(username);
 
         if (!userExist) {
-            const userId = req.user.id || null;
-            const { role } = req.user;
-
-            if (password !== password2) {
-                return res.render("myaccount/form/user", {
-                    message: "les mots de passe ne correspondent pas ",
-                    title: "Ajouter utilisateur",
-                    userId,
-                    role,
-                });
-            }
             const userData = {
                 noms: req.body.noms,
                 email: req.body.email,
                 username,
                 password,
-                id: userId,
+                id: req.body.id,
                 role,
             };
 
@@ -57,22 +56,18 @@ export async function create(req, res, next) {
 
             if (newUser) {
                 req.flash("toast", {
-                    message: `User ${username} created successfully`,
+                    message: `Utilisateur ${username} ajouté avec success`,
                     severity: "success",
                 });
+
                 res.redirect("/myaccount/users");
-            } else {
-                req.flash("toast", {
-                    message: "Username already exists",
-                    severity: "error",
-                });
-                res.render("myaccount/form/user", {
-                    message: "Username already exists",
-                    title: "Ajouter utilisateur",
-                    userId,
-                    role,
-                });
             }
+        } else {
+            res.render("myaccount/form/user", {
+                message: "L'utilisateur existe déjà dans le système",
+                userId,
+                role,
+            });
         }
     } catch (error) {
         const err = new Error(error);
@@ -86,7 +81,7 @@ export async function form(req, res, next) {
 
     res.render("myaccount/form/user", {
         title: "Ajouter un utilisateur",
-        userId: req.user,
+        userId: req.user.id,
         role,
     });
 }
