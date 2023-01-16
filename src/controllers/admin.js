@@ -218,7 +218,7 @@ export async function postEditStudent(req, res, next) {
                 type: QueryTypes.UPDATE,
             }
         );
-        res.redirect(`//myaccount/students/${studentId}`);
+        res.redirect(`/myaccount/students/${studentId}`);
     } catch (error) {
         const err = new Error(error);
         err.httpStatusCode = 500;
