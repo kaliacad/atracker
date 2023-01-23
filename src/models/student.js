@@ -21,9 +21,9 @@ const student = sequelize.define("student", {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    isActif: {
+    isactif: {
         type: DataTypes.BOOLEAN,
-        defaultValue: false,
+        defaultValue: true,
         allowNull: false,
     },
 });

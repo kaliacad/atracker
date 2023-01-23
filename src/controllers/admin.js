@@ -5,6 +5,7 @@
 /* eslint-disable no-restricted-globals */
 /* eslint-disable guard-for-in */
 /* eslint-disable consistent-return */
+import { QueryTypes } from "sequelize";
 import sequelize from "../db/config.js";
 
 import Cohorte from "../models/cohorte.js";
@@ -13,7 +14,7 @@ import Student from "../models/student.js";
 
 const date = new Date().toISOString().split("T")[0];
 
-const STUDENT_PER_PAGE = 9;
+const STUDENT_PER_PAGE = 10;
 
 export async function getIndex(req, res, next) {
     const userId = req.user.id;
@@ -109,13 +110,13 @@ export async function getStudents(req, res, next) {
             title: "Liste des étudiants",
             totalStudents,
             currentPage: page,
-            hasNextPage: STUDENT_PER_PAGE * page < totalStudents,
+            hasNextPage: STUDENT_PER_PAGE * page <= totalStudents,
             hasPreviousPage: page > 1,
             nextPage: page + 1,
-            previousPage: page - 1,
+            previousPage: page - 1 < 1 ? 1 : page - 1,
             isAuth,
             lastPage: Math.ceil(totalStudents / STUDENT_PER_PAGE),
-            toast: req.flash("toast")[0]
+            toast: req.flash("toast")[0],
         });
     } catch (error) {
         const err = new Error(error);
@@ -168,7 +169,7 @@ export async function postAddStudent(req, res, next) {
     const { nom, prenom, email, cohorteId } = req.body;
 
     const userId = req.user.id || null;
-    const { role } = req.user
+    const { role } = req.user;
 
     // only super admin or admin can add a student
     if (role !== 1 && role !== 2) {
@@ -191,7 +192,6 @@ export async function postAddStudent(req, res, next) {
         });
 
         res.redirect("/myaccount/students/all");
-
     } catch (error) {
         const err = new Error(error);
         err.httpStatusCode = 500;
@@ -200,17 +200,24 @@ export async function postAddStudent(req, res, next) {
 }
 
 export async function postEditStudent(req, res, next) {
-    // TODO create a helper function to check authorization 
+    // TODO create a helper function to check authorization
     if (req.user.role !== 1 && req.user.role !== 2) {
         return res.redirect("myaccount/students");
     }
-    const { noms, email, studentId } = req.body;
+    const { nom, prenom, email, studentId } = req.body;
     try {
-        await query("UPDATE students SET noms= $1, email=$2  WHERE id=$3", [
-            noms,
-            email,
-            studentId,
-        ]);
+        await sequelize.query(
+            "UPDATE students SET nom= :nom,  prenom = :prenom, email = :email WHERE id= :studentId",
+            {
+                replacements: {
+                    nom,
+                    prenom,
+                    email,
+                    studentId,
+                },
+                type: QueryTypes.UPDATE,
+            }
+        );
         res.redirect(`/myaccount/students/${studentId}`);
     } catch (error) {
         const err = new Error(error);
@@ -219,7 +226,7 @@ export async function postEditStudent(req, res, next) {
     }
 }
 
-export async function postDeleleStudent(req, res, next) {
+export async function postDesactivateStudent(req, res, next) {
     try {
         if (req.user.role !== 1 && req.user.role !== 2) {
             return res.redirect("myaccount/students/all");
@@ -237,12 +244,42 @@ export async function postDeleleStudent(req, res, next) {
     }
 }
 
+export async function postActivateStudent(req, res, next) {
+    try {
+        if (req.user.role !== 1 && req.user.role !== 2) {
+            return res.redirect("/myaccount/students");
+        }
+        const { studentId } = req.body;
+
+        const student = await Student.findOne({ where: { id: studentId } });
+        await sequelize.query(
+            "UPDATE students SET isactif= :isActif WHERE id= :studentId",
+            {
+                replacements: {
+                    isActif: true,
+                    studentId: student.dataValues.id,
+                },
+                type: QueryTypes.UPDATE,
+            }
+        );
+        req.flash("toast", {
+            message: `Student ${student.dataValues.name} activate successfully`,
+            severity: "success",
+        });
+        res.redirect("//myaccount/students");
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+}
+
 export async function getAddPresence(req, res, next) {
     try {
         const userId = req.user.id;
         const { role } = req.user;
 
-        const students = await Student.findAll({});
+        const students = await Student.findAll({ where: { isactif: "true" } });
 
         res.render("myaccount/add-presence", {
             userId,
@@ -272,8 +309,8 @@ export async function postAddPresence(req, res, next) {
         if (property == "isMatin") isMatin = presenceObj[property];
 
         try {
-            // eslint-disable-next-line no-await-in-loop
             if (studentId) {
+                // eslint-disable-next-line no-await-in-loop
                 await Presence.create({
                     studentId,
                     presence,

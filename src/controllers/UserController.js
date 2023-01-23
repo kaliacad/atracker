@@ -1,3 +1,5 @@
+/* eslint-disable consistent-return */
+/* eslint-disable no-unused-vars */
 import { findUsers, findUserByUsername, saveUser } from "../models/User.js";
 
 export async function all(req, res, next) {
@@ -13,10 +15,9 @@ export async function all(req, res, next) {
                 title: "Liste des utilisateurs",
                 userId,
                 role,
-                toast: req.flash("toast")[0]
-
             });
 
+            // toast: req.flash("toast")[0]
         }
     } catch (error) {
         const err = new Error(error);
@@ -39,7 +40,6 @@ export async function create(req, res, next) {
     }
 
     try {
-
         const userExist = await findUserByUsername(username);
 
         if (!userExist) {
@@ -52,7 +52,6 @@ export async function create(req, res, next) {
                 role,
             };
 
-
             const newUser = await saveUser(userData);
 
             if (newUser) {
@@ -62,7 +61,6 @@ export async function create(req, res, next) {
                 });
 
                 res.redirect("/myaccount/users");
-
             }
         } else {
             res.render("myaccount/form/user", {
