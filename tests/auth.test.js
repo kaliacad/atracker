@@ -1,28 +1,31 @@
-import chaiHttp from "chai-http"
 import chai from "chai"
+import chaiHttp from "chai-http"
 
-const { expect, should } = chai
+import server from "../src/server.js"
+
+const { expect } = chai
 
 chai.use(chaiHttp)
 
-import app from "../src/app.js"
-
 describe("Auth", () => {
-    describe("/POST user login", () => {
-        const user = {
-            username: "admin",
-            password: "admin123",
-        }
+    const user = {
+        username: "admin",
+        password: "admin123",
+    }
 
-        it("it should POST the user", done => {
-            chai.request(app)
-                .post("/")
-                .set('content-type', 'application/x-www-form-urlencoded')
-                .send(user)
-                .end((err, res) => {
-                    expect(res.status).to.be.equals(200)
-                    done()
-                })
-        })
+    it("it should login the user", (done) => {
+        chai.request(server)
+            .post("/")
+            .set('content-type', 'application/x-www-form-urlencoded')
+            .send(user)
+            .redirects(0)
+            .end((err, res) => {
+
+                expect(err).to.be.null
+                expect(res).to.have.status(302)
+                expect(res).to.redirectTo("/myaccount/summary")
+                expect(res).to.have.cookie("session")
+                done()
+            })
     })
 })

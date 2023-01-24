@@ -7,7 +7,7 @@
   "scripts": {
     "runQuery": "node ./src/utils/runQuery",
     "start": "nodemon ./",
-    "test": "NODE_ENV=test mocha ./tests --timeout 100000",
+    "test": "NODE_ENV=development mocha ./tests --timeout 10000",
     "lint": "eslint src/**/*.js",
     "lint:fix": "eslint . src/**/*.js --fix",
     "seed": "npx sequelize-cli db:seed:all",

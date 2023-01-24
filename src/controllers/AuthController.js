@@ -29,9 +29,9 @@ export async function login(req, res, next) {
         
         if (user && verifiedPassword) {
             req.session.user = user;
+            req.body = user
             res.cookie("session", user);
-            
-            console.log("la");
+
             return res.redirect("/myaccount/summary");
         }
     } catch (error) {
