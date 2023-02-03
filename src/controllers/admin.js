@@ -5,6 +5,7 @@
 /* eslint-disable no-restricted-globals */
 /* eslint-disable guard-for-in */
 /* eslint-disable consistent-return */
+import { QueryTypes } from "sequelize";
 import sequelize from "../db/config.js";
 
 import Cohorte from "../models/cohorte.js";
@@ -115,7 +116,7 @@ export async function getStudents(req, res, next) {
             previousPage: page - 1,
             isAuth,
             lastPage: Math.ceil(totalStudents / STUDENT_PER_PAGE),
-            toast: req.flash("toast")[0]
+            toast: req.flash("toast")[0],
         });
     } catch (error) {
         const err = new Error(error);
@@ -168,7 +169,7 @@ export async function postAddStudent(req, res, next) {
     const { nom, prenom, email, cohorteId } = req.body;
 
     const userId = req.user.id || null;
-    const { role } = req.user
+    const { role } = req.user;
 
     // only super admin or admin can add a student
     if (role !== 1 && role !== 2) {
@@ -191,7 +192,6 @@ export async function postAddStudent(req, res, next) {
         });
 
         res.redirect("/myaccount/students/all");
-
     } catch (error) {
         const err = new Error(error);
         err.httpStatusCode = 500;
@@ -200,17 +200,24 @@ export async function postAddStudent(req, res, next) {
 }
 
 export async function postEditStudent(req, res, next) {
-    // TODO create a helper function to check authorization 
+    // TODO create a helper function to check authorization
     if (req.user.role !== 1 && req.user.role !== 2) {
         return res.redirect("myaccount/students");
     }
-    const { noms, email, studentId } = req.body;
+    const { nom, prenom, email, studentId } = req.body;
     try {
-        await query("UPDATE students SET noms= $1, email=$2  WHERE id=$3", [
-            noms,
-            email,
-            studentId,
-        ]);
+        await sequelize.query(
+            "UPDATE students SET nom= :nom,  prenom = :prenom, email = :email WHERE id= :studentId",
+            {
+                replacements: {
+                    nom,
+                    prenom,
+                    email,
+                    studentId,
+                },
+                type: QueryTypes.UPDATE,
+            }
+        );
         res.redirect(`/myaccount/students/${studentId}`);
     } catch (error) {
         const err = new Error(error);
@@ -272,8 +279,8 @@ export async function postAddPresence(req, res, next) {
         if (property == "isMatin") isMatin = presenceObj[property];
 
         try {
-            // eslint-disable-next-line no-await-in-loop
             if (studentId) {
+                // eslint-disable-next-line no-await-in-loop
                 await Presence.create({
                     studentId,
                     presence,
