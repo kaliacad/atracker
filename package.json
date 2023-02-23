@@ -1,5 +1,5 @@
 {
-  "name": "attendance-tracker",
+  "name": "a-tracker",
   "version": "1.0.0",
   "description": "",
   "main": "src/server.js",
@@ -14,7 +14,8 @@
     "seed:revert": "npx sequelize-cli db:seed:undo",
     "migrate:status": "npx sequelize-cli db:migrate:status",
     "migrate:revert": "npx sequelize-cli db:migrate:undo",
-    "migrate": "npx sequelize-cli db:migrate"
+    "migrate": "npx sequelize-cli db:migrate",
+    "db:setup": "npm run migrate && npm run seed"
   },
   "keywords": [
     "education",
@@ -49,14 +50,14 @@
     "pg": "^8.8.0",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.26.0",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "sequelize-cli": "^6.5.2",
+    "babel-register": "^6.26.0"
   },
   "devDependencies": {
-    "babel-register": "^6.26.0",
     "eslint": "^8.28.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",
-    "morgan": "^1.10.0",
-    "sequelize-cli": "^6.5.2"
+    "morgan": "^1.10.0"
   }
 }

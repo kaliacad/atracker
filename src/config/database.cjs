@@ -35,4 +35,4 @@ module.exports = {
     host: DB_PROD_HOST,
     dialect: DIALECT
   }
-}
+} 
