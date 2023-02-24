@@ -33,6 +33,9 @@ module.exports = {
     password: DB_PROD_PASSWORD,
     database: DB_PROD,
     host: DB_PROD_HOST,
-    dialect: DIALECT
+    dialect: DIALECT,
+    dialectOptions: {
+      ssl: true
+    }
   }
 } 

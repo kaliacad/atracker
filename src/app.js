@@ -44,6 +44,7 @@ const accessLogStream = fs.createWriteStream(join(__dirname, "access.log"), {
 app.get("env") === "production"
     ? app.use(morgan("combined", { stream: accessLogStream }))
     : app.use(morgan("dev", { stream: accessLogStream }));
+
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
