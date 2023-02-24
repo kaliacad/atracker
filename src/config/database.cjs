@@ -35,7 +35,10 @@ module.exports = {
     host: DB_PROD_HOST,
     dialect: DIALECT,
     dialectOptions: {
-      ssl: true
+      ssl: {
+        require: true,
+        rejectUnauthorized: false
+      }
     }
   }
 } 
