@@ -69,7 +69,7 @@ presence.belongsTo(student);
 
 try {
     await sequelize.authenticate();
-    sequelize.sync({ alter: true });
+    sequelize.sync({ force: true });
     console.log("connection to db etablished ");
 } catch (error) {
     console.log("Unable to connect to the database", error);
