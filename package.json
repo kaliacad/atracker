@@ -56,7 +56,6 @@
     "eslint": "^8.28.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",
-    "morgan": "^1.10.0",
     "sequelize-cli": "^6.5.2"
   }
 }
