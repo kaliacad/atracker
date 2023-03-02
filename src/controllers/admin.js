@@ -131,6 +131,7 @@ export async function getSingleStudent(req, res, next) {
 
     const studentId = req.params.id;
     const isAuth = (req.user.role === 1 || req.user.role === 2) ?? false;
+    
     if (!studentId) return res.redirect("/not-found");
     try {
         const student = await Student.findOne({

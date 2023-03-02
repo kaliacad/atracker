@@ -10,7 +10,9 @@
           <%= student.prenom %> <%= student.nom %>
         </h3>
         <p class="card-text text-center"><%= student.email %></p>
-        <p class="card-text text-center"><%= student.cohorte.nom %></p>
+        <% if (student.cohort) { %> 
+          <p class="card-text text-center"><%= student.cohorte.nom %></p>
+        <% } %>
       </div>
     </div>
 
