@@ -5,7 +5,6 @@
   "main": "src/server.js",
   "type": "module",
   "scripts": {
-    "runQuery": "node ./src/utils/runQuery",
     "start": "nodemon ./",
     "test": "NODE_ENV=development mocha ./tests --timeout 10000",
     "lint": "eslint src/**/*.js",
