@@ -13,7 +13,8 @@
     "seed:revert": "npx sequelize-cli db:seed:undo",
     "migrate:status": "npx sequelize-cli db:migrate:status",
     "migrate:revert": "npx sequelize-cli db:migrate:undo",
-    "migrate": "npx sequelize-cli db:migrate"
+    "migrate": "npx sequelize-cli db:migrate",
+    "db:setup": "npm run migrate && npm run seed"
   },
   "keywords": [
     "education",
@@ -22,7 +23,7 @@
   ],
   "author": [
     "Abel",
-    "cedric"
+    "Cedric"
   ],
   "license": "MIT",
   "dependencies": {
