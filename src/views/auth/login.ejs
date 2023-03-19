@@ -1,4 +1,5 @@
 <%- include('../includes/header.ejs')%>
+
 <body>
 <section
   class="login container-fluid w-100 mt-0 flex-column d-flex justify-content-center align-items-center"
@@ -11,24 +12,22 @@
       <div class="container">
         <div class="row">
           <div class="col-md-5">
-            <h1
-              class="text-light m-0 my-4"
-                >
+            <h1 class="text-light m-0 my-4">
               ATRACK
             </h1>
             <h4 class="text-light">
               une plateforme pour mieux faire le suivi des présences des étudiants dans votre école!
             </h4>
           </div>
-          <div class="col-md-5 col-md-offset-2">
+          <div class="col-md-5 offset-md-2">
             <div class="wrap-login100">
+              <h3 class="text-center">Bienvenue !</h3>
+              <p class="text-center">Connectez-vous</p>
               <form
                 class="login100-form validate-form"
                 method="POST"
                 action="/"
               >
-                <span class="login100-form-title"> Connexion </span>
-                <span class="login100-form-subtitle m-b-16"> </span>
                 <div class="wrap-input100 validate-input m-b-16">
                   <input
                     class="input100"
@@ -71,4 +70,5 @@
     </div>
   </div>
 </section>
+
 <%- include('../includes/footer.ejs')%>
