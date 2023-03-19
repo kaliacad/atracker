@@ -5,7 +5,7 @@ export function form(req, res) {
     if (req.user) return res.redirect("/myaccount/summary");
 
     return res.render("auth/login", {
-        title: "Connexion",
+        title: "Bienvenue",
         userId: undefined,
     });
 }
@@ -40,11 +40,7 @@ export async function login(req, res, next) {
 }
 
 export function logout(req, res) {
-    req.session.destroy();
-    res.cookie("session", undefined);
-    res.status(200).clearCookie("connect.sid", {
-        path: "/",
-    });
-
+    res.clearCookie("session");
+    
     res.redirect("/");
 }
