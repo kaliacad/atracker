@@ -133,6 +133,7 @@ export async function getSingleStudent(req, res, next) {
     const isAuth = (req.user.role === 1 || req.user.role === 2) ?? false;
     
     if (!studentId) return res.redirect("/not-found");
+    
     try {
         const student = await Student.findOne({
             where: { id: studentId },
@@ -227,17 +228,19 @@ export async function postEditStudent(req, res, next) {
     }
 }
 
-export async function postDeleleStudent(req, res, next) {
+export async function deleleStudent(req, res, next) {
+
     try {
         if (req.user.role !== 1 && req.user.role !== 2) {
             return res.redirect("myaccount/students/all");
         }
-        const { studentId } = req.body;
 
-        const student = await Student.findOne({ where: { id: studentId } });
-        await student.destroy();
+        const student = await Student.findOne({ where: { id: req.params.id } });
+        await student.destroy().then(result => {
 
-        res.redirect("/myaccount/students/all");
+            res.json({ redirect: '/myaccount/students/all' })
+        });
+
     } catch (error) {
         const err = new Error(error);
         err.httpStatusCode = 500;

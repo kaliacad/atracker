@@ -59,7 +59,7 @@ cohorte.hasMany(student, {
 student.belongsTo(cohorte);
 
 student.hasMany(presence, {
-    onDelete: "RESTRICT",
+    onDelete: "CASCADE",
     onUpdate: "RESTRICT",
 });
 presence.belongsTo(student);

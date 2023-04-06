@@ -22,7 +22,7 @@
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody class=" font14 ">
+          <tbody class="font14">
             <% students.forEach((student, i)=> { %>
               <tr class=" align-middle">
                 <td>
@@ -50,10 +50,14 @@
                       <i class="fa-solid fa-pen-to-square"></i>
                     </button>
                   </a>
+                  <!-- <form action="/myaccount/students/delete/<%= student.id %>?_method=DELETE" method="post"> -->
 
-                  <button title="Supprimer" class="btn btn-outline-danger btn-sm mx-1" type="button">
-                    <i class="fa fa-trash-can"></i>
-                  </button>
+                  <a title="Supprimer" class="btn btn-outline-danger btn-sm mx-1" data-doc="<%= student.id %>">
+                    <!-- <button title="Supprimer" class="btn btn-outline-danger btn-sm mx-1" type="button"> -->
+                      <i class="fa fa-trash-can"></i>
+                    <!-- </button> -->
+                  </a>
+                <!-- </form> -->
                 </td>
               </tr>
               <% }) %>
@@ -73,3 +77,22 @@
 </div>
 
 <%- include('../includes/footer.ejs')%>
+
+<script>
+  
+  const trashcans = document.querySelectorAll('a.btn-outline-danger')
+  
+  trashcans.forEach(trashcan => {
+    trashcan.addEventListener('click', e => {
+    const endpoint = `/myaccount/students/${trashcan.dataset.doc}`
+
+    fetch(endpoint, {
+      method: 'DELETE'
+    })
+    .then(response => response.json())
+    .then(data => window.location.href = data.redirect)
+    .catch(err => console.log('err', err))
+  })
+  })
+
+</script>

@@ -6,7 +6,7 @@ import {
     postAddStudent,
     getStudents,
     getSingleStudent,
-    postDeleleStudent,
+    deleleStudent,
     postEditStudent,
 } from "../controllers/admin.js";
 
@@ -16,7 +16,7 @@ router.get("/new", getAddStudent);
 router.post("/new", postAddStudent);
 router.get("/all", getStudents);
 router.get("/:id", getSingleStudent);
-router.post("/delete", postDeleleStudent);
+router.delete("/:id", deleleStudent);
 router.post("/edit", postEditStudent);
 
 export default router;
