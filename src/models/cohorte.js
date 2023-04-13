@@ -20,4 +20,7 @@ const cohorte = sequelize.define("cohorte", {
     },
 });
 
+// util functions on cohorte model
+export const findClasses = cohorte.findAll()
+
 export default cohorte;

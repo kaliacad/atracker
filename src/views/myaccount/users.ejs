@@ -25,7 +25,7 @@
             </tr>
           </thead>
           <tbody class="font14">
-            <% users.forEach((user, i)=> { %>
+            <% users.forEach((user, i) => { %>
               <tr>
                 <td class="align-middle">
                   <%= i + 1 %>
@@ -33,21 +33,21 @@
                 <td>
                   <div class="d-flex align-items-center gap-2">
                     <div class="rounded-name-character">
-                      <%= user.noms.charAt(0).toUpperCase() %>
+                      <%= user.nom.charAt(0).toUpperCase() %>
                     </div>
                     <div>
-                      <%= user.noms %>
+                      <%= user.nom %>
                     </div>
                   </div>
                 </td>
                 <td class="align-middle">
-                  <%= user.username %>
+                  <!-- <%= user.username %> -->
                 </td>
                 <td class="align-middle">
-                  <%= user.email %>
+                  <!-- <%= user.email %> -->
                 </td>
                 <td class="align-middle">
-                  <%= user.role == 1 ? 'Super admin' : user.role == 2 ? 'admin' : 'attendance' %>
+                  <!-- <%= user.role == 1 ? 'Super admin' : user.role == 2 ? 'admin' : 'attendance' %> -->
                 </td>
                 <td class="align-middle">
                   <a href="/myaccount/users/<%= user.id %>">
