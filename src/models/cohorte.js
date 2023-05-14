@@ -13,11 +13,6 @@ const cohorte = sequelize.define("cohorte", {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    isCurrent: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
-    },
 });
 
 // util functions on cohorte model

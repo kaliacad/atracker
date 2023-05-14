@@ -3,8 +3,9 @@ AT is a web app that helps tracks attendance of students in a bootcamp or a codi
 
 ## Getting started
 These instructions will get you a copy of the project up and running on your local machine for usage, development and testing purposes. You can also view the [demo app](https://app-attendance-gda.onrender.com) and test the app:
-- usernam: admin
-- pasword: admin123
+
+- usernam: `admin`
+- pasword: `admin123`
 
 ### Prerequisites
 - have Nodejs installed
@@ -22,14 +23,19 @@ This section is optional, you can skip it. To manipulate Postgres database, I us
 
 - `npm run migrate:status`: see the status of available migrations (up and/or down)
 - `npm run migrate`: run the migration with the latest migration file
-- `npm migrate:revert`: revert migration
-- `npm seed`: seed db with dummy data (as for now, you'll have an admin user with admin123 as password)
-- `npm seed:revert`: revert seeding
+- `npm run migrate:revert`: revert migration
+- `npm run seed`: seed db with dummy data (as for now, you'll have an admin user with admin123 as password)
+- `npm run seed:revert`: revert seeding
+
 - `npx sequelize-cli db:seed(:undo) --seed filaName.js`: execute a specific seed file
+- `npx sequelize-cli db:migrate:undo --name fileName.js`: revert (down) a specific migration file
+- `npx sequelize-cli db:migrate --to fileName.js`: run a specific migration file
+
+> Note: To work with the remote dabase, add `--env production` at the end of your CLI command.
 
 ## Usage
 - start the server with `npm start`
-- Go to [localhost:700](http://localhost:700)
+- Go to [localhost:7000](http://localhost:7000)
 - Username is: `admin` and password: `admin123`
 
 ## License

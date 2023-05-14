@@ -4,19 +4,9 @@
 module.exports = {
   async up (queryInterface, Sequelize) {
     /**
-     * Remove isCurrent col.
+     * Add isCurrent col.
      */
-    return queryInterface.removeColumn(
-      'cohortes',
-      'isCurrent'
-    ) 
-  },
-
-  async down (queryInterface, Sequelize) {
-    /**
-     * Add reverting commands here.
-     */
-    return queryInterface.addColumn(
+     return queryInterface.addColumn(
       'cohortes',
       'isCurrent', {
         type: Sequelize.BOOLEAN,
@@ -25,5 +15,16 @@ module.exports = {
       }
       
     )
+    
+  },
+
+  async down (queryInterface, Sequelize) {
+    /**
+     * Remove isCurrent col.
+     */
+    return queryInterface.removeColumn(
+      'cohortes',
+      'isCurrent'
+    ) 
   }
 };
