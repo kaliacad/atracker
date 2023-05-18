@@ -1,27 +1,28 @@
 <%- include('../includes/header.ejs')%>
   <%- include('../includes/navigation.ejs')%>
 
-<div
-  class="container fontTable w-100 h-100 mt-5 pt-5 d-flex flex-column justify-content-center"
->
-  <div class="col-md-12 d-flex flex-column justify-content-center">
-    <div class="d-flex flex-row w-100 justify-content-between">
-      <h5 class="text-center align-start text-secondary"><%= title %></h5>
-      <a href="/myaccount/students/new"
-        ><button class="btn btn-outline-primary" type="button">
-          Nouveau
-        </button></a
-      >
-    </div>
+    <div class="container fontTable w-100 h-100 mt-5 pt-5 d-flex flex-column justify-content-center">
+      <div class="col-md-12 d-flex flex-column justify-content-center">
+        <div class="d-flex flex-row w-100 justify-content-between">
+          <h5 class="text-center align-start text-secondary">
+            <%= title %> (<%= totalStudents %>)
+          </h5>
+          <a href="/myaccount/students/new"><button class="btn btn-outline-primary" type="button">
+              Nouveau
+            </button>
+          </a>
+        </div>
+
         <table class="table table-hover">
           <thead class="thead-light">
             <tr>
               <th>#</th>
-              <th>Noms</th>
+              <th>Nom complet</th>
               <th>Email</th>
               <th>Actions</th>
             </tr>
           </thead>
+
           <tbody class="font14">
             <% students.forEach((student, i)=> { %>
               <tr class=" align-middle">
@@ -29,17 +30,20 @@
                   <%= i + 1 %>
                 </td>
                 <td>
-                  <div class=" d-flex gap-2 align-items-center " >
+                  <div class=" d-flex gap-2 align-items-center ">
                     <div class=" rounded-name-character">
                       <%= student.prenom.charAt(0).toUpperCase() %>
                     </div>
                     <div>
-                      <%= student.prenom.charAt(0).toUpperCase() + student.prenom.slice(1) +" " + student.nom.toUpperCase() %>
+                      <%= student.prenom.charAt(0).toUpperCase() + student.prenom.slice(1) + " " +
+                        student.nom.toUpperCase() %>
                     </div>
                   </div>
                 </td>
-                <td ><%= student.email %></td>
-                <td class="align-middle">
+                <td>
+                  <%= student.email %>
+                </td>
+                <td class=" align-middle">
                   <a href="/myaccount/students/<%= student.id %>">
                     <button title="Voir" class="btn btn-outline-primary btn-sm mx-1" type="button">
                       <i class="fa-solid fa-eye"></i>
@@ -50,14 +54,10 @@
                       <i class="fa-solid fa-pen-to-square"></i>
                     </button>
                   </a>
-                  <!-- <form action="/myaccount/students/delete/<%= student.id %>?_method=DELETE" method="post"> -->
 
                   <a title="Supprimer" class="btn btn-outline-danger btn-sm mx-1" data-doc="<%= student.id %>">
-                    <!-- <button title="Supprimer" class="btn btn-outline-danger btn-sm mx-1" type="button"> -->
-                      <i class="fa fa-trash-can"></i>
-                    <!-- </button> -->
+                    <i class="fa fa-trash-can"></i>
                   </a>
-                <!-- </form> -->
                 </td>
               </tr>
               <% }) %>
@@ -73,26 +73,26 @@
         </table>
       </div>
     </div>
-  </div>
-</div>
+    </div>
+    </div>
 
-<%- include('../includes/footer.ejs')%>
+    <%- include('../includes/footer.ejs')%>
 
-<script>
-  
-  const trashcans = document.querySelectorAll('a.btn-outline-danger')
-  
-  trashcans.forEach(trashcan => {
-    trashcan.addEventListener('click', e => {
-    const endpoint = `/myaccount/students/${trashcan.dataset.doc}`
+      <script>
 
-    fetch(endpoint, {
-      method: 'DELETE'
-    })
-    .then(response => response.json())
-    .then(data => window.location.href = data.redirect)
-    .catch(err => console.log('err', err))
-  })
-  })
+        const trashcans = document.querySelectorAll('a.btn-outline-danger')
 
-</script>
+        trashcans.forEach(trashcan => {
+          trashcan.addEventListener('click', e => {
+            const endpoint = `/myaccount/students/${trashcan.dataset.doc}`
+
+            fetch(endpoint, {
+              method: 'DELETE'
+            })
+              .then(response => response.json())
+              .then(data => window.location.href = data.redirect)
+              .catch(err => console.log('err', err))
+          })
+        })
+
+      </script>
