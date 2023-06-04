@@ -1,9 +1,11 @@
 import { Router } from "express";
 
-import { all } from "../controllers/classController.js"
+import { classIndex, classCreateGet, classCreatePost } from "../controllers/classController.js"
 
 const router = Router();
 
-router.get("/all", all)
+router.get("/all", classIndex)
+router.get("/new", classCreateGet)
+router.post("/all", classCreatePost)
 
 export default router;

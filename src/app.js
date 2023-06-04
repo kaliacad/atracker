@@ -21,6 +21,7 @@ import User from "./models/User.js";
 import student from "./models/student.js";
 import presence from "./models/presence.js";
 import cohorte from "./models/cohorte.js";
+import StudentCohort from "./models/StudentCohort.js";
 // error controller
 // eslint-disable-next-line no-unused-vars
 import sequelize from "./db/config.js";
@@ -52,12 +53,26 @@ User.hasMany(student, {
 });
 student.belongsTo(User);
 
-cohorte.hasMany(student, {
-    onDelete: "RESTRICT",
-    onUpdate: "RESTRICT",
+/**
+ * Define relationship between 
+ * cohorte and Student_Cohort
+ */
+cohorte.hasMany(StudentCohort, {
+    onDelete: "CASCADE",
 });
-student.belongsTo(cohorte);
+StudentCohort.belongsTo(cohorte);
 
+/**
+ * Define relationship between student and Student_Cohort
+ */
+student.hasMany(StudentCohort, {
+    onDelete: 'CASCADE'
+})
+StudentCohort.belongsTo(student)
+
+/**
+ * Define relationship between student and presence
+ */
 student.hasMany(presence, {
     onDelete: "CASCADE",
     onUpdate: "RESTRICT",
@@ -82,7 +97,7 @@ app.use(
 );
 app.use(flash());
 
-// templates views
+// register view engine
 app.set("view engine", "ejs");
 app.set("views", join(__dirname, "views"));
 

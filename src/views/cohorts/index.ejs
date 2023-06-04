@@ -8,10 +8,14 @@
             <%= title %>
           </h5>
         </div>
-        
-            <% cohorts.forEach(cohort => { %>
-              <div class="row">
-                <div class="col-sm-4">
+        <a href="/myaccount/classes/new">
+          <button class="btn btn-outline-primary" type="button">
+          Ajouter
+        </button>
+      </a>
+      <div class="row">
+      <% cohorts.forEach(cohort => { %>
+                <div class="col-4 mt-4">
                   <div class="card">
                     <div class="card-body">
                       <h5 class="card-title"><%= cohort.nom %></h5>
@@ -19,9 +23,8 @@
                     </div>
                   </div>
                 </div>
+                <% }) %>
               </div>
-              <% }) %>
-              
       </div>
     </div>
 
