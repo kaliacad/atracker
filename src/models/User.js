@@ -51,7 +51,6 @@ export const saveUser = async userData => {
     };
 
     return new User(user).save()
-
 }
 
 export default User;
